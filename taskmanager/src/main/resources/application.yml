@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: taskmanager
+  flyway:
+    locations: classpath:db/migration
+    schemas: tasks
+    baseline-on-migrate: true
+    enabled: true
+  datasource:
+    driver-class-name: ${TM_DATASOURCE_DRIVER}
+    url: ${TM_JDBC_BASE_URL}?currentSchema=tasks
+    username: ${TM_DATASOURCE_USER}
+    password: ${TM_DATASOURCE_PASSWORD}
