@@ -3,18 +3,9 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/processes/order/src/main/kotlin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/processes/order/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/processes/order/{project.basedir}/src/main/kotlin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/processes/payment/src/main/kotlin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/processes/payment/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/processes/payment/{project.basedir}/src/main/kotlin" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/processes/src/main/kotlin" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/processes/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/processes/{project.basedir}/src/main/kotlin" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/kotlin" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/taskmanager/src/main/kotlin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/taskmanager/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/taskmanager/{project.basedir}/src/main/kotlin" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/{project.basedir}/src/main/kotlin" charset="UTF-8" />
   </component>
 </project>
