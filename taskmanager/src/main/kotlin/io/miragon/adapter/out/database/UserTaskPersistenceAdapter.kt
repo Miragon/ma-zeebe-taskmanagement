@@ -1,13 +1,13 @@
 package io.miragon.adapter.out.database
 
-import io.miragon.application.port.out.PersistUserTaskPort
+import io.miragon.application.port.out.UserTaskPersistencePort
 import io.miragon.domain.UserTask
 import org.springframework.stereotype.Component
 
 @Component
 class UserTaskPersistenceAdapter(
     private val userTaskRepository: UserTaskRepository
-) : PersistUserTaskPort
+) : UserTaskPersistencePort
 {
     override fun findAll(): List<UserTask>
     {

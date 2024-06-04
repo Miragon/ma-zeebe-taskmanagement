@@ -2,7 +2,7 @@ package io.miragon.application.port.out
 
 import io.miragon.domain.UserTask
 
-interface PersistUserTaskPort
+interface UserTaskPersistencePort
 {
     fun findAll(): List<UserTask>
 

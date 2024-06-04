@@ -12,7 +12,7 @@ class UserTaskListener(
     private val useCase: SyncUserTaskUseCase,
 )
 {
-    val log = KotlinLogging.logger { }
+    private val log = KotlinLogging.logger { }
 
     @JobWorker(type = "io.camunda.zeebe:userTask", timeout = 10000, autoComplete = false)
     fun receiveTask(job: ActivatedJob)
