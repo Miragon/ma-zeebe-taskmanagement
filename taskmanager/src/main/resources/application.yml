@@ -1,3 +1,6 @@
+server:
+  port: 8083
+
 spring:
   application:
     name: taskmanager
@@ -11,3 +14,9 @@ spring:
     url: ${TM_JDBC_BASE_URL}?currentSchema=tasks
     username: ${TM_DATASOURCE_USER}
     password: ${TM_DATASOURCE_PASSWORD}
+
+camunda:
+  client:
+    zeebe:
+      base-url: http://localhost:26500
+    mode: simple

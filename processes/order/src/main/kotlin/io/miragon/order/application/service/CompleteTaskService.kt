@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service
 @Service
 class CompleteTaskService(private val port: CompleteTaskPort) : CompleteTaskUseCase
 {
-    override fun completeTask(id: String): Boolean = port.completeTask(id)
+    override fun completeTask(id: Long): Boolean = port.completeTask(id)
 }

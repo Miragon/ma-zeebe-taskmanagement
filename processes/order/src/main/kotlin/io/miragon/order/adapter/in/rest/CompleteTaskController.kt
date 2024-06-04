@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 class CompleteTaskController(private val useCase: CompleteTaskUseCase)
 {
     @PostMapping("/complete/{id}")
-    fun completeTask(@PathVariable id: String): ResponseEntity<Boolean>
+    fun completeTask(@PathVariable id: Long): ResponseEntity<Boolean>
     {
         return ResponseEntity.ok(useCase.completeTask(id))
     }

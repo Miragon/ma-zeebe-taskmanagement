@@ -27,7 +27,7 @@
         <!-- spring -->
         <spring.boot.version>3.2.3</spring.boot.version>
         <!-- camunda -->
-        <camunda.version>8.4.0</camunda.version>
+        <camunda.version>8.5.3</camunda.version>
         <!-- project -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -68,6 +68,7 @@
                     </compilerPlugins>
                     <args>
                         <arg>-Xjsr305=strict</arg>
+                        <arg>-java-parameters</arg>
                     </args>
                 </configuration>
                 <dependencies>
@@ -82,22 +83,6 @@
                         <version>${kotlin.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.2</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <configuration>
-                    <mainClass>MainKt</mainClass>
-                </configuration>
             </plugin>
         </plugins>
     </build>

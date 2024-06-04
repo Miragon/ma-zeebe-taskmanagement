@@ -1,0 +1,13 @@
+### GET Tasks
+GET http://localhost:8083/api/load/tasks
+Accept: application/json
+
+> {%
+    client.global.set("task_id", response.body[1]["key"].toString());
+%}
+
+### PUT Start Process
+PUT http://localhost:8081/api/process/start
+
+### PUT Complete Task
+POST http://localhost:8081/api/task/complete/{{task_id}}

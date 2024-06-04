@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component
 @Component
 class CompleteTaskAdapter(private val zeebeClient: ZeebeClient) : CompleteTaskPort
 {
-    override fun completeTask(id: String): Boolean
+    override fun completeTask(id: Long): Boolean
     {
         zeebeClient
-            .newCompleteCommand(id.toLong())
+            .newCompleteCommand(id)
             .send()
             .join()
 
