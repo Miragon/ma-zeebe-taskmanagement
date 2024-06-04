@@ -2,7 +2,9 @@ package io.miragon.adapter.out.database
 
 import io.miragon.application.port.out.PersistUserTaskPort
 import io.miragon.domain.UserTask
+import org.springframework.stereotype.Component
 
+@Component
 class UserTaskPersistenceAdapter(
     private val userTaskRepository: UserTaskRepository
 ) : PersistUserTaskPort
@@ -34,7 +36,7 @@ class UserTaskPersistenceAdapter(
                 variables = task.variables,
                 expiresAt = task.expiresAt,
                 assignee = task.assignee,
-                taskState = task.taskState
+                taskState = task.taskState.toString()
             )
         )
     }

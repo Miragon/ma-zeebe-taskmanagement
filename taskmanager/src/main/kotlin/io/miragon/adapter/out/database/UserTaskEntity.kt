@@ -1,12 +1,10 @@
 package io.miragon.adapter.out.database
 
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.miragon.domain.TaskState
 import io.miragon.domain.UserTask
 import jakarta.persistence.*
-import kotlinx.serialization.builtins.MapSerializer
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.encodeToJsonElement
 import java.time.Instant
 
 @Entity
@@ -23,17 +21,18 @@ class UserTaskEntity(
 
     val processDefinitionKey: Long,
 
-    @Convert(converter = MapToJsonConverter::class)
-    var variables: Map<String, Any> = emptyMap(),
-
     var expiresAt: Instant,
-
-    var assignee: String?,
 
     var taskState: String,
 
+    @Convert(converter = MapConverter::class)
+    var variables: Map<String, Any> = emptyMap(),
+
     var createdAt: Instant = Instant.now(),
-)
+
+    var assignee: String?,
+
+    )
 {
     fun toDomain(): UserTask
     {
@@ -43,29 +42,40 @@ class UserTaskEntity(
             processInstanceKey = processInstanceKey,
             bpmnProcessId = bpmnProcessId,
             processDefinitionKey = processDefinitionKey,
-            variables = variables,
             expiresAt = expiresAt,
+            variables = variables,
+            taskState = TaskState.valueOf(taskState),
             assignee = assignee,
-            taskState = taskState
         )
     }
 }
 
 @Converter(autoApply = true)
-class MapToJsonConverter : AttributeConverter<Map<String, Any>, String>
+class MapConverter : AttributeConverter<Map<String, Any>, String>
 {
-    override fun convertToDatabaseColumn(attribute: Map<String, Any>?): String
+    private val objectMapper = jacksonObjectMapper()
+
+    override fun convertToDatabaseColumn(map: Map<String, Any>?): String
     {
-        return attribute?.let {
-            val jsonMap = it.mapValues { entry ->
-                Json.encodeToJsonElement(entry.value)
-            }
-            Json.encodeToString(MapSerializer(String.serializer(), JsonElement.serializer()), jsonMap)
-        } ?: "{}"
+        return try
+        {
+            objectMapper.writeValueAsString(map)
+        } catch (e: Exception)
+        {
+            throw IllegalArgumentException("Could not convert map to JSON", e)
+        }
     }
 
-    override fun convertToEntityAttribute(dbData: String): Map<String, Any>
+    override fun convertToEntityAttribute(json: String?): Map<String, Any>
     {
-        return Json.decodeFromString(dbData)
+        return try
+        {
+            objectMapper.readValue(json, object : TypeReference<Map<String, Any>>()
+            {})
+        } catch (e: Exception)
+        {
+            throw IllegalArgumentException("Could not convert JSON to map", e)
+        }
     }
+
 }
