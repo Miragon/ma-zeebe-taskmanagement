@@ -1,0 +1,69 @@
+{
+  "schema": {
+    "type": "object",
+    "properties": {
+      "customerName": {
+        "type": "string"
+      },
+      "deliveryAddress": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string"
+          },
+          "zipCode": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          }
+        }
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "quantity": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "isOrderValid": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "isOrderValid"
+    ]
+  },
+  "uischema": {
+    "type": "VerticalLayout",
+    "elements": [
+      {
+        "type": "Control",
+        "scope": "#/properties/customerName",
+        "label": "Name"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/deliveryAddress",
+        "label": "Address"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/items",
+        "label": "Items"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/isOrderValid",
+        "label": "Is order valid?"
+      }
+    ]
+  }
+}

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 @Component
 class StartProcessAdapter(private val zeebeClient: ZeebeClient) : StartProcessPort
 {
-    override fun startProcess(): String
+    override fun startProcess(): Long
     {
         val processInstance = zeebeClient
             .newCreateInstanceCommand()
@@ -16,6 +16,6 @@ class StartProcessAdapter(private val zeebeClient: ZeebeClient) : StartProcessPo
             .send()
             .join()
 
-        return processInstance.processInstanceKey.toString()
+        return processInstance.processInstanceKey
     }
 }

@@ -1,6 +1,8 @@
 package io.miragon.order.application.port.`in`
 
+import io.miragon.order.domain.Order
+
 interface StartProcessUseCase
 {
-    fun startProcess(): String
+    fun startProcess(order: Order): Long
 }

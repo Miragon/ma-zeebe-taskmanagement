@@ -9,7 +9,7 @@ import java.time.Instant
 
 @Entity
 @Table(name = "user_task")
-class UserTaskEntity(
+data class UserTaskEntity(
     @Id
     val id: Long,
 

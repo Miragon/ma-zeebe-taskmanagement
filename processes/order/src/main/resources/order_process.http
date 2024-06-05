@@ -9,5 +9,8 @@ Accept: application/json
 ### PUT Start Process
 PUT http://localhost:8081/api/process/start
 
-### PUT Complete Task
-POST http://localhost:8081/api/task/complete/{{task_id}}
+### PUT Check Order Task
+POST http://localhost:8081/api/task/complete/check/{{task_id}}
+
+### PUT Prepare Order Task
+POST http://localhost:8081/api/task/complete/prepare/{{task_id}}

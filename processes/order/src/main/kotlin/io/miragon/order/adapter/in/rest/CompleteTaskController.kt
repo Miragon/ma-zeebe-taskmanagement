@@ -8,12 +8,18 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping("/api/order/task")
 class CompleteTaskController(private val useCase: CompleteTaskUseCase)
 {
-    @PostMapping("/complete/{id}")
-    fun completeTask(@PathVariable id: Long): ResponseEntity<Boolean>
+    @PostMapping("/complete/check/{id}")
+    fun completeTask(@PathVariable id: Long): ResponseEntity<Long>
     {
-        return ResponseEntity.ok(useCase.completeTask(id))
+        return ResponseEntity.ok(useCase.completeCheckOrderTask(id))
+    }
+
+    @PostMapping("/complete/prepare/{id}")
+    fun completePrepareTask(@PathVariable id: Long): ResponseEntity<Long>
+    {
+        return ResponseEntity.ok(useCase.completePrepareOrderTask(id))
     }
 }

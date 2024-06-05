@@ -9,8 +9,9 @@ class CompleteTaskAdapter(private val zeebeClient: ZeebeClient) : CompleteTaskPo
 {
     override fun completeTask(id: Long): Boolean
     {
-        zeebeClient
+        val res = zeebeClient
             .newCompleteCommand(id)
+            .variables(mapOf("isOrderValid" to true))
             .send()
             .join()
 

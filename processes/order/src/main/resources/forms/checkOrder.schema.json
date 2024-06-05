@@ -1,0 +1,42 @@
+{
+    "type": "object",
+    "properties": {
+        "customerName": {
+            "type": "string"
+        },
+        "deliveryAddress": {
+            "type": "object",
+            "properties": {
+                "street": {
+                    "type": "string"
+                },
+                "zipCode": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                }
+            }
+        },
+        "items": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "quantity": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "isOrderValid": {
+            "type": "boolean"
+        }
+    },
+    "required": [
+        "isOrderValid"
+    ]
+}
