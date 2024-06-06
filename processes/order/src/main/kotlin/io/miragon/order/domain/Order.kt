@@ -3,8 +3,8 @@ package io.miragon.order.domain
 
 data class Order(
     val customerName: String,
-    val deliveryAddress: Map<String, String>,
-    val items: Map<String, String>,
+    val deliveryAddress: Map<String, Any>,
+    var items: List<Map<String, Any>>,
     var state: OrderState,
 )
 {

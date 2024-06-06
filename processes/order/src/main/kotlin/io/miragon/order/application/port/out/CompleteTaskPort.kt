@@ -2,5 +2,7 @@ package io.miragon.order.application.port.out
 
 interface CompleteTaskPort
 {
-    fun completeTask(id: Long): Boolean
+    fun completeCheckOrderTask(id: Long, approved: Boolean): Boolean
+
+    fun completePrepareOrderTask(id: Long): Boolean
 }

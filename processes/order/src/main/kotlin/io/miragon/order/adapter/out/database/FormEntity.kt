@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.io.Serializable
 
 @Entity
-@Table(name = "form")
+@Table(name = "form_data")
 @IdClass(FormKey::class)
 data class FormEntity
     (

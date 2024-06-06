@@ -8,5 +8,5 @@ interface OrderPersistencePort
 
     fun findById(id: Long): Order
 
-    fun save(id: Long, order: Order): Long
+    fun save(id: Long, order: Order)
 }

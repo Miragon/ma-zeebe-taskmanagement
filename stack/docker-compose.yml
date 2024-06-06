@@ -62,8 +62,6 @@ services:
       - POSTGRES_DB=${TM_DATASOURCE_DB}
       - POSTGRES_USER=${TM_DATASOURCE_USER}
       - POSTGRES_PASSWORD=${TM_DATASOURCE_PASSWORD}
-    env_file:
-      - .env.postgres
     networks:
       - taskmanager
 

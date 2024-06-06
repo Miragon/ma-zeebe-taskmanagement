@@ -4,7 +4,7 @@ import io.miragon.taskmanager.domain.UserTask
 
 interface UserTaskPersistencePort
 {
-    fun findAll(): List<UserTask>
+    fun findAllActiveTasks(): List<UserTask>
 
     fun findByTaskId(taskId: Long): UserTask?
 

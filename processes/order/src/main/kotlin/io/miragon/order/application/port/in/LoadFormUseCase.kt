@@ -4,5 +4,9 @@ import io.miragon.order.domain.Form
 
 interface LoadFormUseCase
 {
-    fun loadForm(id: String): Form
+    fun load(orderId: Long): Form
+
+    interface LoadCheckOrderFormUseCase : LoadFormUseCase
+
+    interface LoadPrepareOrderFormUseCase : LoadFormUseCase
 }

@@ -1,10 +1,15 @@
 package io.miragon.order.application.port.out
 
 import io.miragon.order.domain.Form
+import io.miragon.order.domain.FormDeployment
 
 interface FormPersistencePort
 {
-    fun load(id: String): Form
+    fun loadCheckOrderForm(): Form
 
-    fun save(form: Form)
+    fun loadPrepareOrderForm(): Form
+
+    fun saveCheckOrderForm(form: FormDeployment)
+
+    fun savePrepareOrderForm(form: FormDeployment)
 }

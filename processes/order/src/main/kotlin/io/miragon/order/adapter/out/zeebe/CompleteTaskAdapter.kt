@@ -7,11 +7,22 @@ import org.springframework.stereotype.Component
 @Component
 class CompleteTaskAdapter(private val zeebeClient: ZeebeClient) : CompleteTaskPort
 {
-    override fun completeTask(id: Long): Boolean
+    override fun completeCheckOrderTask(id: Long, approved: Boolean): Boolean
+    {
+        val variables = mapOf("isOrderValid" to approved)
+        val res = zeebeClient
+            .newCompleteCommand(id)
+            .variables(variables)
+            .send()
+            .join()
+
+        return true
+    }
+
+    override fun completePrepareOrderTask(id: Long): Boolean
     {
         val res = zeebeClient
             .newCompleteCommand(id)
-            .variables(mapOf("isOrderValid" to true))
             .send()
             .join()
 

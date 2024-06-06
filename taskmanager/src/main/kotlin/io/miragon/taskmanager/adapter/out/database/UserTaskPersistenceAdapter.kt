@@ -3,15 +3,16 @@ package io.miragon.taskmanager.adapter.out.database
 import io.miragon.taskmanager.application.port.out.UserTaskPersistencePort
 import io.miragon.taskmanager.domain.UserTask
 import org.springframework.stereotype.Component
+import java.time.Instant
 
 @Component
 class UserTaskPersistenceAdapter(
     private val userTaskRepository: UserTaskRepository
 ) : UserTaskPersistencePort
 {
-    override fun findAll(): List<UserTask>
+    override fun findAllActiveTasks(): List<UserTask>
     {
-        return userTaskRepository.findAll().map { it.toDomain() }
+        return userTaskRepository.findByExpiresAtAfter(Instant.now()).map { it.toDomain() }
     }
 
     override fun findByTaskId(taskId: Long): UserTask?

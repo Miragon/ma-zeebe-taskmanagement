@@ -7,6 +7,12 @@
           <package value="io.miragon" />
         </packages>
       </persistence-unit>
+      <persistence-unit moduleName="zeebe-taskmanagement" name="Default" />
+      <persistence-unit moduleName="order" name="Default">
+        <packages>
+          <package value="io.miragon.order" />
+        </packages>
+      </persistence-unit>
     </persistence-units>
   </component>
 </project>

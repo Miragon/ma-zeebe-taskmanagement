@@ -15,6 +15,7 @@ class StartProcessService(
     override fun startProcess(order: Order): Long
     {
         val processInstanceId = startProcessPort.startProcess()
-        return orderPersistencePort.save(processInstanceId, order)
+        orderPersistencePort.save(processInstanceId, order)
+        return processInstanceId
     }
 }

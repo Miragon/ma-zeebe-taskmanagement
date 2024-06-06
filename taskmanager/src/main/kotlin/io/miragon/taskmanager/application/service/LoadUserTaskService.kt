@@ -12,6 +12,6 @@ class LoadUserTaskService(
 {
     override fun load(): List<UserTask>
     {
-        return userTaskPersistencePort.findAll()
+        return userTaskPersistencePort.findAllActiveTasks()
     }
 }

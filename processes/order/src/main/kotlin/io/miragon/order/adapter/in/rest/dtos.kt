@@ -1,8 +1,8 @@
 package io.miragon.order.adapter.`in`.rest
 
 data class OrderDto(
-    val customerName: String,
-    val deliveryAddress: AddressDto,
+    val name: String,
+    val address: AddressDto,
     val items: List<ItemDto>,
 )
 
@@ -17,15 +17,24 @@ data class ItemDto(
     val quantity: Int,
 )
 
-interface Form
+data class CheckOrderDto(
+    val approved: Boolean,
+)
 
-data class JsonForm<T>(
-    val schema: Map<String, String>,
-    val uischema: Map<String, String>,
-    val data: T,
-) : Form
+data class PrepareOrderDto(
+    val items: List<ItemCheckDto>,
+)
+{
+    data class ItemCheckDto(
+        val id: Long,
+        val quantity: Int,
+        val isAvailable: Boolean,
+        val deliveryDate: String,
+    )
+}
 
-data class HtmlForm(
-    val html: String,
-    val data: Map<String, Any>,
-) : Form
+data class FormDeploymentDto(
+    val version: Double,
+    val type: String,
+    val form: String,
+)

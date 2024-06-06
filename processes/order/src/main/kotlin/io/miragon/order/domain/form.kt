@@ -9,7 +9,7 @@ abstract class Form
     {
         private val mapper = jacksonObjectMapper()
 
-        fun create(type: FormType, form: String): Form
+        operator fun invoke(type: FormType, form: String): Form
         {
             return when (type)
             {
@@ -24,24 +24,24 @@ abstract class Form
             {})
         }
     }
+
+    class JsonForm<T>(
+        val schema: Map<String, Any>,
+        val uischema: Map<String, Any>,
+        var data: T? = null,
+    ) : Form()
+
+    class HtmlForm(
+        val html: String,
+        var data: Map<String, Any>? = null,
+    ) : Form()
+
 }
 
-class JsonForm<T>(
-    val schema: Map<String, Any>,
-    val uischema: Map<String, Any>,
-    var data: T? = null,
-) : Form()
-
-class HtmlForm(
-    val html: String,
-    var data: Map<String, Any>? = null,
-) : Form()
-
 data class FormDeployment(
-    val id: String,
     val version: Double,
-    val type: FormType,
-    val form: Form,
+    var type: FormType = FormType.JSON_FORM,
+    val form: String,
 )
 
 enum class FormType

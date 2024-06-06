@@ -1,5 +1,19 @@
 server:
-  port: 8081
+  port: 9101
+
+spring:
+  application:
+    name: order-process
+  flyway:
+    locations: classpath:db/migration
+    schemas: order
+    baseline-on-migrate: true
+    enabled: true
+  datasource:
+    driver-class-name: ${TM_DATASOURCE_DRIVER}
+    url: ${TM_JDBC_BASE_URL}?currentSchema=order
+    username: ${TM_DATASOURCE_USER}
+    password: ${TM_DATASOURCE_PASSWORD}
 
 camunda:
   client:

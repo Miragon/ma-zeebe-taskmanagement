@@ -1,0 +1,42 @@
+{
+  "schema": {
+    "type": "object",
+    "properties": {
+      "itemCheckList": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "quantity": {
+              "type": "integer"
+            },
+            "isAvailable": {
+              "type": "boolean"
+            },
+            "deliveryDate": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          "required": [
+            "isAvailable",
+            "deliveryDate"
+          ]
+        }
+      }
+    }
+  },
+  "uischema": {
+    "type": "VerticalLayout",
+    "elements": [
+      {
+        "type": "Control",
+        "scope": "#/properties/itemCheckList",
+        "label": "Item Check List"
+      }
+    ]
+  }
+}

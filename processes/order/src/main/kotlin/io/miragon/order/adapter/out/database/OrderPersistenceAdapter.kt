@@ -32,15 +32,16 @@ class OrderPersistenceAdapter(
         )
     }
 
-    override fun save(id: Long, order: Order): Long
+    override fun save(id: Long, order: Order)
     {
-        val orderEntity = OrderEntity(
-            id = id,
-            customerName = order.customerName,
-            deliveryAddress = order.deliveryAddress,
-            items = order.items,
-            state = order.state.toString()
+        orderRepository.save(
+            OrderEntity(
+                id = id,
+                customerName = order.customerName,
+                deliveryAddress = order.deliveryAddress,
+                items = order.items,
+                state = order.state.toString()
+            )
         )
-        return orderRepository.save(orderEntity).id
     }
 }

@@ -1,16 +1,99 @@
-### GET Tasks
-GET http://localhost:8083/api/load/tasks
+### PUT Deploy CheckOrder Form
+POST http://localhost:9101/rest/deploy/checkOrder
+Content-Type: application/json
+
+{
+  "version": 1.0,
+  "type": "JSON_FORM",
+  "form": "{\"schema\":{\"type\":\"object\",\"properties\":{\"customerName\":{\"type\":\"string\"},\"deliveryAddress\":{\"type\":\"object\",\"properties\":{\"street\":{\"type\":\"string\"},\"zipCode\":{\"type\":\"string\"},\"city\":{\"type\":\"string\"}}},\"items\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"quantity\":{\"type\":\"integer\"}}}},\"isOrderValid\":{\"type\":\"boolean\"}},\"required\":[\"isOrderValid\"]},\"uischema\":{\"type\":\"VerticalLayout\",\"elements\":[{\"type\":\"Control\",\"scope\":\"#/properties/customerName\",\"label\":\"Name\"},{\"type\":\"Control\",\"scope\":\"#/properties/deliveryAddress\",\"label\":\"Address\"},{\"type\":\"Control\",\"scope\":\"#/properties/items\",\"label\":\"Items\"},{\"type\":\"Control\",\"scope\":\"#/properties/isOrderValid\",\"label\":\"Isordervalid?\"}]}}"
+}
+
+### PUT Deploy PrepareOrder Form
+POST http://localhost:9101/rest/deploy/prepareOrder
+Content-Type: application/json
+
+{
+  "version": 1.0,
+  "type": "JSON_FORM",
+  "form": "{\"schema\":{\"type\":\"object\",\"properties\":{\"itemCheckList\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"quantity\":{\"type\":\"integer\"},\"isAvailable\":{\"type\":\"boolean\"},\"deliveryDate\":{\"type\":\"string\",\"format\":\"date\"}},\"required\":[\"isAvailable\",\"deliveryDate\"]}}}},\"uischema\":{\"type\":\"VerticalLayout\",\"elements\":[{\"type\":\"Control\",\"scope\":\"#/properties/itemCheckList\",\"label\":\"Item Check List\"}]}}"
+}
+
+### PUT Start Process
+POST http://localhost:9101/rest/process/placeOrder
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "address": {
+    "street": "1234 Main St",
+    "zipCode": "12345",
+    "city": "Springfield"
+  },
+  "items": [
+    {
+      "id": 1234,
+      "quantity": 1
+    },
+    {
+      "id": 5678,
+      "quantity": 2
+    }
+  ]
+}
+
+### GET CheckOrder Task
+GET http://localhost:9100/rest/load/tasks
 Accept: application/json
 
 > {%
-    client.global.set("task_id", response.body[1]["key"].toString());
+    if (response.body.length > 0) {
+        client.global.set("task_id", response.body[0]["key"].toString());
+        client.global.set("element_id", response.body[0]["elementId"].toString());
+    }
 %}
 
-### PUT Start Process
-PUT http://localhost:8081/api/process/start
+### GET Load form for CheckOrderTask
+GET http://localhost:9101/rest/task/load/{{element_id}}/{{task_id}}
+Accept: application/json
 
-### PUT Check Order Task
-POST http://localhost:8081/api/task/complete/check/{{task_id}}
+### PUT Complete CheckOrderTask
+POST http://localhost:9101/rest/task/complete/{{element_id}}/{{task_id}}
+Content-Type: application/json
 
-### PUT Prepare Order Task
-POST http://localhost:8081/api/task/complete/prepare/{{task_id}}
+{
+  "approved": true
+}
+
+### GET PrepareOrder Task
+GET http://localhost:9100/rest/load/tasks
+Accept: application/json
+
+> {%
+    client.global.set("task_id", response.body[0]["key"].toString());
+    client.global.set("element_id", response.body[0]["elementId"].toString());
+%}
+
+### GET Load form for PrepareOrderTask
+GET http://localhost:9101/rest/task/load/{{element_id}}/{{task_id}}
+Accept: application/json
+
+### PUT Complete PrepareOrderTask
+POST http://localhost:9101/rest/task/complete/{{element_id}}/{{task_id}}
+Content-Type: application/json
+
+{
+  "itemCheckList": [
+    {
+      "id": 1234,
+      "quantity": 1,
+      "isAvailable": true,
+      "deliveryDate": "2020-12-31"
+    },
+    {
+      "name": 5678,
+      "quantity": 2,
+      "isAvailable": true,
+      "deliveryDate": "2020-12-31"
+    }
+  ]
+}
