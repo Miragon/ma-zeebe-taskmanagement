@@ -50,6 +50,8 @@ services:
   postgres:
     image: postgres:15.3
     container_name: postgres
+    volumes:
+      - ./postgres/:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     restart: unless-stopped
@@ -58,10 +60,12 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    env_file:
+      - .env.postgres
     environment:
-      - POSTGRES_DB=${TM_DATASOURCE_DB}
-      - POSTGRES_USER=${TM_DATASOURCE_USER}
-      - POSTGRES_PASSWORD=${TM_DATASOURCE_PASSWORD}
+      - POSTGRES_MULTIPLE_DATABASES=${TM_DATASOURCE_DB},${ORDER_DATASOURCE_DB},${PYMT_DATASOURCE_DB}
+      - POSTGRES_USER=${LOCAL_DATASOURCE_USER}
+      - POSTGRES_PASSWORD=${LOCAL_DATASOURCE_PASSWORD}
     networks:
       - taskmanager
 

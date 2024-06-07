@@ -3,6 +3,7 @@ package io.miragon.order.adapter.out.database
 import io.miragon.order.application.port.out.OrderPersistencePort
 import io.miragon.order.domain.Order
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class OrderPersistenceAdapter(
@@ -21,9 +22,10 @@ class OrderPersistenceAdapter(
         }
     }
 
-    override fun findById(id: Long): Order
+    override fun findById(id: String): Order
     {
-        val orderEntity = orderRepository.findById(id).orElseThrow { throw RuntimeException("Order not found") }
+        val uuid = UUID.fromString(id)
+        val orderEntity = orderRepository.findById(uuid).orElseThrow { throw RuntimeException("Order not found") }
         return Order(
             customerName = orderEntity.customerName,
             deliveryAddress = orderEntity.deliveryAddress,
@@ -32,16 +34,17 @@ class OrderPersistenceAdapter(
         )
     }
 
-    override fun save(id: Long, order: Order)
+    override fun save(order: Order): String
     {
-        orderRepository.save(
+        val res = orderRepository.save(
             OrderEntity(
-                id = id,
                 customerName = order.customerName,
                 deliveryAddress = order.deliveryAddress,
                 items = order.items,
                 state = order.state.toString()
             )
         )
+
+        return res.id.toString()
     }
 }

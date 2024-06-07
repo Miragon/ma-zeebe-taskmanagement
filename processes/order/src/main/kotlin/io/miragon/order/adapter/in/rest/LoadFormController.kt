@@ -3,8 +3,8 @@ package io.miragon.order.adapter.`in`.rest
 import io.miragon.order.application.port.`in`.LoadFormUseCase
 import io.miragon.order.domain.Form
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -15,15 +15,17 @@ class LoadFormController(
     private val loadPrepareOrderFormUseCase: LoadFormUseCase.LoadPrepareOrderFormUseCase,
 )
 {
-    @GetMapping("/checkOrder/{id}")
-    fun loadCheckOrderForm(@PathVariable id: Long): ResponseEntity<Form>
+    @PostMapping("/checkOrder")
+    fun loadCheckOrderForm(@RequestBody userTask: UserTaskDto): ResponseEntity<Form>
     {
-        return ResponseEntity.ok(loadCheckOrderFormUseCase.load(id))
+        val orderId = userTask.variables["orderId"].toString()
+        return ResponseEntity.ok(loadCheckOrderFormUseCase.load(orderId))
     }
 
-    @GetMapping("/prepareOrder/{id}")
-    fun loadPrepareOrderForm(@PathVariable id: Long): ResponseEntity<Form>
+    @PostMapping("/prepareOrder")
+    fun loadPrepareOrderForm(@RequestBody userTask: UserTaskDto): ResponseEntity<Form>
     {
-        return ResponseEntity.ok(loadPrepareOrderFormUseCase.load(id))
+        val orderId = userTask.variables["orderId"].toString()
+        return ResponseEntity.ok(loadPrepareOrderFormUseCase.load(orderId))
     }
 }

@@ -2,7 +2,7 @@ package io.miragon.order.application.port.`in`
 
 interface CompleteTaskUseCase
 {
-    fun completeCheckOrderTask(id: Long, approved: Boolean): Long
+    fun completeCheckOrderTask(taskId: Long, orderId: String, approved: Boolean): Long
 
-    fun completePrepareOrderTask(id: Long, items: List<Map<String, Any>>): Long
+    fun completePrepareOrderTask(taskId: Long, orderId: String, items: List<Map<String, Any>>): Long
 }

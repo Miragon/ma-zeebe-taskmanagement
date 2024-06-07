@@ -1,4 +1,4 @@
-### PUT Deploy CheckOrder Form
+### POST Deploy CheckOrder Form
 POST http://localhost:9101/rest/deploy/checkOrder
 Content-Type: application/json
 
@@ -8,7 +8,7 @@ Content-Type: application/json
   "form": "{\"schema\":{\"type\":\"object\",\"properties\":{\"customerName\":{\"type\":\"string\"},\"deliveryAddress\":{\"type\":\"object\",\"properties\":{\"street\":{\"type\":\"string\"},\"zipCode\":{\"type\":\"string\"},\"city\":{\"type\":\"string\"}}},\"items\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"quantity\":{\"type\":\"integer\"}}}},\"isOrderValid\":{\"type\":\"boolean\"}},\"required\":[\"isOrderValid\"]},\"uischema\":{\"type\":\"VerticalLayout\",\"elements\":[{\"type\":\"Control\",\"scope\":\"#/properties/customerName\",\"label\":\"Name\"},{\"type\":\"Control\",\"scope\":\"#/properties/deliveryAddress\",\"label\":\"Address\"},{\"type\":\"Control\",\"scope\":\"#/properties/items\",\"label\":\"Items\"},{\"type\":\"Control\",\"scope\":\"#/properties/isOrderValid\",\"label\":\"Isordervalid?\"}]}}"
 }
 
-### PUT Deploy PrepareOrder Form
+### POST Deploy PrepareOrder Form
 POST http://localhost:9101/rest/deploy/prepareOrder
 Content-Type: application/json
 
@@ -18,7 +18,7 @@ Content-Type: application/json
   "form": "{\"schema\":{\"type\":\"object\",\"properties\":{\"itemCheckList\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"quantity\":{\"type\":\"integer\"},\"isAvailable\":{\"type\":\"boolean\"},\"deliveryDate\":{\"type\":\"string\",\"format\":\"date\"}},\"required\":[\"isAvailable\",\"deliveryDate\"]}}}},\"uischema\":{\"type\":\"VerticalLayout\",\"elements\":[{\"type\":\"Control\",\"scope\":\"#/properties/itemCheckList\",\"label\":\"Item Check List\"}]}}"
 }
 
-### PUT Start Process
+### POST Start Process
 POST http://localhost:9101/rest/process/placeOrder
 Content-Type: application/json
 
@@ -47,20 +47,27 @@ Accept: application/json
 
 > {%
     if (response.body.length > 0) {
-        client.global.set("task_id", response.body[0]["key"].toString());
-        client.global.set("element_id", response.body[0]["elementId"].toString());
+        let res = response.body[0];
+        res.assignee = "";
+        client.global.set("user_task", JSON.stringify(res));
+        client.global.set("element_id", res["elementId"]);
+        console.log(client.global.get("user_task"));
     }
 %}
 
-### GET Load form for CheckOrderTask
-GET http://localhost:9101/rest/task/load/{{element_id}}/{{task_id}}
+### POST Load form for CheckOrderTask
+POST http://localhost:9101/rest/task/load/{{element_id}}
+Content-Type: application/json
 Accept: application/json
 
-### PUT Complete CheckOrderTask
-POST http://localhost:9101/rest/task/complete/{{element_id}}/{{task_id}}
+{{user_task}}
+
+### POST Complete CheckOrderTask
+POST http://localhost:9101/rest/task/complete/{{element_id}}
 Content-Type: application/json
 
 {
+  "userTask": {{user_task}},
   "approved": true
 }
 
@@ -69,20 +76,29 @@ GET http://localhost:9100/rest/load/tasks
 Accept: application/json
 
 > {%
-    client.global.set("task_id", response.body[0]["key"].toString());
-    client.global.set("element_id", response.body[0]["elementId"].toString());
+    if (response.body.length > 0) {
+        let res = response.body[0];
+        res.assignee = "";
+        client.global.set("user_task", JSON.stringify(res));
+        client.global.set("element_id", res["elementId"]);
+        console.log(client.global.get("user_task"));
+    }
 %}
 
-### GET Load form for PrepareOrderTask
-GET http://localhost:9101/rest/task/load/{{element_id}}/{{task_id}}
+### POST Load form for PrepareOrderTask
+POST http://localhost:9101/rest/task/load/{{element_id}}
+Content-Type: application/json
 Accept: application/json
 
+{{user_task}}
+
 ### PUT Complete PrepareOrderTask
-POST http://localhost:9101/rest/task/complete/{{element_id}}/{{task_id}}
+POST http://localhost:9101/rest/task/complete/{{element_id}}
 Content-Type: application/json
 
 {
-  "itemCheckList": [
+  "userTask": {{user_task}},
+  "items": [
     {
       "id": 1234,
       "quantity": 1,

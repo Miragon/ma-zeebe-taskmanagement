@@ -7,12 +7,14 @@ import org.springframework.stereotype.Component
 @Component
 class StartProcessAdapter(private val zeebeClient: ZeebeClient) : StartProcessPort
 {
-    override fun startProcess(): Long
+    override fun startProcess(orderId: String): Long
     {
+        val variables = mapOf("orderId" to orderId)
         val processInstance = zeebeClient
             .newCreateInstanceCommand()
             .bpmnProcessId("OrderProcess")
             .latestVersion()
+            .variables(variables)
             .send()
             .join()
 

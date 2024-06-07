@@ -4,5 +4,5 @@ import io.miragon.order.domain.Order
 
 interface StartProcessUseCase
 {
-    fun startProcess(order: Order): Long
+    fun startProcess(order: Order): String
 }

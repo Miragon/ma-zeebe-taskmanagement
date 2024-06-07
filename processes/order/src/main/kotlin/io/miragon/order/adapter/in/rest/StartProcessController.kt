@@ -18,7 +18,7 @@ class StartProcessController(private val useCase: StartProcessUseCase)
      * @return The id of the created order.
      */
     @PostMapping("/placeOrder")
-    fun placeOrder(@RequestBody order: OrderDto): ResponseEntity<Long>
+    fun placeOrder(@RequestBody order: OrderDto): ResponseEntity<String>
     {
         val o = Order(
             customerName = order.name,

@@ -2,21 +2,28 @@ package io.miragon.order.adapter.`in`.rest
 
 import io.miragon.order.application.port.`in`.CompleteTaskUseCase
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/rest/task/complete")
 class CompleteTaskController(private val useCase: CompleteTaskUseCase)
 {
-    @PostMapping("/checkOrder/{id}")
-    fun completeTask(@PathVariable id: Long, @RequestBody checkOrderDto: CheckOrderDto): ResponseEntity<Long>
+    @PostMapping("/checkOrder")
+    fun completeTask(@RequestBody checkOrderDto: CheckOrderDto): ResponseEntity<Long>
     {
-        return ResponseEntity.ok(useCase.completeCheckOrderTask(id, checkOrderDto.approved))
+        val taskId = checkOrderDto.userTask.key
+        val orderId = checkOrderDto.userTask.variables["orderId"].toString()
+        return ResponseEntity.ok(useCase.completeCheckOrderTask(taskId, orderId, checkOrderDto.approved))
     }
 
-    @PostMapping("/prepareOrder/{id}")
-    fun completePrepareTask(@PathVariable id: Long, @RequestBody prepareOrderDto: PrepareOrderDto): ResponseEntity<Long>
+    @PostMapping("/prepareOrder")
+    fun completePrepareTask(@RequestBody prepareOrderDto: PrepareOrderDto): ResponseEntity<Long>
     {
+        val taskId = prepareOrderDto.userTask.key
+        val orderId = prepareOrderDto.userTask.variables["orderId"].toString()
         val items = prepareOrderDto.items.map {
             mapOf(
                 "id" to it.id,
@@ -26,6 +33,6 @@ class CompleteTaskController(private val useCase: CompleteTaskUseCase)
             )
         }
 
-        return ResponseEntity.ok(useCase.completePrepareOrderTask(id, items))
+        return ResponseEntity.ok(useCase.completePrepareOrderTask(taskId, orderId, items))
     }
 }

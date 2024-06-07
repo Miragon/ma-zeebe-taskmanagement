@@ -12,22 +12,22 @@ class CompleteTaskService(
     private val orderPersistencePort: OrderPersistencePort,
 ) : CompleteTaskUseCase
 {
-    override fun completeCheckOrderTask(id: Long, approved: Boolean): Long
+    override fun completeCheckOrderTask(taskId: Long, orderId: String, approved: Boolean): Long
     {
-        completeTaskPort.completeCheckOrderTask(id, approved)
-        val order = orderPersistencePort.findById(id)
+        val order = orderPersistencePort.findById(orderId)
         order.state = Order.OrderState.PREPARE
-        orderPersistencePort.save(id, order)
-        return id
+        orderPersistencePort.save(order)
+        completeTaskPort.completeCheckOrderTask(taskId, approved)
+        return taskId
     }
 
-    override fun completePrepareOrderTask(id: Long, items: List<Map<String, Any>>): Long
+    override fun completePrepareOrderTask(taskId: Long, orderId: String, items: List<Map<String, Any>>): Long
     {
-        completeTaskPort.completePrepareOrderTask(id)
-        val order = orderPersistencePort.findById(id)
+        val order = orderPersistencePort.findById(orderId)
         order.state = Order.OrderState.DELIVER
         order.items = items
-        orderPersistencePort.save(id, order)
-        return id
+        orderPersistencePort.save(order)
+        completeTaskPort.completePrepareOrderTask(taskId)
+        return taskId
     }
 }

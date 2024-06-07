@@ -12,10 +12,13 @@ class StartProcessService(
     private val startProcessPort: StartProcessPort
 ) : StartProcessUseCase
 {
-    override fun startProcess(order: Order): Long
+    /**
+     * @return order id
+     */
+    override fun startProcess(order: Order): String
     {
-        val processInstanceId = startProcessPort.startProcess()
-        orderPersistencePort.save(processInstanceId, order)
-        return processInstanceId
+        val orderId = orderPersistencePort.save(order)
+        startProcessPort.startProcess(orderId)
+        return orderId
     }
 }

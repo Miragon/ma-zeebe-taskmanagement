@@ -16,6 +16,7 @@ data class FormEntity
 
     val type: String,
 
+    @Column(columnDefinition = "TEXT")
     val form: String,
 )
 

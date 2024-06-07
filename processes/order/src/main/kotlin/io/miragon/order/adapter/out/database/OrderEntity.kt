@@ -3,12 +3,14 @@ package io.miragon.order.adapter.out.database
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.persistence.*
+import java.util.*
 
 @Entity
 @Table(name = "order_data")
 data class OrderEntity(
     @Id
-    val id: Long,
+    @GeneratedValue(strategy = GenerationType.UUID)
+    val id: UUID? = null,
 
     val customerName: String,
 

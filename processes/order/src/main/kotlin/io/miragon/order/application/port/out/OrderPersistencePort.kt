@@ -6,7 +6,7 @@ interface OrderPersistencePort
 {
     fun findAll(): List<Order>
 
-    fun findById(id: Long): Order
+    fun findById(id: String): Order
 
-    fun save(id: Long, order: Order)
+    fun save(order: Order): String
 }

@@ -6,14 +6,14 @@ spring:
     name: taskmanager
   flyway:
     locations: classpath:db/migration
-    schemas: tasks
+    schemas: task_schema
     baseline-on-migrate: true
     enabled: true
   datasource:
-    driver-class-name: ${TM_DATASOURCE_DRIVER}
-    url: ${TM_JDBC_BASE_URL}?currentSchema=tasks
-    username: ${TM_DATASOURCE_USER}
-    password: ${TM_DATASOURCE_PASSWORD}
+    driver-class-name: ${LOCAL_DATASOURCE_DRIVER}
+    url: ${TM_JDBC_BASE_URL}?currentSchema=task_schema
+    username: ${LOCAL_DATASOURCE_USER}
+    password: ${LOCAL_DATASOURCE_PASSWORD}
 
 camunda:
   client:

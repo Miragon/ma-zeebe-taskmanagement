@@ -14,7 +14,7 @@ class LoadPrepareOrderForm(
     private val orderPersistencePort: OrderPersistencePort,
 ) : LoadFormUseCase.LoadPrepareOrderFormUseCase
 {
-    override fun load(orderId: Long): Form
+    override fun load(orderId: String): Form
     {
         val form = formPersistencePort.loadPrepareOrderForm()
         val order = orderPersistencePort.findById(orderId)
