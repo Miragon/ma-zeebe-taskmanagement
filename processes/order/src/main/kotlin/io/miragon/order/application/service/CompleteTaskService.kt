@@ -16,7 +16,7 @@ class CompleteTaskService(
     {
         val order = orderPersistencePort.findById(orderId)
         order.state = Order.OrderState.PREPARE
-        orderPersistencePort.save(order)
+        orderPersistencePort.update(orderId, order)
         completeTaskPort.completeCheckOrderTask(taskId, approved)
         return taskId
     }
@@ -26,7 +26,7 @@ class CompleteTaskService(
         val order = orderPersistencePort.findById(orderId)
         order.state = Order.OrderState.DELIVER
         order.items = items
-        orderPersistencePort.save(order)
+        orderPersistencePort.update(orderId, order)
         completeTaskPort.completePrepareOrderTask(taskId)
         return taskId
     }

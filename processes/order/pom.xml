@@ -31,6 +31,8 @@
                     <generateBuilders>true</generateBuilders>
                     <useJakartaValidation>true</useJakartaValidation>
                     <useLongIntegers>true</useLongIntegers>
+                    <!--<includeGeneratedAnnotation>false</includeGeneratedAnnotation>-->
+                    <targetVersion>1.8</targetVersion>
                 </configuration>
                 <executions>
                     <execution>
@@ -39,6 +41,23 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <apiDocsUrl>http://localhost:9101/v3/api-docs</apiDocsUrl>
+                    <outputDir>${project.basedir}</outputDir>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -8,5 +8,7 @@ interface OrderPersistencePort
 
     fun findById(id: String): Order
 
+    fun update(id: String, order: Order): String
+
     fun save(order: Order): String
 }
