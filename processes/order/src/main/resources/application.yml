@@ -10,12 +10,13 @@ spring:
     baseline-on-migrate: true
     enabled: true
   datasource:
-    driver-class-name: ${LOCAL_DATASOURCE_DRIVER}
-    url: ${ORDER_JDBC_BASE_URL}?currentSchema=order_schema
-    username: ${LOCAL_DATASOURCE_USER}
-    password: ${LOCAL_DATASOURCE_PASSWORD}
+    driver-class-name: ${LOCAL_DATASOURCE_DRIVER:org.postgresql.Driver}
+    url: ${JDBC_BASE_URL:jdbc:postgresql://localhost:5432/orderprocess}?currentSchema=order_schema
+    username: ${LOCAL_DATASOURCE_USER:postgres}
+    password: ${LOCAL_DATASOURCE_PASSWORD:postgres}
 
 camunda:
   client:
     zeebe:
-      base-url: http://localhost:26500
+      base-url: ${ZEEBE_BASE_URL:http://localhost:26500}
+    mode: simple

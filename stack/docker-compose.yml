@@ -1,5 +1,19 @@
 services:
 
+  nginx:
+    image: nginx:1.24.0
+    container_name: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - internal
+
   zeebe:
     image: camunda/zeebe:${CAMUNDA_PLATFORM_VERSION}
     container_name: zeebe
@@ -18,7 +32,7 @@ services:
     #volumes:
     #  - .data/zeebe:/usr/local/zeebe/data
     networks:
-      - camunda-platform
+      - internal
     depends_on:
       elasticsearch:
         condition: service_healthy
@@ -45,7 +59,7 @@ services:
       interval: 5s
       retries: 30
     networks:
-      - camunda-platform
+      - internal
 
   postgres:
     image: postgres:15.3
@@ -60,15 +74,49 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    env_file:
-      - .env.postgres
     environment:
       - POSTGRES_MULTIPLE_DATABASES=${TM_DATASOURCE_DB},${ORDER_DATASOURCE_DB},${PYMT_DATASOURCE_DB}
       - POSTGRES_USER=${LOCAL_DATASOURCE_USER}
       - POSTGRES_PASSWORD=${LOCAL_DATASOURCE_PASSWORD}
     networks:
-      - taskmanager
+      - internal
+
+  taskmanager:
+    container_name: taskmanager
+    build:
+      context: ../taskmanager
+    ports:
+      - "9100:9100"
+    restart: unless-stopped
+    env_file:
+      - .env.postgres
+    environment:
+      - ZEEBE_BASE_URL=http://zeebe:26500
+      - JDBC_BASE_URL=jdbc:postgresql://postgres:5432/${TM_DATASOURCE_DB}
+    depends_on:
+      - zeebe
+      - postgres
+    networks:
+      - internal
+
+  order-process:
+    container_name: order-process
+    build:
+      context: ../processes/order
+    ports:
+      - "9101:9101"
+    restart: unless-stopped
+    env_file:
+      - .env.postgres
+    environment:
+      - ZEEBE_BASE_URL=http://zeebe:26500
+      - JDBC_BASE_URL=jdbc:postgresql://postgres:5432/${ORDER_DATASOURCE_DB}
+    depends_on:
+      - zeebe
+      - postgres
+    networks:
+      - internal
+
 
 networks:
-  camunda-platform:
-  taskmanager:
+  internal:

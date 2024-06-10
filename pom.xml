@@ -85,6 +85,11 @@
                 <version>${spring.boot.version}</version>
                 <executions>
                     <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                    <execution>
                         <id>pre-integration-test</id>
                         <goals>
                             <goal>start</goal>

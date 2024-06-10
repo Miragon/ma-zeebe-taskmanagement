@@ -1,5 +1,5 @@
 ### POST Deploy CheckOrder Form
-POST http://localhost:9101/rest/deploy/checkOrder
+POST http://localhost:8081/order/deploy/checkOrder
 Content-Type: application/json
 
 {
