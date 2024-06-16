@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/rest/task/load")
+@RequestMapping("/rest/task")
 class LoadFormController(
     private val loadCheckOrderFormUseCase: LoadFormUseCase.LoadCheckOrderFormUseCase,
     private val loadPrepareOrderFormUseCase: LoadFormUseCase.LoadPrepareOrderFormUseCase,

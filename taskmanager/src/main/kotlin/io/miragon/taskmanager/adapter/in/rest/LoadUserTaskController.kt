@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/rest/load")
+@RequestMapping("/rest")
 class LoadUserTaskController(
     private val loadUserTaskUseCase: LoadUserTaskUseCase
 )
