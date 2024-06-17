@@ -12,7 +12,7 @@ class StartProcessAdapter(private val zeebeClient: ZeebeClient) : StartProcessPo
         val variables = mapOf("orderId" to orderId)
         val processInstance = zeebeClient
             .newCreateInstanceCommand()
-            .bpmnProcessId("OrderProcess")
+            .bpmnProcessId("orderProcess")
             .latestVersion()
             .variables(variables)
             .send()

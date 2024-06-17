@@ -12,15 +12,19 @@ import org.springframework.web.bind.annotation.RestController
 class CompleteTaskController(private val useCase: CompleteTaskUseCase)
 {
     @PostMapping("/checkOrder")
-    fun completeTask(@RequestBody checkOrderDto: CheckOrderDto): ResponseEntity<Long>
+    fun completeTask(@RequestBody checkOrderDto: CheckOrderDto): ResponseEntity<CompleteTaskResult>
     {
         val taskId = checkOrderDto.userTask.key
         val orderId = checkOrderDto.userTask.variables["orderId"].toString()
-        return ResponseEntity.ok(useCase.completeCheckOrderTask(taskId, orderId, checkOrderDto.approved))
+
+        val completedTaskResult =
+            CompleteTaskResult(useCase.completeCheckOrderTask(taskId, orderId, checkOrderDto.approved))
+
+        return ResponseEntity.ok(completedTaskResult)
     }
 
     @PostMapping("/prepareOrder")
-    fun completePrepareTask(@RequestBody prepareOrderDto: PrepareOrderDto): ResponseEntity<Long>
+    fun completePrepareTask(@RequestBody prepareOrderDto: PrepareOrderDto): ResponseEntity<CompleteTaskResult>
     {
         val taskId = prepareOrderDto.userTask.key
         val orderId = prepareOrderDto.userTask.variables["orderId"].toString()
@@ -33,6 +37,13 @@ class CompleteTaskController(private val useCase: CompleteTaskUseCase)
             )
         }
 
-        return ResponseEntity.ok(useCase.completePrepareOrderTask(taskId, orderId, items))
+        val completedTaskResult =
+            CompleteTaskResult(useCase.completePrepareOrderTask(taskId, orderId, items))
+
+        return ResponseEntity.ok(completedTaskResult)
     }
+
+    data class CompleteTaskResult(
+        private val taskId: Long,
+    )
 }
