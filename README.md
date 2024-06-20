@@ -1,3 +1,3 @@
 # Task-Management in einer Microservice Umgebung
 
-![overview](./images/overview.png)
+![overview](images/overview.png)

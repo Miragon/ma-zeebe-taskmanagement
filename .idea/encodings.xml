@@ -7,6 +7,8 @@
     <file url="file://$PROJECT_DIR$/processes/payment/src/main/kotlin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/processes/payment/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/processes/payment/target/generated-sources/jsonschema2pojo" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/processes/shared/src/main/kotlin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/processes/shared/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/processes/src/main/kotlin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/processes/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/kotlin" charset="UTF-8" />
