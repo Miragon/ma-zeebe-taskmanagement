@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="OrderProcessApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
     <module name="order" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="io.miragon.order.OrderProcessApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="io.miragon.zeebe.tm.order.OrderProcessApplication" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="io.miragon.order.*" />

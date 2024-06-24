@@ -1,4 +1,4 @@
-package io.miragon.zeebe.tm.order.adapter.`in`
+package io.miragon.zeebe.tm.order.adapter.`in`.form
 
 import io.miragon.order.jsonForm.CheckOrderSchema
 import io.miragon.order.jsonForm.PrepareOrderSchema
@@ -14,24 +14,6 @@ data class UserTaskDto(
     var taskState: String,
     var assignee: String = "",
 )
-
-data class OrderDto(
-    val name: String,
-    val address: AddressDto,
-    val items: List<ItemDto>,
-)
-{
-    data class AddressDto(
-        val street: String,
-        val city: String,
-        val zipCode: String,
-    )
-
-    data class ItemDto(
-        val id: Long,
-        val quantity: Int,
-    )
-}
 
 data class CheckOrderDto(
     val userTask: UserTaskDto,

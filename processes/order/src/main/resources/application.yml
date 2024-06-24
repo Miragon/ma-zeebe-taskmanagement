@@ -1,6 +1,11 @@
 server:
   port: 9101
 
+order:
+  id: order-process
+  name: Order Process
+  startable: true
+
 management:
   endpoint:
     web:

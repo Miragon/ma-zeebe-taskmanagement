@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="TaskmanagerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
     <module name="taskmanager" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="io.miragon.taskmanager.TaskmanagerApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="io.miragon.zeebe.taskmanager.TaskmanagerApplication" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="io.miragon.taskmanager.*" />

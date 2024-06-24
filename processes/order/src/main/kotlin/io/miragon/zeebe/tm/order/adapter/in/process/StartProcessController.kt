@@ -1,14 +1,15 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.process
 
-import io.miragon.zeebe.tm.order.adapter.`in`.OrderDto
 import io.miragon.zeebe.tm.order.application.port.`in`.StartProcessUseCase
 import io.miragon.zeebe.tm.order.domain.Order
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@RequestMapping("/rest/process")
 class StartProcessController(private val useCase: StartProcessUseCase)
 {
     /**
@@ -16,7 +17,7 @@ class StartProcessController(private val useCase: StartProcessUseCase)
      * @param order The order to start the process for.
      * @return The id of the created order.
      */
-    @PostMapping("/rest/process/start")
+    @PostMapping("/start")
     fun placeOrder(@RequestBody order: OrderDto): ResponseEntity<StartProcessResult>
     {
         val o = Order(
@@ -35,12 +36,30 @@ class StartProcessController(private val useCase: StartProcessUseCase)
             state = Order.OrderState.CHECK
         )
 
-        val startProcessResult = StartProcessResult(useCase.startProcess(o))
+        val startProcessResult = StartProcessResult("Order ${useCase.startProcess(o)} was created.")
 
         return ResponseEntity.ok(startProcessResult)
     }
 
+    data class OrderDto(
+        val name: String,
+        val address: AddressDto,
+        val items: List<ItemDto>,
+    )
+    {
+        data class AddressDto(
+            val street: String,
+            val city: String,
+            val zipCode: String,
+        )
+
+        data class ItemDto(
+            val id: Long,
+            val quantity: Int,
+        )
+    }
+
     data class StartProcessResult(
-        private val orderId: String,
+        private val returnMessage: String,
     )
 }
