@@ -79,8 +79,8 @@ services:
     restart: unless-stopped
     ports:
       - "8081:8080"
-#     extra_hosts:
-#       - "host.docker.internal:host-gateway"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       taskmanager:
         condition: service_healthy
