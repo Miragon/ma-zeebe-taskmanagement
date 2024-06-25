@@ -87,8 +87,10 @@ services:
         condition: service_healthy
       order-process:
         condition: service_healthy
+      payment-process:
+        condition: service_healthy
     profiles:
-      - nginx
+      - prod
     networks:
       - internal
 
@@ -142,6 +144,30 @@ services:
     restart: unless-stopped
     healthcheck:
       test: "wget --no-verbose --tries=1 --spider http://localhost:9101/actuator/health || exit 1"
+      interval: 60s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+    environment:
+      - ZEEBE_BASE_URL=http://zeebe:26500
+      - JDBC_BASE_URL=jdbc:postgresql://postgres:5432/${ORDER_DATASOURCE_DB}
+    profiles:
+      - prod
+    depends_on:
+      - zeebe
+      - postgres
+    networks:
+      - internal
+
+  payment-process:
+    container_name: payment-process
+    build:
+      context: ../processes/payment
+    ports:
+      - "9102:9102"
+    restart: unless-stopped
+    healthcheck:
+      test: "wget --no-verbose --tries=1 --spider http://localhost:9102/actuator/health || exit 1"
       interval: 60s
       timeout: 10s
       retries: 5

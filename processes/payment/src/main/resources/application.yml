@@ -23,5 +23,5 @@ spring:
 camunda:
   client:
     zeebe:
-      base-url: ${ZEEBE_BASE_URL:http://localhost:26500}
+      gateway-url: ${ZEEBE_BASE_URL:http://localhost:26500}
     mode: simple
