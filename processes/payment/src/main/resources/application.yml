@@ -1,6 +1,11 @@
 server:
   port: 9102
 
+payment:
+  id: payment-process
+  name: Payment Process
+  startable: true
+
 spring:
   application:
     name: payment-process

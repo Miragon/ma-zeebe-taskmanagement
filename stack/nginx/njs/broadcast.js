@@ -1,6 +1,7 @@
 async function join(r) {
     let uris = [
-        "/orderProcess/rest/metadata"
+        "/orderProcess/rest/metadata",
+        "/paymentProcess/rest/metadata"
     ]
     join_subrequests(r, uris)
 }
