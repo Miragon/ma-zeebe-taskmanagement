@@ -26,8 +26,8 @@ class MetadataController
     }
 
     data class Metadata(
-        private val id: String,
-        private val name: String,
-        private val startable: Boolean
+        val id: String,
+        val name: String,
+        val startable: Boolean
     )
 }
