@@ -92,25 +92,6 @@ services:
     networks:
       - internal
 
-  openresty:
-    container_name: openresty
-    build:
-      context: ./nginx
-    ports:
-      - "8082:8080"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    restart: unless-stopped
-    depends_on:
-      taskmanager:
-        condition: service_healthy
-      order-process:
-        condition: service_healthy
-    profiles:
-      - openresty
-    networks:
-      - internal
-
   tasklist:
     container_name: tasklist
     build:
