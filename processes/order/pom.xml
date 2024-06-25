@@ -43,20 +43,20 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-maven-plugin</artifactId>
-                <version>1.4</version>
+                <groupId>com.github.victools</groupId>
+                <artifactId>jsonschema-maven-plugin</artifactId>
+                <version>4.35.0</version>
                 <executions>
                     <execution>
-                        <phase>integration-test</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <apiDocsUrl>http://localhost:9101/v3/api-docs</apiDocsUrl>
-                    <outputDir>${project.basedir}</outputDir>
+                    <packageNames>io.miragon.zeebe.tm.order.adapter.in.form</packageNames>
+                    <schemaFilePath>${project.basedir}/src/main/resources/forms</schemaFilePath>
+                    <schemaFileName>{0}.schema.json</schemaFileName>
                 </configuration>
             </plugin>
         </plugins>
