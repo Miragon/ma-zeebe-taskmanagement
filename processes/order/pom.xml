@@ -16,6 +16,14 @@
         <jsonschema.generator.version>4.35.0</jsonschema.generator.version>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -25,7 +33,7 @@
                 <configuration>
                     <sourceDirectory>${project.basedir}/src/main/resources/forms</sourceDirectory>
                     <targetPackage>io.miragon.zeebe.tm.order.generated</targetPackage>
-                    <targetVersion>11</targetVersion>
+                    <targetVersion>1.8</targetVersion>
                     <excludes>*-schema.json</excludes>
                     <generateBuilders>true</generateBuilders>
                     <useJakartaValidation>true</useJakartaValidation>
