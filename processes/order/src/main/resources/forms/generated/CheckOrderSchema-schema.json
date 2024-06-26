@@ -40,5 +40,5 @@
       }
     }
   },
-  "required" : [ "customerName" ]
+  "required" : [ "customerName", "isOrderValid" ]
 }
