@@ -25,13 +25,11 @@
 												"header": [
 													{
 														"key": "Content-Type",
-														"value": "application/json",
-														"uuid": "b757dfdc-7989-44fd-9e31-43dfddce6a53"
+														"value": "application/json"
 													},
 													{
 														"key": "Accept",
-														"value": "*/*",
-														"uuid": "2fda54cb-1869-403e-a6e1-46d0d503a007"
+														"value": "*/*"
 													}
 												],
 												"body": {
@@ -106,7 +104,7 @@
 														}
 													],
 													"cookie": [],
-													"body": "{\n    \"schema\": \"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"itemCheckList\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"quantity\\\":{\\\"type\\\":\\\"integer\\\"},\\\"isAvailable\\\":{\\\"type\\\":\\\"boolean\\\"},\\\"deliveryDate\\\":{\\\"type\\\":\\\"string\\\",\\\"format\\\":\\\"date\\\"}},\\\"required\\\":[\\\"isAvailable\\\",\\\"deliveryDate\\\"]}}}}\",\n    \"uischema\": \"{\\\"type\\\":\\\"VerticalLayout\\\",\\\"elements\\\":[{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/itemCheckList\\\",\\\"label\\\":\\\"ItemCheckList\\\"}]}\",\n    \"data\": {\n        \"itemCheckList\": [\n            {\n                \"id\": 1234,\n                \"quantity\": 1,\n                \"isAvailable\": true,\n                \"deliveryDate\": \"24.12.2024\"\n            },\n            {\n                \"id\": 5678,\n                \"quantity\": 2,\n                \"isAvailable\": true,\n                \"deliveryDate\": \"24.12.2024\"\n            }\n        ]\n    }\n}"
+													"body": "{\n    \"schema\": \"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"itemCheckList\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"quantity\\\":{\\\"type\\\":\\\"integer\\\"},\\\"isAvailable\\\":{\\\"type\\\":\\\"boolean\\\"},\\\"deliveryDate\\\":{\\\"type\\\":\\\"string\\\",\\\"format\\\":\\\"date\\\"}},\\\"required\\\":[\\\"isAvailable\\\",\\\"deliveryDate\\\"]}}}}\",\n    \"uischema\": \"{\\\"type\\\":\\\"VerticalLayout\\\",\\\"elements\\\":[{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/itemCheckList\\\",\\\"label\\\":\\\"Item Check List\\\"}]}\",\n    \"data\": {\n        \"itemCheckList\": [\n            {\n                \"id\": 1234,\n                \"quantity\": 1,\n                \"isAvailable\": true,\n                \"deliveryDate\": \"24.12.2024\"\n            },\n            {\n                \"id\": 5678,\n                \"quantity\": 2,\n                \"isAvailable\": true,\n                \"deliveryDate\": \"24.12.2024\"\n            }\n        ]\n    }\n}"
 												}
 											]
 										}
@@ -125,13 +123,11 @@
 														"header": [
 															{
 																"key": "Content-Type",
-																"value": "application/json",
-																"uuid": "a868328c-6994-475c-aa39-fef716011172"
+																"value": "application/json"
 															},
 															{
 																"key": "Accept",
-																"value": "*/*",
-																"uuid": "713145f9-bcc6-431a-9ba9-6271ebfdc2b6"
+																"value": "*/*"
 															}
 														],
 														"body": {
@@ -224,13 +220,11 @@
 														"header": [
 															{
 																"key": "Content-Type",
-																"value": "application/json",
-																"uuid": "10fa51a2-50d3-4d66-91aa-268b52be7626"
+																"value": "application/json"
 															},
 															{
 																"key": "Accept",
-																"value": "*/*",
-																"uuid": "e07cf493-fd76-4596-8a55-c73f9af8c0e0"
+																"value": "*/*"
 															}
 														],
 														"body": {
@@ -325,13 +319,11 @@
 												"header": [
 													{
 														"key": "Content-Type",
-														"value": "application/json",
-														"uuid": "461c9a68-4679-40a7-9a11-1dfc3c758515"
+														"value": "application/json"
 													},
 													{
 														"key": "Accept",
-														"value": "*/*",
-														"uuid": "f855c61f-3174-4553-a780-7d9df223dda3"
+														"value": "*/*"
 													}
 												],
 												"body": {
@@ -406,7 +398,7 @@
 														}
 													],
 													"cookie": [],
-													"body": "{\n    \"schema\": \"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"customerName\\\":{\\\"type\\\":\\\"string\\\"},\\\"deliveryAddress\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"street\\\":{\\\"type\\\":\\\"string\\\"},\\\"zipCode\\\":{\\\"type\\\":\\\"string\\\"},\\\"city\\\":{\\\"type\\\":\\\"string\\\"}}},\\\"items\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"quantity\\\":{\\\"type\\\":\\\"integer\\\"}}}},\\\"isOrderValid\\\":{\\\"type\\\":\\\"boolean\\\"}},\\\"required\\\":[\\\"isOrderValid\\\"]}\",\n    \"uischema\": \"{\\\"type\\\":\\\"VerticalLayout\\\",\\\"elements\\\":[{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/customerName\\\",\\\"label\\\":\\\"Name\\\"},{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/deliveryAddress\\\",\\\"label\\\":\\\"Address\\\"},{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/items\\\",\\\"label\\\":\\\"Items\\\"},{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/isOrderValid\\\",\\\"label\\\":\\\"Isordervalid?\\\"}]}\",\n    \"data\": {\n        \"customerName\": \"John Doe\",\n        \"deliveryAddress\": {\n            \"street\": \"Main Street 1\",\n            \"zipCode\": \"1234\",\n            \"city\": \"Springfield\"\n        },\n        \"items\": [\n            {\n                \"id\": 1234,\n                \"quantity\": 1\n            },\n            {\n                \"id\": 5678,\n                \"quantity\": 2\n            }\n        ]\n    }\n}"
+													"body": "{\n    \"schema\": \"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"customerName\\\":{\\\"type\\\":\\\"string\\\"},\\\"deliveryAddress\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"street\\\":{\\\"type\\\":\\\"string\\\"},\\\"zipCode\\\":{\\\"type\\\":\\\"string\\\"},\\\"city\\\":{\\\"type\\\":\\\"string\\\"}}},\\\"items\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"quantity\\\":{\\\"type\\\":\\\"integer\\\"}}}},\\\"isOrderValid\\\":{\\\"type\\\":\\\"boolean\\\"}},\\\"required\\\":[\\\"isOrderValid\\\"]}\",\n    \"uischema\": \"{\\\"type\\\":\\\"VerticalLayout\\\",\\\"elements\\\":[{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/customerName\\\",\\\"label\\\":\\\"Name\\\"},{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/deliveryAddress\\\",\\\"label\\\":\\\"Address\\\"},{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/items\\\",\\\"label\\\":\\\"Items\\\"},{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/isOrderValid\\\",\\\"label\\\":\\\"Is Order Valid?\\\"}]}\",\n    \"data\": {\n        \"customerName\": \"John Doe\",\n        \"deliveryAddress\": {\n            \"street\": \"Main Street 1\",\n            \"zipCode\": \"1234\",\n            \"city\": \"Springfield\"\n        },\n        \"items\": [\n            {\n                \"id\": 1234,\n                \"quantity\": 1\n            },\n            {\n                \"id\": 5678,\n                \"quantity\": 2\n            }\n        ]\n    }\n}"
 												}
 											]
 										}
@@ -427,13 +419,11 @@
 												"header": [
 													{
 														"key": "Content-Type",
-														"value": "application/json",
-														"uuid": "79efbbed-0f12-4248-bd1f-dd09f57aec77"
+														"value": "application/json"
 													},
 													{
 														"key": "Accept",
-														"value": "*/*",
-														"uuid": "e2f22cfd-0f6a-484d-b2a9-874398a11af8"
+														"value": "*/*"
 													}
 												],
 												"body": {
@@ -529,8 +519,7 @@
 												"header": [
 													{
 														"key": "Content-Type",
-														"value": "application/json",
-														"uuid": "562612b7-e250-4f60-8321-e70df3e08f82"
+														"value": "application/json"
 													}
 												],
 												"body": {
@@ -611,13 +600,12 @@
 												"header": [
 													{
 														"key": "Content-Type",
-														"value": "application/json",
-														"uuid": "ec591703-0ab1-4bcc-aae5-a4d669871d56"
+														"value": "application/json"
 													}
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"version\": 1.0,\n  \"type\": \"JSON_FORM\",\n  \"form\": \"{\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"customerName\\\":{\\\"type\\\":\\\"string\\\"},\\\"deliveryAddress\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"street\\\":{\\\"type\\\":\\\"string\\\"},\\\"zipCode\\\":{\\\"type\\\":\\\"string\\\"},\\\"city\\\":{\\\"type\\\":\\\"string\\\"}}},\\\"items\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"quantity\\\":{\\\"type\\\":\\\"integer\\\"}}}},\\\"isOrderValid\\\":{\\\"type\\\":\\\"boolean\\\"}},\\\"required\\\":[\\\"isOrderValid\\\"]},\\\"uischema\\\":{\\\"type\\\":\\\"VerticalLayout\\\",\\\"elements\\\":[{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/customerName\\\",\\\"label\\\":\\\"Name\\\"},{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/deliveryAddress\\\",\\\"label\\\":\\\"Address\\\"},{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/items\\\",\\\"label\\\":\\\"Items\\\"},{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/isOrderValid\\\",\\\"label\\\":\\\"Isordervalid?\\\"}]}}\"\n}",
+													"raw": "{\n  \"version\": 1.0,\n  \"type\": \"JSON_FORM\",\n  \"form\": \"{\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"customerName\\\":{\\\"type\\\":\\\"string\\\"},\\\"deliveryAddress\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"street\\\":{\\\"type\\\":\\\"string\\\"},\\\"zipCode\\\":{\\\"type\\\":\\\"string\\\"},\\\"city\\\":{\\\"type\\\":\\\"string\\\"}}},\\\"items\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"quantity\\\":{\\\"type\\\":\\\"integer\\\"}}}},\\\"isOrderValid\\\":{\\\"type\\\":\\\"boolean\\\"}},\\\"required\\\":[\\\"isOrderValid\\\"]},\\\"uischema\\\":{\\\"type\\\":\\\"VerticalLayout\\\",\\\"elements\\\":[{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/customerName\\\",\\\"label\\\":\\\"Name\\\"},{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/deliveryAddress\\\",\\\"label\\\":\\\"Address\\\"},{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/items\\\",\\\"label\\\":\\\"Items\\\"},{\\\"type\\\":\\\"Control\\\",\\\"scope\\\":\\\"#/properties/isOrderValid\\\",\\\"label\\\":\\\"Is Order Valid?\\\"}]}}\"\n}",
 													"options": {
 														"raw": {
 															"headerFamily": "json",
@@ -705,8 +693,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "*/*",
-												"uuid": "c136acd3-a4b4-4205-ba4d-a3563fbcfb29"
+												"value": "*/*"
 											}
 										],
 										"url": {
