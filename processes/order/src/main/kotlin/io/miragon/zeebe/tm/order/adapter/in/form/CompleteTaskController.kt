@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 class CompleteTaskController(private val useCase: CompleteTaskUseCase)
 {
     @PostMapping("/checkOrder")
-    fun completeTask(@RequestBody checkOrderDto: CheckOrderDto): ResponseEntity<CompleteTaskResult>
+    fun completeTask(@RequestBody checkOrderDto: CheckOrderTaskDto): ResponseEntity<CompleteTaskResult>
     {
         val taskId = checkOrderDto.userTask.key
         val orderId = checkOrderDto.userTask.variables["orderId"].toString()
@@ -25,15 +25,14 @@ class CompleteTaskController(private val useCase: CompleteTaskUseCase)
     }
 
     @PostMapping("/prepareOrder")
-    fun completePrepareTask(@RequestBody prepareOrderDto: PrepareOrderDto): ResponseEntity<CompleteTaskResult>
+    fun completePrepareTask(@RequestBody prepareOrderDto: PrepareOrderTaskDto): ResponseEntity<CompleteTaskResult>
     {
         val taskId = prepareOrderDto.userTask.key
         val orderId = prepareOrderDto.userTask.variables["orderId"].toString()
         val checkedItems = prepareOrderDto.formData.itemCheckList
         val items = checkedItems.map {
             mapOf(
-                "id" to it.id,
-                "quantity" to it.quantity,
+                "item" to it.item,
                 "isAvailable" to it.isAvailable,
                 "deliveryDate" to it.deliveryDate,
             )

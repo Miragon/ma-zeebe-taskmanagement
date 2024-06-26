@@ -1,12 +1,12 @@
 package io.miragon.zeebe.tm.order.application.service
 
+import io.miragon.zeebe.tm.order.adapter.`in`.form.data.AddressDto
+import io.miragon.zeebe.tm.order.adapter.`in`.form.data.CheckOrderSchema
+import io.miragon.zeebe.tm.order.adapter.`in`.form.data.ItemDto
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadFormUseCase
 import io.miragon.zeebe.tm.order.application.port.out.FormPersistencePort
 import io.miragon.zeebe.tm.order.application.port.out.OrderPersistencePort
 import io.miragon.zeebe.tm.order.domain.Form
-import io.miragon.order.jsonForm.CheckOrderSchema
-import io.miragon.order.jsonForm.DeliveryAddress
-import io.miragon.order.jsonForm.Item
 import org.springframework.stereotype.Service
 
 @Service
@@ -23,21 +23,21 @@ class LoadCheckOrderFormService(
         if (form is Form.JsonForm<*>)
         {
             // Use the POJOs from the JSON schema to populate the form
-            val data: CheckOrderSchema = CheckOrderSchema()
-                .withCustomerName(order.customerName)
-                .withDeliveryAddress(
-                    DeliveryAddress()
-                        .withStreet(order.deliveryAddress["street"].toString())
-                        .withZipCode(order.deliveryAddress["zipCode"].toString())
-                        .withCity(order.deliveryAddress["city"].toString())
-                )
-                .withItems(
-                    order.items.map {
-                        Item()
-                            .withId(it["id"].toString().toLong())
-                            .withQuantity(it["quantity"].toString().toLong())
-                    }
-                )
+            val data = CheckOrderSchema(
+                customerName = order.customerName,
+                deliveryAddress = AddressDto(
+                    street = order.deliveryAddress["street"].toString(),
+                    zipCode = order.deliveryAddress["zipCode"].toString(),
+                    city = order.deliveryAddress["city"].toString(),
+                ),
+                items = order.items.map {
+                    ItemDto(
+                        id = it["id"].toString().toLong(),
+                        quantity = it["quantity"].toString().toLong(),
+                    )
+                },
+                isOrderValid = false,
+            )
 
             return Form.JsonForm(
                 schema = form.schema,

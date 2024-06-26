@@ -1,7 +1,7 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.form
 
-import io.miragon.order.jsonForm.CheckOrderSchema
-import io.miragon.order.jsonForm.PrepareOrderSchema
+import io.miragon.zeebe.tm.order.adapter.`in`.form.data.CheckOrderSchema
+import io.miragon.zeebe.tm.order.adapter.`in`.form.data.PrepareOrderSchema
 
 // TODO: Add dependency on io.miragon.taskmanager
 data class UserTaskDto(
@@ -15,12 +15,12 @@ data class UserTaskDto(
     var assignee: String = "",
 )
 
-data class CheckOrderDto(
+data class CheckOrderTaskDto(
     val userTask: UserTaskDto,
     val formData: CheckOrderSchema,
 )
 
-data class PrepareOrderDto(
+data class PrepareOrderTaskDto(
     val userTask: UserTaskDto,
     val formData: PrepareOrderSchema,
 )

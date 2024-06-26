@@ -1,11 +1,12 @@
 package io.miragon.zeebe.tm.order.application.service
 
+import io.miragon.zeebe.tm.order.adapter.`in`.form.data.CheckItemDto
+import io.miragon.zeebe.tm.order.adapter.`in`.form.data.ItemDto
+import io.miragon.zeebe.tm.order.adapter.`in`.form.data.PrepareOrderSchema
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadFormUseCase
 import io.miragon.zeebe.tm.order.application.port.out.FormPersistencePort
 import io.miragon.zeebe.tm.order.application.port.out.OrderPersistencePort
 import io.miragon.zeebe.tm.order.domain.Form
-import io.miragon.order.jsonForm.ItemCheck
-import io.miragon.order.jsonForm.PrepareOrderSchema
 import org.springframework.stereotype.Service
 
 @Service
@@ -21,14 +22,18 @@ class LoadPrepareOrderForm(
 
         if (form is Form.JsonForm<*>)
         {
-            val data: PrepareOrderSchema = PrepareOrderSchema()
-                .withItemCheckList(
-                    order.items.map {
-                        ItemCheck()
-                            .withId(it["id"].toString().toLong())
-                            .withQuantity(it["quantity"].toString().toLong())
-                    }
-                )
+            val data = PrepareOrderSchema(
+                itemCheckList = order.items.map {
+                    CheckItemDto(
+                        ItemDto(
+                            id = it["id"].toString().toLong(),
+                            quantity = it["quantity"].toString().toLong(),
+                        ),
+                        isAvailable = false,
+                        deliveryDate = "2022-12-24",
+                    )
+                }
+            )
 
             return Form.JsonForm(
                 schema = form.schema,
