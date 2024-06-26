@@ -97,7 +97,7 @@ services:
   tasklist:
     container_name: tasklist
     build:
-      context: ../../tasklist
+      context: ../apps/tasklist
       target: prod
       args:
         - VITE_BASE_URL=http://localhost:8081
