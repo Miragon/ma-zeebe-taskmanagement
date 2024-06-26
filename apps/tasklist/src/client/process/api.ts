@@ -1,7 +1,6 @@
 import { UserTaskDto } from "../generated/taskmanager";
 import axios, { AxiosRequestConfig, RawAxiosRequestHeaders } from "axios";
 import { BASE_URL } from "../../config.ts";
-import { JsonSchema, UISchemaElement } from "@jsonforms/core";
 
 export enum FormType {
     JSON_FROM = "jsonForm",
@@ -14,8 +13,8 @@ export interface FormDto {
 }
 
 export interface JsonFormDto {
-    schema: JsonSchema;
-    uischema: UISchemaElement;
+    schema: string;
+    uischema: string;
     data: any;
 }
 
@@ -36,7 +35,7 @@ export interface ProcessDefinitionDto {
     id: string;
     name: string;
     startable: boolean;
-    schema?: JsonSchema;
+    schema?: string;
 }
 
 const client = axios.create({

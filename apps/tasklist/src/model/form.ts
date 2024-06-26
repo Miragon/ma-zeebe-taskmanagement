@@ -1,8 +1,8 @@
 import { JsonSchema, UISchemaElement } from "@jsonforms/core";
 
 interface JsonFormParameters {
-    schema: JsonSchema;
-    uischema: UISchemaElement;
+    schema: string;
+    uischema: string;
     data: any;
 }
 
@@ -21,8 +21,8 @@ export class JsonForm implements Form {
     private readonly data: any;
 
     constructor({ schema, uischema, data }: JsonFormParameters) {
-        this.schema = schema;
-        this.uischema = uischema;
+        this.schema = JSON.parse(schema);
+        this.uischema = JSON.parse(uischema);
         this.data = data;
     }
 
