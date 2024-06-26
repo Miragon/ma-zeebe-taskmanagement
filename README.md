@@ -12,7 +12,7 @@
     cd stack
     docker-compose up
     ```
-   > :info: You can use the `run scripts` if you are using `Intellij`.
+   > ℹ️ You can use the `run scripts` if you are using `Intellij`.
 
 3. Deploy the process
     ```shell
@@ -21,7 +21,7 @@
     ```
 
 4. Deploy forms
-   > :info: Use the `Postman-Collection` located in `apps/tasklist/resources` to deploy the forms.
+   > ℹ️ Use the `Postman-Collection` located in `apps/tasklist/resources` to deploy the forms.
 
 5. Open the [Tasklist](http://localhost:8081)
 
