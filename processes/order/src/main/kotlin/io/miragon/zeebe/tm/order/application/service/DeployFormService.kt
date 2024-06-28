@@ -10,6 +10,11 @@ class DeployFormService(
     private val formPersistencePort: FormPersistencePort
 ) : DeployFormUseCase
 {
+    override fun deployProcessStartForm(form: FormDeployment)
+    {
+        formPersistencePort.saveProcessStartForm(form)
+    }
+
     override fun deployCheckOrderForm(form: FormDeployment)
     {
         formPersistencePort.saveCheckOrderForm(form)

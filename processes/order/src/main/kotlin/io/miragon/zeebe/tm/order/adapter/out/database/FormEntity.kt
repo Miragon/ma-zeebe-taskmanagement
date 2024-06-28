@@ -6,8 +6,7 @@ import java.io.Serializable
 @Entity
 @Table(name = "form_data")
 @IdClass(FormKey::class)
-data class FormEntity
-    (
+class FormEntity(
     @Id
     val id: String,
 

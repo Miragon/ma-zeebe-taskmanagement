@@ -6,6 +6,8 @@ interface LoadFormUseCase
 {
     fun load(orderId: String): Form
 
+    interface LoadProcessStartFormUseCase : LoadFormUseCase
+
     interface LoadCheckOrderFormUseCase : LoadFormUseCase
 
     interface LoadPrepareOrderFormUseCase : LoadFormUseCase

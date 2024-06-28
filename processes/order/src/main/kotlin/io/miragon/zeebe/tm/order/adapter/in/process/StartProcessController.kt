@@ -1,6 +1,6 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.process
 
-import io.miragon.zeebe.tm.order.adapter.`in`.form.data.OrderSchema
+import io.miragon.zeebe.tm.order.adapter.`in`.form.model.OrderSchema
 import io.miragon.zeebe.tm.order.application.port.`in`.StartProcessUseCase
 import io.miragon.zeebe.tm.order.domain.Order
 import org.springframework.http.ResponseEntity
@@ -15,21 +15,20 @@ class StartProcessController(private val useCase: StartProcessUseCase)
 {
     /**
      * Start the order process.
-     * @param variables
+     * @param payload
      * @return The id of the created order.
      */
     @PostMapping("/start")
-    fun placeOrder(@RequestBody variables: Map<String, OrderSchema>): ResponseEntity<StartProcessResult>
+    fun placeOrder(@RequestBody payload: OrderSchema): ResponseEntity<StartProcessResult>
     {
-        val order = variables["order"] ?: throw IllegalArgumentException("Order is missing")
         val o = Order(
-            customerName = order.name,
+            customerName = payload.name,
             deliveryAddress = mapOf(
-                "street" to order.address.street,
-                "city" to order.address.city,
-                "zipCode" to order.address.zipCode,
+                "street" to payload.address.street,
+                "city" to payload.address.city,
+                "zipCode" to payload.address.zipCode,
             ),
-            items = order.items.map {
+            items = payload.items.map {
                 mapOf(
                     "id" to it.id.toString(),
                     "quantity" to it.quantity.toString(),

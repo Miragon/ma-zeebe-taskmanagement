@@ -1,5 +1,6 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.form
 
+import io.miragon.zeebe.tm.order.adapter.`in`.form.model.UserTaskDto
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadFormUseCase
 import io.miragon.zeebe.tm.order.domain.Form
 import org.springframework.http.ResponseEntity
@@ -11,10 +12,17 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/rest/task")
 class LoadFormController(
+    private val loadProcessStartFormUseCase: LoadFormUseCase.LoadProcessStartFormUseCase,
     private val loadCheckOrderFormUseCase: LoadFormUseCase.LoadCheckOrderFormUseCase,
     private val loadPrepareOrderFormUseCase: LoadFormUseCase.LoadPrepareOrderFormUseCase,
 )
 {
+    @PostMapping("/processStart")
+    fun loadProcessStartForm(): ResponseEntity<Form>
+    {
+        return ResponseEntity.ok(loadProcessStartFormUseCase.load("processStart"))
+    }
+
     @PostMapping("/checkOrder")
     fun loadCheckOrderForm(@RequestBody userTask: UserTaskDto): ResponseEntity<Form>
     {

@@ -1,8 +1,8 @@
 package io.miragon.zeebe.tm.order.application.service
 
-import io.miragon.zeebe.tm.order.adapter.`in`.form.data.AddressDto
-import io.miragon.zeebe.tm.order.adapter.`in`.form.data.CheckOrderSchema
-import io.miragon.zeebe.tm.order.adapter.`in`.form.data.ItemDto
+import io.miragon.zeebe.tm.order.adapter.`in`.form.model.AddressDto
+import io.miragon.zeebe.tm.order.adapter.`in`.form.model.CheckOrderSchema
+import io.miragon.zeebe.tm.order.adapter.`in`.form.model.ItemDto
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadFormUseCase
 import io.miragon.zeebe.tm.order.application.port.out.FormPersistencePort
 import io.miragon.zeebe.tm.order.application.port.out.OrderPersistencePort

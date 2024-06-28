@@ -1,4 +1,4 @@
-package io.miragon.zeebe.tm.order.adapter.`in`.form.data
+package io.miragon.zeebe.tm.order.adapter.`in`.form.model
 
 import jakarta.validation.constraints.Size
 

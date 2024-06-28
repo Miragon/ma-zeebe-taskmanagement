@@ -2,7 +2,7 @@ server:
   port: 9102
 
 payment:
-  id: payment-process
+  id: paymentProcess
   name: Payment Process
   startable: true
 

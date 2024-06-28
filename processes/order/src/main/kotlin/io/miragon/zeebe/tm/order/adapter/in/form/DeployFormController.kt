@@ -9,11 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/rest/deploy")
+@RequestMapping("/rest/form/deploy")
 class DeployFormController(
     private val deployFormUseCase: DeployFormUseCase
 )
 {
+    @PostMapping("/processStart")
+    fun deployProcessStartForm(@RequestBody form: FormDeploymentDto)
+    {
+        deployFormUseCase.deployProcessStartForm(buildFormDeployment(form))
+    }
+
     @PostMapping("/checkOrder")
     fun deployCheckOrderForm(@RequestBody form: FormDeploymentDto)
     {
@@ -34,4 +40,10 @@ class DeployFormController(
             type = FormType.valueOf(form.type)
         )
     }
+
+    data class FormDeploymentDto(
+        val version: Double,
+        val type: String,
+        val form: String,
+    )
 }

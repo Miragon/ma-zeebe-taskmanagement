@@ -11,9 +11,18 @@ class FormPersistenceAdapter(
     private val formRepository: FormRepository,
 ) : FormPersistencePort
 {
+    private val processStartId = "processStartForm"
+
     private val checkOrderId = "checkOrderForm"
 
     private val prepareOrderId = "prepareOrderForm"
+
+    override fun loadProcessStartForm(): Form
+    {
+        val key = FormKey(processStartId, 1.0)
+        val formEntity = formRepository.findById(key).orElseThrow { throw RuntimeException("Form not found") }
+        return Form(FormType.valueOf(formEntity.type), formEntity.form)
+    }
 
     override fun loadCheckOrderForm(): Form
     {
@@ -27,6 +36,11 @@ class FormPersistenceAdapter(
         val key = FormKey(prepareOrderId, 1.0)
         val formEntity = formRepository.findById(key).orElseThrow { throw RuntimeException("Form not found") }
         return Form(FormType.valueOf(formEntity.type), formEntity.form)
+    }
+
+    override fun saveProcessStartForm(form: FormDeployment)
+    {
+        save(processStartId, form)
     }
 
     override fun saveCheckOrderForm(form: FormDeployment)

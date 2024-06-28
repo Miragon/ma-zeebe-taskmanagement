@@ -60,7 +60,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <classNames>io/miragon/zeebe/tm/order/adapter/in/form/data/**Schema*</classNames>
+                    <classNames>io/miragon/zeebe/tm/order/adapter/in/form/model/**Schema*</classNames>
                     <schemaFilePath>${project.basedir}/src/main/resources/forms/generated</schemaFilePath>
                     <schemaFileName>{0}-schema.json</schemaFileName>
                     <modules>

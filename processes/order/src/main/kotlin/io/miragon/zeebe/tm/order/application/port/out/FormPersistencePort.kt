@@ -5,9 +5,13 @@ import io.miragon.zeebe.tm.order.domain.FormDeployment
 
 interface FormPersistencePort
 {
+    fun loadProcessStartForm(): Form
+
     fun loadCheckOrderForm(): Form
 
     fun loadPrepareOrderForm(): Form
+
+    fun saveProcessStartForm(form: FormDeployment)
 
     fun saveCheckOrderForm(form: FormDeployment)
 

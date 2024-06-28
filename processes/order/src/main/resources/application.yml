@@ -2,7 +2,7 @@ server:
   port: 9101
 
 order:
-  id: order-process
+  id: orderProcess
   name: Order Process
   startable: true
 
