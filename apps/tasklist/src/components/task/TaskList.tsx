@@ -2,20 +2,11 @@ import Task from "./Task.tsx";
 import { Fragment, useEffect, useState } from "react";
 import JsonFormRenderer from "../form/JsonFormRenderer.tsx";
 import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
-import {
-    Configuration,
-    LoadUserTaskControllerApi,
-    UserTaskDto,
-} from "../../client/generated/taskmanager";
+import { Configuration, LoadUserTaskControllerApi, UserTaskDto } from "../../client/generated/taskmanager";
 import { Form, HtmlForm, JsonForm } from "../../model/form.ts";
 import { makeStyles } from "@mui/styles";
 import { BASE_URL } from "../../config.ts";
-import {
-    FormType,
-    HtmlFormDto,
-    JsonFormDto,
-    loadForm,
-} from "../../client/process/api.ts";
+import { completeTask, FormType, HtmlFormDto, JsonFormDto, loadForm } from "../../client/process/api.ts";
 
 const useStyles = makeStyles({
     taskList: {
@@ -53,7 +44,7 @@ function TaskList() {
         setIsLoading(false);
     }, [completedTask]);
 
-    function Tasks() {
+    function TaskList() {
         if (isLoading) {
             return <p>Loading...</p>;
         } else {
@@ -96,7 +87,18 @@ function TaskList() {
         }
     };
 
-    const completeTask = async (task: UserTaskDto) => {
+    const submit = async (data: any) => {
+        if (!task) {
+            console.error("No user task found");
+            return;
+        }
+
+        try {
+            await completeTask(task, data);
+        } catch (error) {
+            console.error("Failed to complete task:", error);
+        }
+
         setTask(null);
         setFormType(null);
         setForm({});
@@ -108,12 +110,12 @@ function TaskList() {
     return (
         <Fragment>
             <div className={classes.taskContainer}>
-                <Tasks />
+                <TaskList />
                 {formType === "jsonForm" && (
                     <JsonFormRenderer
                         form={form as JsonForm}
-                        userTask={task}
-                        submitEvent={completeTask}
+                        // userTask={task}
+                        submitEvent={submit}
                     />
                 )}
                 {formType === "htmlForm" && <HtmlFormRenderer form={form as HtmlForm} />}

@@ -2,12 +2,11 @@ import { Fragment } from "react";
 import { Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { makeStyles } from "@mui/styles";
-import { startProcess } from "../../client/process/api.ts";
-import { ORDER } from "../../mocks.ts";
 
 interface Props {
     id: string;
     label: string;
+    onClick: (id: string) => void;
 }
 
 const useStyles = makeStyles({
@@ -25,13 +24,7 @@ function ProcessStartButton(props: Props) {
     const classes = useStyles();
 
     const handleButtonClick = async () => {
-        try {
-            // TODO: Replace ORDER with the actual data
-            const variables = new Map([["order", ORDER]]);
-            await startProcess(props.id, variables);
-        } catch (error) {
-            console.error("Failed to start process:", error);
-        }
+        props.onClick(props.id);
     };
 
     return (

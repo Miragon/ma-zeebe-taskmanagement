@@ -6,13 +6,11 @@ import { Button, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { JsonForm } from "../../model/form.ts";
 import SendIcon from "@mui/icons-material/Send";
-import { UserTaskDto } from "../../client/generated/taskmanager";
-import { completeTask } from "../../client/process/api.ts";
 
 interface Props {
     form: JsonForm;
-    userTask: UserTaskDto | null;
-    submitEvent: (task: UserTaskDto) => void;
+    // userTask: UserTaskDto | null;
+    submitEvent: (formData: any) => void;
 }
 
 const useStyles = makeStyles({
@@ -52,25 +50,13 @@ function JsonFormRenderer(props: Props) {
         setData(data);
     }, [props.form]);
 
-    async function submit() {
-        const task = props.userTask;
-
-        if (!task) {
-            console.error("No user task found");
-            return;
-        }
-
-        try {
-            await completeTask(task, data);
-            props.submitEvent(task);
-        } catch (error) {
-            console.error("Failed to complete task:", error);
-        }
-    }
-
     function handleFormChange({ errors, data }: any) {
         setFormError(errors.length > 0);
         setData(data);
+    }
+
+    async function submit() {
+        props.submitEvent(data);
     }
 
     return (

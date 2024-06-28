@@ -60,7 +60,7 @@ const config: AxiosRequestConfig = {
 export async function loadForm(
     bpmnProcessId: string,
     elementId: string,
-    userTask: UserTaskDto,
+    userTask?: UserTaskDto,
 ): Promise<FormDto> {
     const query = `/${bpmnProcessId}/rest/task/${elementId}`;
     const response = await client.post(query, userTask, config);
@@ -125,7 +125,7 @@ export async function completeTask(
  */
 export async function startProcess(
     bpmnProcessId: string,
-    variables: Map<string, any>,
+    variables: any,
 ): Promise<StartProcessDto> {
     const query = `/${bpmnProcessId}/rest/process/start`;
     const response = await client.post(query, variables, config);
