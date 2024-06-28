@@ -11,7 +11,8 @@ interface HtmlFormParameters {
     data: any;
 }
 
-export interface Form {}
+export interface Form {
+}
 
 export class JsonForm implements Form {
     private readonly schema: JsonSchema;
@@ -21,9 +22,9 @@ export class JsonForm implements Form {
     private readonly data: any;
 
     constructor({ schema, uischema, data }: JsonFormParameters) {
-        this.schema = JSON.parse(schema);
-        this.uischema = JSON.parse(uischema);
-        this.data = data;
+        this.schema = JSON.parse(JSON.stringify(schema));
+        this.uischema = JSON.parse(JSON.stringify(uischema));
+        this.data = data ?? {};
     }
 
     getSchema() {
