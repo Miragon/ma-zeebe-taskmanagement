@@ -30,7 +30,7 @@ class LoadPrepareOrderForm(
                             quantity = it["quantity"].toString().toLong(),
                         ),
                         isAvailable = false,
-                        deliveryDate = "2022-12-24",
+                        deliveryDate = "",
                     )
                 }
             )
