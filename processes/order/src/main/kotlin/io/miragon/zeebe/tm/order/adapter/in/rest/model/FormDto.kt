@@ -1,19 +1,18 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
 
-data class FormDto<T>(
-
-
-    val data: T
-)
+sealed class FormDto<Schema>
 {
-    data class JsonFormDto(
+    abstract val data: Schema?
 
+    data class JsonFormDto<Schema>(
         val schema: String,
+        val uiSchema: String,
+        override val data: Schema?
+    ) : FormDto<Schema>()
 
-        val uiSchema: String
-    )
-
-    data class HtmlFormDto(
+    data class HtmlFormDto<Schema>(
         val html: String,
-    )
+        override val data: Schema?
+    ) : FormDto<Schema>()
 }
+

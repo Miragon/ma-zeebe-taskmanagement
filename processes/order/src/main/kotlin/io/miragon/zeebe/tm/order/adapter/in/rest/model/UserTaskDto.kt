@@ -1,6 +1,5 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
 
-// TODO: Add dependency on io.miragon.taskmanager
 data class UserTaskDto(
     val key: Long,
     val elementId: String,
