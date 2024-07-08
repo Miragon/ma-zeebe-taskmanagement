@@ -1,28 +1,23 @@
 package io.miragon.zeebe.tm.order.application.service
 
-import io.miragon.zeebe.tm.order.application.port.`in`.CompleteTaskUseCase
+import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.out.CompleteTaskPort
 import io.miragon.zeebe.tm.order.application.port.out.OrderPersistencePort
 import io.miragon.zeebe.tm.order.domain.Order
 import org.springframework.stereotype.Service
 
 @Service
-class CompleteTaskService(
+class CompletePrepareOrderTaskService(
     private val completeTaskPort: CompleteTaskPort,
     private val orderPersistencePort: OrderPersistencePort,
-) : CompleteTaskUseCase
+) : CompletePrepareOrderTaskUseCase
 {
-    override fun completeCheckOrderTask(taskId: Long, orderId: String, approved: Boolean): Long
+    override fun complete(command: CompletePrepareOrderTaskUseCase.Command): Long
     {
-        val order = orderPersistencePort.findById(orderId)
-        order.state = Order.OrderState.PREPARE
-        orderPersistencePort.update(orderId, order)
-        completeTaskPort.completeCheckOrderTask(taskId, approved)
-        return taskId
-    }
+        val taskId = command.taskId
+        val orderId = command.orderId
+        val items = command.items
 
-    override fun completePrepareOrderTask(taskId: Long, orderId: String, items: List<Map<String, Any>>): Long
-    {
         val order = orderPersistencePort.findById(orderId)
         order.state = Order.OrderState.DELIVER
         order.items = items
