@@ -18,44 +18,46 @@ class CompleteTaskController(
 )
 {
     @PostMapping("/complete-task")
-    fun completeTask(userTask: UserTaskDto, data: Any): ResponseEntity<Long>
+    fun completeTask(userTask: UserTaskDto, formData: Any): ResponseEntity<ResponseDto>
     {
         return when (userTask.elementId)
         {
             UserTaskId.CHECK_ORDER.id ->
             {
-                ResponseEntity.ok(this.completeCheckOrderTask(userTask, data as CheckOrderSchema))
+                val d = formData as CheckOrderSchema
+                val command = d.toCommand(userTask.key, userTask.variables["orderId"].toString())
+                val response = ResponseDto(completeCheckOrderTaskUseCase.complete(command))
+                ResponseEntity.ok(response)
             }
 
             UserTaskId.PREPARE_ORDER.id ->
             {
-                ResponseEntity.ok(this.completePrepareOrderTask(userTask, data as PrepareOrderSchema))
+                val d = formData as PrepareOrderSchema
+                val command = d.toCommand(userTask.key, userTask.variables["orderId"].toString())
+                val response = ResponseDto(completePrepareOrderTaskUseCase.complete(command))
+                ResponseEntity.ok(response)
             }
 
             else -> ResponseEntity.badRequest().build()
         }
     }
 
-    private fun completeCheckOrderTask(userTask: UserTaskDto, data: CheckOrderSchema): Long
+    @PostMapping("/update")
+    fun updateTask(userTask: UserTaskDto, formData: Any): ResponseEntity<ResponseDto>
     {
-        val orderId = userTask.variables["orderId"].toString()
-        val command = CompleteCheckOrderTaskUseCase.Command(
-            userTask.key,
-            orderId,
-            data.isOrderValid
-        )
-        return completeCheckOrderTaskUseCase.complete(command)
+        return when (userTask.elementId)
+        {
+            UserTaskId.PREPARE_ORDER.id ->
+            {
+                val d = formData as PrepareOrderSchema
+                val command = d.toCommand(userTask.key, userTask.variables["orderId"].toString())
+                val response = ResponseDto(completePrepareOrderTaskUseCase.update(command))
+                ResponseEntity.ok(response)
+            }
+
+            else -> ResponseEntity.badRequest().build()
+        }
     }
 
-    private fun completePrepareOrderTask(userTask: UserTaskDto, data: PrepareOrderSchema): Long
-    {
-        val orderId = userTask.variables["orderId"].toString()
-        val items = data.itemCheckList.map { it.toItem() }
-        val command = CompletePrepareOrderTaskUseCase.Command(
-            userTask.key,
-            orderId,
-            items
-        )
-        return completePrepareOrderTaskUseCase.complete(command)
-    }
+    data class ResponseDto(val taskId: Long)
 }

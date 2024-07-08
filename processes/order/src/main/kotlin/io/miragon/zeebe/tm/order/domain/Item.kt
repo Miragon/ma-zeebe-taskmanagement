@@ -5,3 +5,9 @@ data class Item(
     val quantity: Int,
     val deliveryDate: String? = null
 )
+{
+    fun updateDeliveryDate(deliveryDate: String): Item
+    {
+        return this.copy(deliveryDate = deliveryDate)
+    }
+}

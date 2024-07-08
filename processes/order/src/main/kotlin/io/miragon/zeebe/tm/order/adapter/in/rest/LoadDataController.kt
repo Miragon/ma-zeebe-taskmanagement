@@ -44,7 +44,7 @@ class LoadDataController(
         val form = response.form
         val order = response.order
 
-        val data = CheckOrderSchema(
+        val formData = CheckOrderSchema(
             customerName = order.customerName,
             deliveryAddress = order.deliveryAddress.let {
                 AddressDto(
@@ -62,7 +62,7 @@ class LoadDataController(
             isOrderValid = false
         )
 
-        return FormDto.JsonFormDto(form.schema, form.uiSchema, data)
+        return FormDto.JsonFormDto(schema = form.schema, uiSchema = form.uiSchema, formData = formData)
     }
 
     private fun loadPrepareOrder(userTask: UserTaskDto): FormDto<PrepareOrderSchema>
@@ -72,7 +72,7 @@ class LoadDataController(
         val form = response.form
         val items = response.items
 
-        val data = PrepareOrderSchema(
+        val formData = PrepareOrderSchema(
             itemCheckList = items.map {
                 CheckItemDto(
                     item = ItemDto(
@@ -85,6 +85,11 @@ class LoadDataController(
             }
         )
 
-        return FormDto.JsonFormDto(form.schema, form.uiSchema, data)
+        return FormDto.JsonFormDto(
+            schema = form.schema,
+            uiSchema = form.uiSchema,
+            updateable = true,
+            formData = formData
+        )
     }
 }

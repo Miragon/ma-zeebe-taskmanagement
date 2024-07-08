@@ -1,12 +1,11 @@
 package io.miragon.zeebe.tm.order.application.service
 
 import io.miragon.zeebe.tm.order.application.port.`in`.CompleteCheckOrderTaskUseCase
+import io.miragon.zeebe.tm.order.application.port.`in`.CompleteCheckOrderTaskUseCase.Command
 import io.miragon.zeebe.tm.order.application.port.out.CompleteTaskPort
 import io.miragon.zeebe.tm.order.application.port.out.OrderPersistencePort
 import io.miragon.zeebe.tm.order.domain.Order
 import org.springframework.stereotype.Service
-
-typealias CompleteTaskCommand = CompleteCheckOrderTaskUseCase.Command
 
 @Service
 class CompleteCheckOrderTaskService(
@@ -14,7 +13,7 @@ class CompleteCheckOrderTaskService(
     private val orderPersistencePort: OrderPersistencePort,
 ) : CompleteCheckOrderTaskUseCase
 {
-    override fun complete(command: CompleteTaskCommand): Long
+    override fun complete(command: Command): Long
     {
         val taskId = command.taskId
         val orderId = command.orderId

@@ -7,13 +7,9 @@ interface StartProcessUseCase
     /**
      * @return The id of the created order.
      */
-    fun startProcess(command: Command): Response
+    fun startProcess(command: Command): String
 
     data class Command(
         val order: Order
-    )
-
-    data class Response(
-        val orderId: String
     )
 }

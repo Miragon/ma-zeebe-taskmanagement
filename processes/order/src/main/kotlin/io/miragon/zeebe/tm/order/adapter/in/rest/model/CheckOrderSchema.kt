@@ -1,5 +1,6 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
 
+import io.miragon.zeebe.tm.order.application.port.`in`.CompleteCheckOrderTaskUseCase
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
@@ -14,4 +15,13 @@ data class CheckOrderSchema(
     @get:NotNull
     val isOrderValid: Boolean
 )
-
+{
+    fun toCommand(taskId: Long, orderId: String): CompleteCheckOrderTaskUseCase.Command
+    {
+        return CompleteCheckOrderTaskUseCase.Command(
+            taskId = taskId,
+            orderId = orderId,
+            isAccepted = this.isOrderValid
+        )
+    }
+}
