@@ -1,5 +1,6 @@
 package io.miragon.zeebe.taskmanager.adapter.`in`.rest
 
+import io.miragon.zeebe.taskmanager.adapter.`in`.rest.model.UserTaskDto
 import io.miragon.zeebe.taskmanager.application.port.`in`.LoadUserTaskUseCase
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -31,14 +32,3 @@ class LoadUserTaskController(
         })
     }
 }
-
-data class UserTaskDto(
-    val key: Long,
-    val elementId: String,
-    val processInstanceKey: Long,
-    val bpmnProcessId: String,
-    val processDefinitionKey: Long,
-    val variables: Map<String, Any> = emptyMap(),
-    var taskState: String,
-    var assignee: String?,
-)

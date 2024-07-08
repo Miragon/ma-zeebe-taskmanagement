@@ -26,7 +26,7 @@ class OrderPersistenceAdapter(
 
     override fun update(id: String, order: Order): String
     {
-        val res = orderRepository.save(toOrderEntity(order))
+        val res = orderRepository.save(toOrderEntity(order, id))
         return res.id.toString()
     }
 
@@ -58,9 +58,10 @@ class OrderPersistenceAdapter(
         )
     }
 
-    private fun toOrderEntity(order: Order): OrderEntity
+    private fun toOrderEntity(order: Order, id: String? = null): OrderEntity
     {
         return OrderEntity(
+            id = id?.let { UUID.fromString(it) },
             customerName = order.customerName,
             deliveryAddress = mapOf(
                 "street" to order.deliveryAddress.street,

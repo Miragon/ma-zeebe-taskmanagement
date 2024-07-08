@@ -10,5 +10,7 @@ interface UserTaskPersistencePort
 
     fun findByAssignee(assignee: String): List<UserTask>
 
+    fun update(task: UserTask)
+
     fun save(task: UserTask)
 }

@@ -2,13 +2,6 @@ package io.miragon.zeebe.taskmanager.domain
 
 import java.time.Instant
 
-enum class TaskState
-{
-    CREATED,
-    ASSIGNED,
-    COMPLETED
-}
-
 data class UserTask(
     val key: Long,
     val elementId: String,
@@ -24,5 +17,12 @@ data class UserTask(
     fun extendLock(until: Instant)
     {
         this.expiresAt = until
+    }
+
+    enum class TaskState
+    {
+        CREATED,
+        ASSIGNED,
+        COMPLETED
     }
 }

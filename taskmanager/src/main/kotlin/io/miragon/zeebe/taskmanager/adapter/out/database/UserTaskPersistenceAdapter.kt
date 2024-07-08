@@ -25,6 +25,11 @@ class UserTaskPersistenceAdapter(
         return userTaskRepository.findByAssignee(assignee).map { it.toDomain() }
     }
 
+    override fun update(task: UserTask)
+    {
+        this.save(task)
+    }
+
     override fun save(task: UserTask)
     {
         userTaskRepository.save(

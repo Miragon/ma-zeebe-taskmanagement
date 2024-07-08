@@ -26,3 +26,12 @@ camunda:
     zeebe:
       gateway-url: ${ZEEBE_BASE_URL:http://localhost:26500}
     mode: simple
+
+miranum.tm.process-application:
+  order:
+    base-url: ${ORDER_BASE_URL:http://localhost:9101}
+    startable: true
+  payment:
+    base-url: ${PAYMENT_BASE_URL:http://localhost:9102}
+    startable: true
+
