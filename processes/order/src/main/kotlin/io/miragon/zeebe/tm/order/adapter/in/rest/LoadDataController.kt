@@ -62,7 +62,9 @@ class LoadDataController(
             isOrderValid = false
         )
 
-        return FormDto.JsonFormDto(schema = form.schema, uiSchema = form.uiSchema, formData = formData)
+        return FormDto.JsonFormDto(
+            schema = form.schema.toString(), uiSchema = form.uiSchema.toString(), formData = formData
+        )
     }
 
     private fun loadPrepareOrder(userTask: UserTaskDto): FormDto<PrepareOrderSchema>
@@ -86,8 +88,8 @@ class LoadDataController(
         )
 
         return FormDto.JsonFormDto(
-            schema = form.schema,
-            uiSchema = form.uiSchema,
+            schema = form.schema.toString(),
+            uiSchema = form.uiSchema.toString(),
             updateable = true,
             formData = formData
         )

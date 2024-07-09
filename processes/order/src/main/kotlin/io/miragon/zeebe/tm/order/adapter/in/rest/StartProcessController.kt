@@ -23,8 +23,8 @@ class StartProcessController(
 
         return ResponseEntity.ok(
             FormDto.JsonFormDto(
-                schema = form.schema,
-                uiSchema = form.uiSchema,
+                schema = form.schema.toString(),
+                uiSchema = form.uiSchema.toString(),
                 formData = null
             )
         )

@@ -3,7 +3,7 @@ package io.miragon.zeebe.taskmanager.domain
 import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties(prefix = "miranum.tm")
-data class Metadata(
+data class ProcessApplicationMetadata(
     val processApplication: Map<String, ProcessApplication>,
 )
 {

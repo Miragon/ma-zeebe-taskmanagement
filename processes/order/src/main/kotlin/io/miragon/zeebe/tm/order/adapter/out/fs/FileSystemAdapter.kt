@@ -7,9 +7,15 @@ import org.springframework.stereotype.Component
 @Component
 class FileSystemAdapter : FormPersistencePort
 {
+    private val processStartFormPath = "/forms/generated/StartProcessSchema.form.json"
+
+    private val checkOrderFormPath = "/forms/generated/CheckOrderSchema.form.json"
+
+    private val prepareOrderFormPath = "/forms/generated/PrepareOrderSchema.form.json"
+
     override fun readProcessStartForm(): Form.JsonForm
     {
-        val path = "/forms/generated/OrderSchema-schema.json"
+        val path = processStartFormPath
         val content = read(path) ?: throw IllegalStateException("Form not found: $path")
 
         return Form.createJsonForm(content)
@@ -17,7 +23,7 @@ class FileSystemAdapter : FormPersistencePort
 
     override fun readCheckOrderForm(): Form.JsonForm
     {
-        val path = "/forms/generated/CheckOrderSchema-schema.json"
+        val path = checkOrderFormPath
         val content = read(path) ?: throw IllegalStateException("Form not found: $path")
 
         return Form.createJsonForm(content)
@@ -25,7 +31,7 @@ class FileSystemAdapter : FormPersistencePort
 
     override fun readPrepareOrderForm(): Form.JsonForm
     {
-        val path = "/forms/generated/PrepareOrderSchema-schema.json"
+        val path = prepareOrderFormPath
         val content = read(path) ?: throw IllegalStateException("Form not found: $path")
 
         return Form.createJsonForm(content)

@@ -2,8 +2,8 @@ package io.miragon.zeebe.taskmanager.adapter.out.database
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.miragon.zeebe.taskmanager.domain.TaskState
 import io.miragon.zeebe.taskmanager.domain.UserTask
+import io.miragon.zeebe.taskmanager.domain.UserTaskState
 import jakarta.persistence.*
 import java.time.Instant
 
@@ -44,7 +44,7 @@ data class UserTaskEntity(
             processDefinitionKey = processDefinitionKey,
             expiresAt = expiresAt,
             variables = variables,
-            taskState = TaskState.valueOf(taskState),
+            taskState = UserTaskState.valueOf(taskState),
             assignee = assignee,
         )
     }

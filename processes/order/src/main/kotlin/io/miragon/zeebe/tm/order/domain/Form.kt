@@ -24,8 +24,8 @@ sealed class Form
     }
 
     class JsonForm(
-        val schema: String,
-        val uiSchema: String,
+        val schema: Map<String, Any>,
+        val uiSchema: Map<String, Any>,
     ) : Form()
 
     class HtmlForm(

@@ -10,19 +10,12 @@ data class UserTask(
     val processDefinitionKey: Long,
     var expiresAt: Instant,
     val variables: Map<String, Any> = emptyMap(),
-    var taskState: TaskState = TaskState.CREATED,
+    var taskState: UserTaskState = UserTaskState.CREATED,
     var assignee: String?,
 )
 {
     fun extendLock(until: Instant)
     {
         this.expiresAt = until
-    }
-
-    enum class TaskState
-    {
-        CREATED,
-        ASSIGNED,
-        COMPLETED
     }
 }

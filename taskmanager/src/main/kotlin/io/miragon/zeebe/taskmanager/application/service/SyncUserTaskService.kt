@@ -2,8 +2,8 @@ package io.miragon.zeebe.taskmanager.application.service
 
 import io.miragon.zeebe.taskmanager.application.port.`in`.SyncUserTaskUseCase
 import io.miragon.zeebe.taskmanager.application.port.out.UserTaskPersistencePort
-import io.miragon.zeebe.taskmanager.domain.TaskState
 import io.miragon.zeebe.taskmanager.domain.UserTask
+import io.miragon.zeebe.taskmanager.domain.UserTaskState
 import org.springframework.stereotype.Service
 
 @Service
@@ -25,7 +25,7 @@ class SyncUserTaskService(
                     processDefinitionKey = command.processDefinitionKey,
                     expiresAt = command.expiresAt,
                     variables = command.variables,
-                    taskState = TaskState.CREATED,
+                    taskState = UserTaskState.CREATED,
                     assignee = null,
                 )
             )

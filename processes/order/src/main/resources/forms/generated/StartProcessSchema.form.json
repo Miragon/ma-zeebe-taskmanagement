@@ -1,10 +1,8 @@
 {
   "schema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "properties": {
-      "name": {
-        "type": "string"
-      },
       "address": {
         "type": "object",
         "properties": {
@@ -34,24 +32,29 @@
             }
           }
         }
+      },
+      "name": {
+        "type": "string"
       }
-    },
-    "$schema": "http://json-schema.org/draft-07/schema#"
+    }
   },
-  "uischema": {
+  "uiSchema": {
     "type": "VerticalLayout",
     "elements": [
       {
         "type": "Control",
-        "scope": "#/properties/name"
+        "scope": "#/properties/name",
+        "label": "Name"
       },
       {
         "type": "Control",
-        "scope": "#/properties/address"
+        "scope": "#/properties/address",
+        "label": "Address"
       },
       {
         "type": "Control",
-        "scope": "#/properties/items"
+        "scope": "#/properties/items",
+        "label": "Items"
       }
     ]
   }
