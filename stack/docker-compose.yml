@@ -76,7 +76,6 @@ services:
     container_name: nginx
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/njs:/etc/nginx/njs
     restart: unless-stopped
     ports:
       - "8081:8080"
@@ -125,6 +124,8 @@ services:
       retries: 5
       start_period: 5s
     environment:
+      - ORDER_BASE_URL=order-process:9101
+      - PAYMENT_BASE_URL=payment-process:9102
       - ZEEBE_BASE_URL=http://zeebe:26500
       - JDBC_BASE_URL=jdbc:postgresql://postgres:5432/${TM_DATASOURCE_DB}
     profiles:
@@ -174,7 +175,7 @@ services:
       start_period: 5s
     environment:
       - ZEEBE_BASE_URL=http://zeebe:26500
-      - JDBC_BASE_URL=jdbc:postgresql://postgres:5432/${ORDER_DATASOURCE_DB}
+      - JDBC_BASE_URL=jdbc:postgresql://postgres:5432/${PAYMENT_DATASOURCE_DB}
     profiles:
       - prod
     depends_on:

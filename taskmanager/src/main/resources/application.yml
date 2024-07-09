@@ -29,9 +29,11 @@ camunda:
 
 miranum.tm.process-application:
   order:
+    label: Order Process
     base-url: ${ORDER_BASE_URL:http://localhost:9101}
     startable: true
   payment:
+    label: Payment Process
     base-url: ${PAYMENT_BASE_URL:http://localhost:9102}
     startable: true
 

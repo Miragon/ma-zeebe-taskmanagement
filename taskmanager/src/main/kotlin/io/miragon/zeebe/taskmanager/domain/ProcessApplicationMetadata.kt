@@ -16,6 +16,7 @@ data class ProcessApplicationMetadata(
     }
 
     data class ProcessApplication(
+        val label: String,
         val baseUrl: String,
         val startable: Boolean? = false,
         val processUrl: Process?,
