@@ -5,8 +5,8 @@ import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
 import { Configuration, LoadUserTaskControllerApi, UserTaskDto } from "../../client/generated/taskmanager";
 import { Form, HtmlForm, JsonForm } from "../../model/form.ts";
 import { makeStyles } from "@mui/styles";
-import { BASE_URL } from "../../config.ts";
-import { completeTask, FormType, HtmlFormDto, JsonFormDto, loadForm } from "../../client/process/api.ts";
+import { BASE_URL, getUrlByType, UrlType } from "../../config.ts";
+import { completeTask, FormType, HtmlFormDto, JsonFormDto, loadTask } from "../../client/process/api.ts";
 
 const useStyles = makeStyles({
     taskList: {
@@ -62,9 +62,10 @@ function TaskList() {
         setTask(userTask);
 
         try {
-            const { type, form } = await loadForm(
-                userTask["bpmnProcessId"],
-                userTask["elementId"],
+            const url = getUrlByType(UrlType.LOAD_TASK, userTask.bpmnProcessId);
+
+            const { type, form } = await loadTask(
+                url,
                 userTask,
             );
 

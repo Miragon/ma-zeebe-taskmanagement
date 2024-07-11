@@ -2,13 +2,15 @@ import { JsonSchema, UISchemaElement } from "@jsonforms/core";
 
 interface JsonFormParameters {
     schema: string;
-    uischema: string;
-    data: any;
+    uiSchema: string;
+    updatable: boolean;
+    formData: any;
 }
 
 interface HtmlFormParameters {
     html: string;
-    data: any;
+    updatable: boolean;
+    formData: any;
 }
 
 export interface Form {
@@ -17,14 +19,17 @@ export interface Form {
 export class JsonForm implements Form {
     private readonly schema: JsonSchema;
 
-    private readonly uischema: UISchemaElement;
+    private readonly uiSchema: UISchemaElement;
 
-    private readonly data: any;
+    private readonly updatable: boolean;
 
-    constructor({ schema, uischema, data }: JsonFormParameters) {
+    private readonly formData: any;
+
+    constructor({ schema, uiSchema, updatable, formData }: JsonFormParameters) {
         this.schema = JSON.parse(JSON.stringify(schema));
-        this.uischema = JSON.parse(JSON.stringify(uischema));
-        this.data = data ?? {};
+        this.uiSchema = JSON.parse(JSON.stringify(uiSchema));
+        this.updatable = updatable;
+        this.formData = formData ?? {};
     }
 
     getSchema() {
@@ -32,29 +37,40 @@ export class JsonForm implements Form {
     }
 
     getUiSchema() {
-        return this.uischema;
+        return this.uiSchema;
     }
 
-    getData() {
-        return this.data;
+    getUpdateable() {
+        return this.updatable;
+    }
+
+    getFormData() {
+        return this.formData;
     }
 }
 
 export class HtmlForm implements Form {
     private readonly html: string;
 
-    private readonly data: any;
+    private readonly updatable: boolean;
 
-    constructor({ html, data }: HtmlFormParameters) {
+    private readonly formData: any;
+
+    constructor({ html, updatable, formData }: HtmlFormParameters) {
         this.html = html;
-        this.data = data;
+        this.updatable = updatable;
+        this.formData = formData;
     }
 
     getHtml() {
         return this.html;
     }
 
-    getData() {
-        return this.data;
+    getUpdateable() {
+        return this.updatable;
+    }
+
+    getFormData() {
+        return this.formData;
     }
 }

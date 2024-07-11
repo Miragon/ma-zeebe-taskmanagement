@@ -1,11 +1,12 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import ProcessStartButton from "./ProcessStartButton.tsx";
-import { getGlobalProcessDefinitions, Process } from "../../model/process.ts";
-import { FormType, HtmlFormDto, JsonFormDto, loadForm, startProcess } from "../../client/process/api.ts";
+import { FormType, HtmlFormDto, JsonFormDto, loadStartForm, startProcess } from "../../client/process/api.ts";
 import { Form, HtmlForm, JsonForm } from "../../model/form.ts";
 import JsonFormRenderer from "../form/JsonFormRenderer.tsx";
 import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
+import { getAllProcessApplications, getUrlByType, UrlType } from "../../config.ts";
+import { ProcessApplication } from "../../client/generated/taskmanager";
 
 const useStyles = makeStyles({
     processContainer: {
@@ -23,8 +24,8 @@ const useStyles = makeStyles({
 
 function ProcessList() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [process, setProcess] = useState<string>("");
-    const [processDefinitions, setProcessDefinitions] = useState<Process[]>([]);
+    const [processId, setProcessId] = useState<string>("");
+    const [processApplications, setProcessApplications] = useState<ProcessApplication[]>([]);
     const [formType, setFormType] = useState<FormType | null>(null);
     const [form, setForm] = useState<Form>({});
     const initialized = useRef(false);
@@ -34,18 +35,19 @@ function ProcessList() {
     useEffect(() => {
         if (!initialized.current) {
             initialized.current = true;
-            setProcessDefinitions(getGlobalProcessDefinitions);
+            setProcessApplications(getAllProcessApplications);
             setIsLoading(false);
         }
     }, [initialized]);
 
     const getForm = async (id: string) => {
-        setProcess(id);
+        setProcessId(id);
+
+        const url = getUrlByType(UrlType.PROCESS_START_FORM, id);
 
         try {
-            const { type, form } = await loadForm(
-                id,
-                "processStart",
+            const { type, form } = await loadStartForm(
+                url,
             );
 
             switch (type) {
@@ -68,8 +70,10 @@ function ProcessList() {
     };
 
     const submit = async (data: any) => {
+        const url = getUrlByType(UrlType.PROCESS_START, processId);
+
         try {
-            await startProcess(process, data);
+            await startProcess(url, data);
         } catch (error) {
             console.error("Failed to complete task:", error);
         }
@@ -79,13 +83,13 @@ function ProcessList() {
         if (isLoading) {
             return <p>Loading...</p>;
         } else {
-            const buttons = processDefinitions.map((process) => {
-                if (process.isStartable()) {
+            const buttons = processApplications.map((process) => {
+                if (process.startable) {
                     return (
                         <ProcessStartButton
-                            key={process.getId()}
-                            id={process.getId()}
-                            label={process.getName()}
+                            key={process.processId}
+                            id={process.processId}
+                            label={process.label}
                             onClick={getForm}
                         />
                     );

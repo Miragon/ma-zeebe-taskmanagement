@@ -43,10 +43,10 @@ function JsonFormRenderer(props: Props) {
 
     useEffect(() => {
         const schema = props.form.getSchema();
-        const uischema = props.form.getUiSchema();
-        const data = props.form.getData();
+        const uiSchema = props.form.getUiSchema();
+        const data = props.form.getFormData();
         setSchema(schema);
-        setUiSchema(uischema);
+        setUiSchema(uiSchema);
         setData(data);
     }, [props.form]);
 
