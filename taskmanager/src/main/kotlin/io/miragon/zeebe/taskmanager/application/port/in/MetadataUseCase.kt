@@ -9,14 +9,13 @@ interface MetadataUseCase
     )
 
     data class ProcessApplication(
-        private val id: String,
-        private val label: String,
-        private val baseUrl: String,
-        private val startable: Boolean? = false,
-        private val startProcessUrl: String?,
-        private val startProcessFormUrl: String?,
-        private val loadDataUrl: String?,
-        private val completeTaskUrl: String?,
-        private val updateTaskUrl: String?,
+        val processId: String,
+        val label: String,
+        val startable: Boolean,
+        val startProcessUrl: String,
+        val startProcessFormUrl: String,
+        val loadTaskUrl: String,
+        val completeTaskUrl: String,
+        val updateTaskUrl: String,
     )
 }

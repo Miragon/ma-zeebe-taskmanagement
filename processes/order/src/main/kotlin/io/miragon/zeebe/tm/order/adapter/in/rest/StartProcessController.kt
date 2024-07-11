@@ -15,7 +15,7 @@ class StartProcessController(
     private val startProcessUseCase: StartProcessUseCase
 )
 {
-    @GetMapping("/form")
+    @GetMapping("/start/form")
     fun loadForm(): ResponseEntity<FormDto<*>>
     {
         val response = loadFormUseCase.load()

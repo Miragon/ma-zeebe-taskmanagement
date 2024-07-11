@@ -15,36 +15,23 @@ class MetadataService(
     {
         val processApplications = metadata.processApplication.map { (key, value) ->
             ProcessApplication(
-                id = key,
-                baseUrl = value.baseUrl,
+                processId = key,
+                label = value.label,
                 startable = value.startable,
-                startProcessUrl = value.processUrl?.let {
-                    ProcessApplicationMetadata.buildUrl(
-                        value.processUrl.baseUrl,
-                        value.processUrl.startProcessUrl
-                    )
-                },
-                startProcessFormUrl = value.processUrl?.let {
-                    ProcessApplicationMetadata.buildUrl(
-                        value.processUrl.baseUrl,
-                        value.processUrl.startProcessFormUrl
-                    )
-                },
-                loadDataUrl = value.userTaskUrl?.let {
-                    ProcessApplicationMetadata.buildUrl(value.userTaskUrl.baseUrl, value.userTaskUrl.loadDataUrl)
-                },
-                completeTaskUrl = value.userTaskUrl?.let {
-                    ProcessApplicationMetadata.buildUrl(
-                        value.userTaskUrl.baseUrl,
-                        value.userTaskUrl.completeTaskUrl
-                    )
-                },
-                updateTaskUrl = value.userTaskUrl?.let {
-                    ProcessApplicationMetadata.buildUrl(
-                        value.userTaskUrl.baseUrl,
-                        value.userTaskUrl.updateTaskUrl
-                    )
-                }
+                startProcessUrl = ProcessApplicationMetadata.buildUrl(value.baseUrl, value.processUrl.start),
+                startProcessFormUrl = ProcessApplicationMetadata.buildUrl(
+                    value.baseUrl,
+                    value.processUrl.form
+                ),
+                loadTaskUrl = ProcessApplicationMetadata.buildUrl(value.baseUrl, value.userTaskUrl.load),
+                completeTaskUrl = ProcessApplicationMetadata.buildUrl(
+                    value.baseUrl,
+                    value.userTaskUrl.complete
+                ),
+                updateTaskUrl = ProcessApplicationMetadata.buildUrl(
+                    value.baseUrl,
+                    value.userTaskUrl.update
+                )
             )
         }
 

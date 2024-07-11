@@ -99,7 +99,7 @@ services:
       context: ../apps/tasklist
       target: prod
       args:
-        - VITE_BASE_URL=http://localhost:8081
+        - VITE_BASE_URL=http://localhost:8081 # nginx
     ports:
       - "3000:8080"
     restart: unless-stopped

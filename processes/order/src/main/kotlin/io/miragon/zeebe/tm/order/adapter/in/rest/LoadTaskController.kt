@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/rest/task")
-class LoadDataController(
+class LoadTaskController(
     private val loadCheckOrderTask: LoadCheckOrderTaskUseCase,
     private val loadPrepareOrderTask: LoadPrepareOrderTaskUseCase
 )
 {
-    @PostMapping("/load-data")
+    @PostMapping("/load")
     fun loadData(@RequestBody userTask: UserTaskDto): ResponseEntity<FormDto<*>>
     {
         val userTaskId = userTask.elementId

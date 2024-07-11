@@ -17,7 +17,7 @@ class CompleteTaskController(
     private val completePrepareOrderTaskUseCase: CompletePrepareOrderTaskUseCase,
 )
 {
-    @PostMapping("/complete-task")
+    @PostMapping("/complete")
     fun completeTask(userTask: UserTaskDto, formData: Any): ResponseEntity<ResponseDto>
     {
         return when (userTask.elementId)
