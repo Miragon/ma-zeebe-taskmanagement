@@ -1,4 +1,4 @@
-package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
+package io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema
 
 import jakarta.validation.constraints.Size
 

@@ -2,7 +2,7 @@ package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.FormDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.MessageDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.StartProcessSchema
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.StartProcessSchema
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadProcessStartFormUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.StartProcessUseCase
 import io.miragon.zeebe.tm.order.domain.Order
@@ -37,8 +37,13 @@ class StartProcessController(
     }
 
     @PostMapping("/start")
-    fun placeOrder(@RequestBody formData: StartProcessSchema): ResponseEntity<MessageDto>
+    fun placeOrder(@RequestBody formData: Any): ResponseEntity<MessageDto>
     {
+        if (formData !is StartProcessSchema)
+        {
+            return ResponseEntity.badRequest().build()
+        }
+
         val command = formData.toCommand(Order.OrderState.CHECK)
         val orderId = startProcessUseCase.startProcess(command)
         val response = MessageDto("Order with id $orderId created!")

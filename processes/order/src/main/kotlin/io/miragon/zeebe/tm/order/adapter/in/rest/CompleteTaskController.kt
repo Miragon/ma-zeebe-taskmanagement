@@ -1,13 +1,14 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.CheckOrderSchema
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.PrepareOrderSchema
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.CompleteTaskDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.TaskIdDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.UserTaskDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderSchema
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareOrderSchema
 import io.miragon.zeebe.tm.order.application.port.`in`.CompleteCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareOrderTaskUseCase
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -19,8 +20,11 @@ class CompleteTaskController(
 )
 {
     @PostMapping("/complete")
-    fun completeTask(userTask: UserTaskDto, formData: Any): ResponseEntity<TaskIdDto>
+    fun completeTask(@RequestBody completeTaskDto: CompleteTaskDto): ResponseEntity<TaskIdDto>
     {
+        val userTask = completeTaskDto.userTask
+        val formData = completeTaskDto.formData
+
         return when (userTask.elementId)
         {
             UserTaskId.CHECK_ORDER.id ->
@@ -44,8 +48,11 @@ class CompleteTaskController(
     }
 
     @PostMapping("/update")
-    fun updateTask(userTask: UserTaskDto, formData: Any): ResponseEntity<TaskIdDto>
+    fun updateTask(@RequestBody completeTaskDto: CompleteTaskDto): ResponseEntity<TaskIdDto>
     {
+        val userTask = completeTaskDto.userTask
+        val formData = completeTaskDto.formData
+
         return when (userTask.elementId)
         {
             UserTaskId.PREPARE_ORDER.id ->

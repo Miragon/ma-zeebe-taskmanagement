@@ -1,4 +1,4 @@
-package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
+package io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema
 
 import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareOrderTaskUseCase
 import io.miragon.zeebe.tm.order.domain.Item
