@@ -2,11 +2,18 @@ import Task from "./Task.tsx";
 import { Fragment, useEffect, useState } from "react";
 import JsonFormRenderer from "../form/JsonFormRenderer.tsx";
 import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
-import { Configuration, LoadUserTaskControllerApi, UserTaskDto } from "../../client/generated/taskmanager";
-import { Form, HtmlForm, JsonForm } from "../../model/form.ts";
+import { LoadUserTaskControllerApi } from "../../client/generated/taskmanager";
+import { Form, FormType, getFormType, HtmlForm, JsonForm } from "../../model/form.ts";
 import { makeStyles } from "@mui/styles";
 import { BASE_URL, getUrlByType, UrlType } from "../../config.ts";
-import { completeTask, FormType, HtmlFormDto, JsonFormDto, loadTask } from "../../client/process/api.ts";
+import {
+    CompleteTaskControllerApi,
+    HtmlFormDto,
+    JsonFormDto,
+    LoadTaskControllerApi,
+} from "../../client/generated/microservice";
+import { UserTask } from "../../model/UserTask.ts";
+import { AxiosRequestConfig } from "axios";
 
 const useStyles = makeStyles({
     taskList: {
@@ -23,20 +30,23 @@ const useStyles = makeStyles({
 
 function TaskList() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [task, setTask] = useState<UserTaskDto | null>(null);
-    const [tasks, setTasks] = useState<UserTaskDto[]>([]);
+    const [task, setTask] = useState<UserTask | null>(null);
+    const [tasks, setTasks] = useState<UserTask[]>([]);
     const [formType, setFormType] = useState<FormType | null>(null);
-    const [form, setForm] = useState<Form>({});
-    const [completedTask, setCompletedTask] = useState<UserTaskDto | null>(null);
+    const [form, setForm] = useState<Form | null>(null);
+    const [completedTask, setCompletedTask] = useState<UserTask | null>(null);
 
     const classes = useStyles();
 
     useEffect(() => {
         async function fetchTasks() {
-            const config = new Configuration({ basePath: `${BASE_URL}/taskmanager` });
-            const taskApi = new LoadUserTaskControllerApi(config);
-            const response = await taskApi.loadTasks();
-            setTasks(response.data.filter((task) => task.key !== completedTask?.key));
+            const taskApi = new LoadUserTaskControllerApi();
+            const config: AxiosRequestConfig = {
+                baseURL: `${BASE_URL}/taskmanager`,
+            };
+            const response = await taskApi.loadTasks(config);
+            const tasks = response.data.map((task) => new UserTask({ ...task }));
+            setTasks(tasks.filter((task) => task.key !== completedTask?.key));
         }
 
         console.debug("fetchTasks");
@@ -58,18 +68,19 @@ function TaskList() {
         }
     }
 
-    const getForm = async (userTask: UserTaskDto) => {
+    const getForm = async (userTask: UserTask) => {
         setTask(userTask);
 
+        const api = new LoadTaskControllerApi();
+        const config: AxiosRequestConfig = {
+            url: getUrlByType(UrlType.LOAD_TASK, userTask.bpmnProcessId),
+        };
+
         try {
-            const url = getUrlByType(UrlType.LOAD_TASK, userTask.bpmnProcessId);
+            const response = await api.loadData(userTask, config);
+            const form = response.data;
 
-            const { type, form } = await loadTask(
-                url,
-                userTask,
-            );
-
-            switch (type) {
+            switch (getFormType(response.data)) {
                 case FormType.JSON_FROM: {
                     const jsonForm = form as JsonFormDto;
                     setFormType(FormType.JSON_FROM);
@@ -94,15 +105,28 @@ function TaskList() {
             return;
         }
 
+        const api = new CompleteTaskControllerApi();
+        const config: AxiosRequestConfig = {
+            url: getUrlByType(UrlType.COMPLETE_TASK, task.bpmnProcessId),
+        };
+
         try {
-            await completeTask(task, data);
+            const response = await api.completeTask({
+                userTask: task,
+                formData: data,
+            }, config);
+
+            const taskId = response.data.taskId;
+
+            console.log("Task completed:", taskId);
+
         } catch (error) {
             console.error("Failed to complete task:", error);
         }
 
         setTask(null);
         setFormType(null);
-        setForm({});
+        setForm(null);
 
         setIsLoading(true);
         setCompletedTask(task);

@@ -1,12 +1,13 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import ProcessStartButton from "./ProcessStartButton.tsx";
-import { FormType, HtmlFormDto, JsonFormDto, loadStartForm, startProcess } from "../../client/process/api.ts";
-import { Form, HtmlForm, JsonForm } from "../../model/form.ts";
+import { Form, FormType, getFormType, HtmlForm, JsonForm } from "../../model/form.ts";
 import JsonFormRenderer from "../form/JsonFormRenderer.tsx";
 import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
 import { getAllProcessApplications, getUrlByType, UrlType } from "../../config.ts";
 import { ProcessApplication } from "../../client/generated/taskmanager";
+import { HtmlFormDto, JsonFormDto, StartProcessControllerApi } from "../../client/generated/microservice";
+import { AxiosRequestConfig } from "axios";
 
 const useStyles = makeStyles({
     processContainer: {
@@ -27,7 +28,7 @@ function ProcessList() {
     const [processId, setProcessId] = useState<string>("");
     const [processApplications, setProcessApplications] = useState<ProcessApplication[]>([]);
     const [formType, setFormType] = useState<FormType | null>(null);
-    const [form, setForm] = useState<Form>({});
+    const [form, setForm] = useState<Form | null>(null);
     const initialized = useRef(false);
 
     const classes = useStyles();
@@ -43,14 +44,16 @@ function ProcessList() {
     const getForm = async (id: string) => {
         setProcessId(id);
 
-        const url = getUrlByType(UrlType.PROCESS_START_FORM, id);
+        const api = new StartProcessControllerApi();
+        const config: AxiosRequestConfig = {
+            url: getUrlByType(UrlType.PROCESS_START_FORM, id),
+        };
 
         try {
-            const { type, form } = await loadStartForm(
-                url,
-            );
+            const response = await api.loadForm(config);
+            const form = response.data;
 
-            switch (type) {
+            switch (getFormType(response.data)) {
                 case FormType.JSON_FROM: {
                     const jsonForm = form as JsonFormDto;
                     setFormType(FormType.JSON_FROM);
@@ -70,10 +73,17 @@ function ProcessList() {
     };
 
     const submit = async (data: any) => {
-        const url = getUrlByType(UrlType.PROCESS_START, processId);
+        const api = new StartProcessControllerApi();
+        const config: AxiosRequestConfig = {
+            url: getUrlByType(UrlType.PROCESS_START, processId),
+        };
 
         try {
-            await startProcess(url, data);
+            const response = await api.startProcess(data, config);
+            const message = response.data.message;
+
+            console.log("Process started:", message);
+
         } catch (error) {
             console.error("Failed to complete task:", error);
         }
