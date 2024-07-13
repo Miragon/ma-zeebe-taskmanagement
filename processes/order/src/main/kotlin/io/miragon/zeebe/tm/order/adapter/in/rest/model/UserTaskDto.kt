@@ -8,7 +8,7 @@ data class UserTaskDto(
     val processDefinitionKey: Long,
     val variables: Map<String, Any>,
     var taskState: String,
-    var assignee: String = "",
+    var assignee: String?,
 )
 
 

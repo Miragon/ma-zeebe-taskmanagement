@@ -37,7 +37,7 @@ class StartProcessController(
     }
 
     @PostMapping("/start")
-    fun placeOrder(@RequestBody formData: Any): ResponseEntity<MessageDto>
+    fun startProcess(@RequestBody formData: Any): ResponseEntity<MessageDto>
     {
         if (formData !is StartProcessSchema)
         {

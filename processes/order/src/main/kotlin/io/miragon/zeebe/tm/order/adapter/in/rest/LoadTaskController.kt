@@ -109,7 +109,7 @@ class LoadTaskController(
         return FormDto.JsonFormDto(
             schema = schema,
             uiSchema = uiSchema,
-            updateable = true,
+            updatable = true,
             formData = formData
         )
     }
