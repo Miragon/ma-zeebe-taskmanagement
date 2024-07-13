@@ -1,30 +1,24 @@
 package io.miragon.zeebe.tm.order.adapter.out.fs
 
-import org.junit.jupiter.api.BeforeEach
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.junit.jupiter.api.Test
-import java.io.File
+import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertEquals
 
 class FileSystemAdapterTest
 {
     private val formPersistenceAdapter = FileSystemAdapter()
 
-    private val directory = File("src/main/resources/forms/generated")
-
-    @BeforeEach
-    fun setUp()
-    {
-        assert(directory.exists())
-    }
+    private val directory = "/forms"
 
     @Test
     fun readProcessStartForm()
     {
-        // Create file
-        val processStartSchema = File(directory, "StartProcessSchema.form.json")
-        assert(processStartSchema.exists())
+        // Arrange
+        val fileName = "StartProcessSchema.form.json"
 
         // Read content
-        val read = formPersistenceAdapter.readProcessStartForm()
+        val read = formPersistenceAdapter.readProcessStartForm("$directory/$fileName")
 
         assert(read.schema.isNotEmpty())
         assert(read.uiSchema.isNotEmpty())
@@ -33,12 +27,11 @@ class FileSystemAdapterTest
     @Test
     fun readCheckOrderForm()
     {
-        // Create file
-        val checkOrderSchema = File(directory, "CheckOrderSchema.form.json")
-        assert(checkOrderSchema.exists())
+        // Arrange
+        val fileName = "CheckOrderSchema.form.json"
 
         // Read content
-        val read = formPersistenceAdapter.readCheckOrderForm()
+        val read = formPersistenceAdapter.readCheckOrderForm("$directory/$fileName")
 
         assert(read.schema.isNotEmpty())
         assert(read.uiSchema.isNotEmpty())
@@ -47,14 +40,49 @@ class FileSystemAdapterTest
     @Test
     fun readPrepareOrderForm()
     {
-        // Create file
-        val prepareOrderSchema = File(directory, "PrepareOrderSchema.form.json")
-        assert(prepareOrderSchema.exists())
+        // Arrange
+        val fileName = "PrepareOrderSchema.form.json"
 
         // Read content
-        val read = formPersistenceAdapter.readPrepareOrderForm()
+        val read = formPersistenceAdapter.readPrepareOrderForm("$directory/$fileName")
 
         assert(read.schema.isNotEmpty())
         assert(read.uiSchema.isNotEmpty())
+    }
+
+    @Test
+    fun fileDoesNotExist()
+    {
+        // Arrange
+        val fileName = "DoesNotExist.form.json"
+
+        // Act & Assert
+        assertThrows<IllegalStateException> {
+            formPersistenceAdapter.readProcessStartForm("$directory/$fileName")
+        }
+    }
+
+    @Test
+    fun defaultUiSchema()
+    {
+        val mapper = jacksonObjectMapper()
+
+        // Arrange
+        val fileName = "DefaultUiSchema.json"
+        val defaultUiSchema = """
+            {
+                "type": "VerticalLayout",
+                "elements": []
+            }
+        """.trimIndent().replace("\\s+".toRegex(), "")
+
+        // Read content
+        val read = formPersistenceAdapter.readProcessStartForm("$directory/$fileName")
+
+        val uiSchema = mapper.writeValueAsString(read.uiSchema)
+
+        assert(read.schema.isNotEmpty())
+        assert(read.uiSchema.isNotEmpty())
+        assertEquals(uiSchema, defaultUiSchema)
     }
 }

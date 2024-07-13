@@ -1,21 +1,21 @@
 {
   "schema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "properties": {
-      "customerName": {
-        "type": "string"
-      },
-      "deliveryAddress": {
+      "address": {
         "type": "object",
         "properties": {
+          "city": {
+            "type": "string"
+          },
           "street": {
             "type": "string"
           },
           "zipCode": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 5
           }
         }
       },
@@ -33,36 +33,28 @@
           }
         }
       },
-      "isOrderValid": {
-        "type": "boolean"
+      "name": {
+        "type": "string"
       }
-    },
-    "required": [
-      "isOrderValid"
-    ]
+    }
   },
-  "uischema": {
+  "uiSchema": {
     "type": "VerticalLayout",
     "elements": [
       {
         "type": "Control",
-        "scope": "#/properties/customerName",
+        "scope": "#/properties/name",
         "label": "Name"
       },
       {
         "type": "Control",
-        "scope": "#/properties/deliveryAddress",
+        "scope": "#/properties/address",
         "label": "Address"
       },
       {
         "type": "Control",
         "scope": "#/properties/items",
         "label": "Items"
-      },
-      {
-        "type": "Control",
-        "scope": "#/properties/isOrderValid",
-        "label": "Is order valid?"
       }
     ]
   }

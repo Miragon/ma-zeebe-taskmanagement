@@ -1,5 +1,6 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.*
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadPrepareOrderTaskUseCase
@@ -16,6 +17,12 @@ class LoadTaskController(
     private val loadPrepareOrderTask: LoadPrepareOrderTaskUseCase
 )
 {
+    private val mapper = jacksonObjectMapper()
+
+    private val checkOrderFormPath = "/forms/CheckOrderSchema.form.json"
+
+    private val prepareOrderFormPath = "/forms/PrepareOrderSchema.form.json"
+
     @PostMapping("/load")
     fun loadData(@RequestBody userTask: UserTaskDto): ResponseEntity<FormDto<*>>
     {
@@ -39,9 +46,14 @@ class LoadTaskController(
 
     private fun loadCheckOrder(userTask: UserTaskDto): FormDto<CheckOrderSchema>
     {
-        val command = LoadCheckOrderTaskUseCase.Command(userTask.variables["orderId"].toString())
+        val command = LoadCheckOrderTaskUseCase.Command(
+            orderId = userTask.variables["orderId"].toString(),
+            filePath = checkOrderFormPath
+        )
         val response = loadCheckOrderTask.load(command)
-        val form = response.form
+
+        val schema = mapper.writeValueAsString(response.form.schema)
+        val uiSchema = mapper.writeValueAsString(response.form.uiSchema)
         val order = response.order
 
         val formData = CheckOrderSchema(
@@ -63,15 +75,20 @@ class LoadTaskController(
         )
 
         return FormDto.JsonFormDto(
-            schema = form.schema.toString(), uiSchema = form.uiSchema.toString(), formData = formData
+            schema = schema, uiSchema = uiSchema, formData = formData
         )
     }
 
     private fun loadPrepareOrder(userTask: UserTaskDto): FormDto<PrepareOrderSchema>
     {
-        val command = LoadPrepareOrderTaskUseCase.Command(userTask.variables["orderId"].toString())
+        val command = LoadPrepareOrderTaskUseCase.Command(
+            orderId = userTask.variables["orderId"].toString(),
+            filePath = prepareOrderFormPath
+        )
         val response = loadPrepareOrderTask.load(command)
-        val form = response.form
+
+        val schema = mapper.writeValueAsString(response.form.schema)
+        val uiSchema = mapper.writeValueAsString(response.form.uiSchema)
         val items = response.items
 
         val formData = PrepareOrderSchema(
@@ -88,8 +105,8 @@ class LoadTaskController(
         )
 
         return FormDto.JsonFormDto(
-            schema = form.schema.toString(),
-            uiSchema = form.uiSchema.toString(),
+            schema = schema,
+            uiSchema = uiSchema,
             updateable = true,
             formData = formData
         )

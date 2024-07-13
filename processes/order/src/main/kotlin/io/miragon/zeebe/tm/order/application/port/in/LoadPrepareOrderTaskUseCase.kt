@@ -9,6 +9,7 @@ interface LoadPrepareOrderTaskUseCase
 
     data class Command(
         val orderId: String,
+        val filePath: String,
     )
 
     data class Response(

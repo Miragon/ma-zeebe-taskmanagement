@@ -1,6 +1,7 @@
 package io.miragon.zeebe.tm.order.domain
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.DatabindException
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
 sealed class Form
@@ -10,10 +11,24 @@ sealed class Form
         private val mapper = jacksonObjectMapper()
 
         // Factory method to create a JsonForm from a JSON string
-        fun createJsonForm(json: String): JsonForm
+        fun createJsonForm(jsonString: String): JsonForm
         {
-            return mapper.readValue(json, object : TypeReference<JsonForm>()
-            {})
+            return try
+            {
+                mapper.readValue(jsonString, object : TypeReference<JsonForm>()
+                {})
+            } catch (e: DatabindException)
+            {
+                val json = mapper.readValue(jsonString, object : TypeReference<Map<String, Any>>()
+                {})
+                if (json["type"] == "object" && json.containsKey("properties"))
+                {
+                    return JsonForm(json, mapOf("type" to "VerticalLayout", "elements" to emptyArray<Any>()))
+                } else
+                {
+                    throw e
+                }
+            }
         }
 
         // Factory method to create an HtmlForm

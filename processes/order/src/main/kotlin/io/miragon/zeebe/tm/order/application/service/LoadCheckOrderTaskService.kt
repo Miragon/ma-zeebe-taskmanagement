@@ -16,8 +16,9 @@ class LoadCheckOrderTaskService(
     override fun load(command: Command): Response
     {
         val orderId = command.orderId
+        val filePath = command.filePath
 
-        val form = formPersistencePort.readCheckOrderForm()
+        val form = formPersistencePort.readCheckOrderForm(filePath)
         val order = orderPersistencePort.findById(orderId)
 
         return Response(

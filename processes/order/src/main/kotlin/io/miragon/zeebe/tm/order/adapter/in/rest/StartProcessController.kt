@@ -1,6 +1,7 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.FormDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.MessageDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.StartProcessSchema
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadProcessStartFormUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.StartProcessUseCase
@@ -15,10 +16,15 @@ class StartProcessController(
     private val startProcessUseCase: StartProcessUseCase
 )
 {
+    private val processStartFormPath = "/forms/generated/StartProcessSchema.form.json"
+
     @GetMapping("/start/form")
     fun loadForm(): ResponseEntity<FormDto<*>>
     {
-        val response = loadFormUseCase.load()
+        val command = LoadProcessStartFormUseCase.Command(
+            filePath = processStartFormPath
+        )
+        val response = loadFormUseCase.load(command)
         val form = response.form
 
         return ResponseEntity.ok(
@@ -31,16 +37,12 @@ class StartProcessController(
     }
 
     @PostMapping("/start")
-    fun placeOrder(@RequestBody formData: StartProcessSchema): ResponseEntity<ResponseDto>
+    fun placeOrder(@RequestBody formData: StartProcessSchema): ResponseEntity<MessageDto>
     {
         val command = formData.toCommand(Order.OrderState.CHECK)
         val orderId = startProcessUseCase.startProcess(command)
-        val response = ResponseDto("Order with id $orderId created!")
+        val response = MessageDto("Order with id $orderId created!")
 
         return ResponseEntity.ok(response)
     }
-
-    data class ResponseDto(
-        val message: String
-    )
 }

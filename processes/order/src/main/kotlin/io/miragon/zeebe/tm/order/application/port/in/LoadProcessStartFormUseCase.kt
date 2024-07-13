@@ -4,9 +4,13 @@ import io.miragon.zeebe.tm.order.domain.Form
 
 interface LoadProcessStartFormUseCase
 {
-    fun load(): Response
+    fun load(command: Command): Response
+
+    data class Command(
+        val filePath: String,
+    )
 
     data class Response(
-        val form: Form.JsonForm
+        val form: Form.JsonForm,
     )
 }

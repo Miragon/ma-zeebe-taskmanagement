@@ -2,6 +2,7 @@ package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.CheckOrderSchema
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.PrepareOrderSchema
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.TaskIdDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.UserTaskDto
 import io.miragon.zeebe.tm.order.application.port.`in`.CompleteCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareOrderTaskUseCase
@@ -18,23 +19,23 @@ class CompleteTaskController(
 )
 {
     @PostMapping("/complete")
-    fun completeTask(userTask: UserTaskDto, formData: Any): ResponseEntity<ResponseDto>
+    fun completeTask(userTask: UserTaskDto, formData: Any): ResponseEntity<TaskIdDto>
     {
         return when (userTask.elementId)
         {
             UserTaskId.CHECK_ORDER.id ->
             {
-                val d = formData as CheckOrderSchema
-                val command = d.toCommand(userTask.key, userTask.variables["orderId"].toString())
-                val response = ResponseDto(completeCheckOrderTaskUseCase.complete(command))
+                val data = formData as CheckOrderSchema
+                val command = data.toCommand(userTask.key, userTask.variables["orderId"].toString())
+                val response = TaskIdDto(completeCheckOrderTaskUseCase.complete(command))
                 ResponseEntity.ok(response)
             }
 
             UserTaskId.PREPARE_ORDER.id ->
             {
-                val d = formData as PrepareOrderSchema
-                val command = d.toCommand(userTask.key, userTask.variables["orderId"].toString())
-                val response = ResponseDto(completePrepareOrderTaskUseCase.complete(command))
+                val data = formData as PrepareOrderSchema
+                val command = data.toCommand(userTask.key, userTask.variables["orderId"].toString())
+                val response = TaskIdDto(completePrepareOrderTaskUseCase.complete(command))
                 ResponseEntity.ok(response)
             }
 
@@ -43,21 +44,19 @@ class CompleteTaskController(
     }
 
     @PostMapping("/update")
-    fun updateTask(userTask: UserTaskDto, formData: Any): ResponseEntity<ResponseDto>
+    fun updateTask(userTask: UserTaskDto, formData: Any): ResponseEntity<TaskIdDto>
     {
         return when (userTask.elementId)
         {
             UserTaskId.PREPARE_ORDER.id ->
             {
-                val d = formData as PrepareOrderSchema
-                val command = d.toCommand(userTask.key, userTask.variables["orderId"].toString())
-                val response = ResponseDto(completePrepareOrderTaskUseCase.update(command))
+                val data = formData as PrepareOrderSchema
+                val command = data.toCommand(userTask.key, userTask.variables["orderId"].toString())
+                val response = TaskIdDto(completePrepareOrderTaskUseCase.update(command))
                 ResponseEntity.ok(response)
             }
 
             else -> ResponseEntity.badRequest().build()
         }
     }
-
-    data class ResponseDto(val taskId: Long)
 }

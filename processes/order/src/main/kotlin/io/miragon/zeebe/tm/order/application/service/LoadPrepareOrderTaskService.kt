@@ -16,7 +16,9 @@ class LoadPrepareOrderTaskService(
     override fun load(command: Command): Response
     {
         val orderId = command.orderId
-        val form = formPersistencePort.readPrepareOrderForm()
+        val filePath = command.filePath
+
+        val form = formPersistencePort.readPrepareOrderForm(filePath)
         val order = orderPersistencePort.findById(orderId)
 
         return Response(

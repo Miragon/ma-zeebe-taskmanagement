@@ -1,6 +1,8 @@
 package io.miragon.zeebe.tm.order.application.service
 
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadProcessStartFormUseCase
+import io.miragon.zeebe.tm.order.application.port.`in`.LoadProcessStartFormUseCase.Command
+import io.miragon.zeebe.tm.order.application.port.`in`.LoadProcessStartFormUseCase.Response
 import io.miragon.zeebe.tm.order.application.port.out.FormPersistencePort
 import org.springframework.stereotype.Service
 
@@ -9,11 +11,10 @@ class LoadProcessStartFormService(
     private val formPersistencePort: FormPersistencePort,
 ) : LoadProcessStartFormUseCase
 {
-    override fun load(): LoadProcessStartFormUseCase.Response
+    override fun load(command: Command): Response
     {
-        val form = formPersistencePort.readProcessStartForm()
-
-        return LoadProcessStartFormUseCase.Response(
+        val form = formPersistencePort.readProcessStartForm(command.filePath)
+        return Response(
             form = form
         )
     }
