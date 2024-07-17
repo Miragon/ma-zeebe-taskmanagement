@@ -34,8 +34,8 @@ export class JsonForm implements Form {
     private readonly formData: any;
 
     constructor({ schema, uiSchema, updatable, formData }: JsonFormParameters) {
-        this.schema = JSON.parse(JSON.stringify(schema));
-        this.uiSchema = JSON.parse(JSON.stringify(uiSchema));
+        this.schema = JSON.parse(schema);
+        this.uiSchema = JSON.parse(uiSchema);
         this.updatable = updatable;
         this.formData = formData ?? {};
     }

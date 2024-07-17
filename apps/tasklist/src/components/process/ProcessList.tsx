@@ -6,8 +6,10 @@ import JsonFormRenderer from "../form/JsonFormRenderer.tsx";
 import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
 import { getAllProcessApplications, getUrlByType, UrlType } from "../../config.ts";
 import { ProcessApplication } from "../../client/generated/taskmanager";
-import { HtmlFormDto, JsonFormDto, StartProcessControllerApi } from "../../client/generated/microservice";
+import { StartProcessControllerApi } from "../../client/process";
 import { AxiosRequestConfig } from "axios";
+import { JsonFormDto } from "../../client/generated/processModels/models/JsonFormDto.ts";
+import { HtmlFormDto } from "../../client/generated/processModels/models/HtmlFormDto.ts";
 
 const useStyles = makeStyles({
     processContainer: {
@@ -53,7 +55,9 @@ function ProcessList() {
             const response = await api.loadForm(config);
             const form = response.data;
 
-            switch (getFormType(response.data)) {
+            console.debug("Form loaded:", form);
+
+            switch (getFormType(form)) {
                 case FormType.JSON_FROM: {
                     const jsonForm = form as JsonFormDto;
                     setFormType(FormType.JSON_FROM);
@@ -73,6 +77,7 @@ function ProcessList() {
     };
 
     const submit = async (data: any) => {
+        console.log("Submitting form data:", data);
         const api = new StartProcessControllerApi();
         const config: AxiosRequestConfig = {
             url: getUrlByType(UrlType.PROCESS_START, processId),
@@ -81,11 +86,10 @@ function ProcessList() {
         try {
             const response = await api.startProcess(data, config);
             const message = response.data.message;
-
             console.log("Process started:", message);
 
         } catch (error) {
-            console.error("Failed to complete task:", error);
+            console.error("Failed to start process:", error);
         }
     };
 

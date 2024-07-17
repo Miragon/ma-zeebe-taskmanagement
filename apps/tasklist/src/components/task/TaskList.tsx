@@ -5,15 +5,12 @@ import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
 import { LoadUserTaskControllerApi } from "../../client/generated/taskmanager";
 import { Form, FormType, getFormType, HtmlForm, JsonForm } from "../../model/form.ts";
 import { makeStyles } from "@mui/styles";
-import { BASE_URL, getUrlByType, UrlType } from "../../config.ts";
-import {
-    CompleteTaskControllerApi,
-    HtmlFormDto,
-    JsonFormDto,
-    LoadTaskControllerApi,
-} from "../../client/generated/microservice";
+import { getUrlByType, taskManagerConfig, UrlType } from "../../config.ts";
+import { CompleteTaskControllerApi, LoadTaskControllerApi } from "../../client/process";
 import { UserTask } from "../../model/UserTask.ts";
 import { AxiosRequestConfig } from "axios";
+import { JsonFormDto } from "../../client/generated/processModels/models/JsonFormDto.ts";
+import { HtmlFormDto } from "../../client/generated/processModels/models/HtmlFormDto.ts";
 
 const useStyles = makeStyles({
     taskList: {
@@ -39,18 +36,19 @@ function TaskList() {
     const classes = useStyles();
 
     useEffect(() => {
-        async function fetchTasks() {
-            const taskApi = new LoadUserTaskControllerApi();
-            const config: AxiosRequestConfig = {
-                baseURL: `${BASE_URL}/taskmanager`,
-            };
-            const response = await taskApi.loadTasks(config);
-            const tasks = response.data.map((task) => new UserTask({ ...task }));
-            setTasks(tasks.filter((task) => task.key !== completedTask?.key));
+        async function fetchTasks(): Promise<UserTask[]> {
+            const api = new LoadUserTaskControllerApi(taskManagerConfig);
+            const response = await api.loadTasks();
+
+            return response.data.map((task) => new UserTask({ ...task }));
         }
 
-        console.debug("fetchTasks");
-        fetchTasks().catch((error) => console.error("Failed to load tasks:", error));
+        fetchTasks()
+            .then((tasks) => {
+                setTasks(tasks.filter((task) => task.key !== completedTask?.key));
+            })
+            .catch((error) => console.error("Failed to load tasks:", error));
+
         setIsLoading(false);
     }, [completedTask]);
 
@@ -79,6 +77,8 @@ function TaskList() {
         try {
             const response = await api.loadData(userTask, config);
             const form = response.data;
+
+            console.log("Form loaded:", form);
 
             switch (getFormType(response.data)) {
                 case FormType.JSON_FROM: {

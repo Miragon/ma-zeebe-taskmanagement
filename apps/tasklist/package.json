@@ -10,7 +10,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "client:tm": "openapi-generator-cli generate -i ../../taskmanager/openapi.json -o src/client/generated/taskmanager -g typescript-axios",
-    "client:ms": "openapi-generator-cli generate -i ../../processes/order/openapi.json -o src/client/generated/microservice -g typescript-axios"
+    "client:ms": "openapi-generator-cli generate -i ../../processes/order/openapi.json -o src/client/generated/processModels -g typescript --global-property models"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",

@@ -1,6 +1,10 @@
-import { ProcessApplication } from "./client/generated/taskmanager";
+import { Configuration, ProcessApplication } from "./client/generated/taskmanager";
 
 export const BASE_URL: string = import.meta.env.VITE_BASE_URL;
+
+export const taskManagerConfig = new Configuration({
+    basePath: `${BASE_URL}/taskmanager`,
+});
 
 export function setProcessApplications(applications: ProcessApplication[]) {
     processApplications = applications;
