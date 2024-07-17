@@ -1,6 +1,6 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
 
-data class CompleteTaskDto(
+data class CompleteTaskDto<T>(
     val userTask: UserTaskDto,
-    val formData: Any
+    val formData: T
 )

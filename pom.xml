@@ -64,8 +64,8 @@
                     <args>
                         <arg>-Xjsr305=strict</arg>
                         <arg>-java-parameters</arg>
-                        <arg>-Xjdk-release=${kotlin.compiler.jvmTarget}</arg>
                     </args>
+                    <jvmTarget>${kotlin.compiler.jvmTarget}</jvmTarget>
                 </configuration>
                 <dependencies>
                     <dependency>

@@ -50,7 +50,7 @@ class OrderPersistenceAdapter(
             },
             items = orderEntity.items.map {
                 Item(
-                    id = it["id"] as Long,
+                    id = (it["id"] as Int).toLong(),
                     quantity = it["quantity"] as Int,
                 )
             },

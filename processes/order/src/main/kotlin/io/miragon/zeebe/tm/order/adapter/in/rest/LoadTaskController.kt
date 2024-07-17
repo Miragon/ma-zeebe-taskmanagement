@@ -6,6 +6,7 @@ import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.UserTaskDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.*
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadPrepareOrderTaskUseCase
+import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -19,6 +20,8 @@ class LoadTaskController(
     private val loadPrepareOrderTask: LoadPrepareOrderTaskUseCase
 )
 {
+    private val logger = KotlinLogging.logger {}
+
     private val mapper = jacksonObjectMapper()
 
     private val checkOrderFormPath = "/forms/CheckOrderSchema.form.json"
@@ -29,6 +32,8 @@ class LoadTaskController(
     fun loadData(@RequestBody userTask: UserTaskDto): ResponseEntity<FormDto<*>>
     {
         val userTaskId = userTask.elementId
+
+        logger.info { "Loading form for user task with id: $userTaskId" }
 
         return when (userTaskId)
         {

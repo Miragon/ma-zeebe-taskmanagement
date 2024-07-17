@@ -1,6 +1,6 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema
 
-import io.miragon.zeebe.tm.order.application.port.`in`.StartProcessUseCase.Command
+import io.miragon.zeebe.tm.order.application.port.`in`.StartProcessUseCase
 import io.miragon.zeebe.tm.order.domain.Address
 import io.miragon.zeebe.tm.order.domain.Item
 import io.miragon.zeebe.tm.order.domain.Order
@@ -14,27 +14,23 @@ data class StartProcessSchema(
 
     val items: List<ItemDto>,
 )
-{
-    fun toCommand(state: OrderState): Command
-    {
-        return Command(
-            order = Order(
-                customerName = this.name,
-                deliveryAddress = this.address.let {
-                    Address(
-                        street = it.street,
-                        city = it.city,
-                        zip = it.zipCode
-                    )
-                },
-                items = this.items.map {
-                    Item(
-                        id = it.id,
-                        quantity = it.quantity
-                    )
-                },
-                state = state
+
+fun StartProcessSchema.toCommand(state: OrderState) = StartProcessUseCase.Command(
+    order = Order(
+        customerName = this.name,
+        deliveryAddress = this.address.let {
+            Address(
+                street = it.street,
+                city = it.city,
+                zip = it.zipCode
             )
-        )
-    }
-}
+        },
+        items = this.items.map {
+            Item(
+                id = it.id,
+                quantity = it.quantity
+            )
+        },
+        state = state
+    )
+)
