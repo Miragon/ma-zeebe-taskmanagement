@@ -10,6 +10,7 @@ import { StartProcessControllerApi } from "../../client/process";
 import { AxiosRequestConfig } from "axios";
 import { JsonFormDto } from "../../client/generated/processModels/models/JsonFormDto.ts";
 import { HtmlFormDto } from "../../client/generated/processModels/models/HtmlFormDto.ts";
+import { Snackbar } from "@mui/material";
 
 const useStyles = makeStyles({
     processContainer: {
@@ -31,6 +32,8 @@ function ProcessList() {
     const [processApplications, setProcessApplications] = useState<ProcessApplication[]>([]);
     const [formType, setFormType] = useState<FormType | null>(null);
     const [form, setForm] = useState<Form | null>(null);
+    const [message, setMessage] = useState<string>("");
+
     const initialized = useRef(false);
 
     const classes = useStyles();
@@ -77,7 +80,7 @@ function ProcessList() {
     };
 
     const submit = async (data: any) => {
-        console.log("Submitting form data:", data);
+        console.debug("Submitting form data:", data);
         const api = new StartProcessControllerApi();
         const config: AxiosRequestConfig = {
             url: getUrlByType(UrlType.PROCESS_START, processId),
@@ -85,8 +88,7 @@ function ProcessList() {
 
         try {
             const response = await api.startProcess(data, config);
-            const message = response.data.message;
-            console.log("Process started:", message);
+            setMessage(response.data.message);
 
         } catch (error) {
             console.error("Failed to start process:", error);
@@ -128,6 +130,10 @@ function ProcessList() {
                 )}
                 {formType === "htmlForm" && <HtmlFormRenderer form={form as HtmlForm} />}
             </div>
+            <Snackbar
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                message={message}
+            />
         </Fragment>
     );
 }

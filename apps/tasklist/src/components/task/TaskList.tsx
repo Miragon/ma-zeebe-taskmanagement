@@ -11,6 +11,7 @@ import { UserTask } from "../../model/UserTask.ts";
 import { AxiosRequestConfig } from "axios";
 import { JsonFormDto } from "../../client/generated/processModels/models/JsonFormDto.ts";
 import { HtmlFormDto } from "../../client/generated/processModels/models/HtmlFormDto.ts";
+import { Snackbar } from "@mui/material";
 
 const useStyles = makeStyles({
     taskList: {
@@ -32,6 +33,7 @@ function TaskList() {
     const [formType, setFormType] = useState<FormType | null>(null);
     const [form, setForm] = useState<Form | null>(null);
     const [completedTask, setCompletedTask] = useState<UserTask | null>(null);
+    const [message, setMessage] = useState<string>("");
 
     const classes = useStyles();
 
@@ -78,7 +80,7 @@ function TaskList() {
             const response = await api.loadData(userTask, config);
             const form = response.data;
 
-            console.log("Form loaded:", form);
+            console.debug("Form loaded:", form);
 
             switch (getFormType(response.data)) {
                 case FormType.JSON_FROM: {
@@ -117,8 +119,7 @@ function TaskList() {
             }, config);
 
             const taskId = response.data.taskId;
-
-            console.log("Task completed:", taskId);
+            setMessage(`Task ${taskId} completed.`);
 
         } catch (error) {
             console.error("Failed to complete task:", error);
@@ -145,6 +146,10 @@ function TaskList() {
                 )}
                 {formType === "htmlForm" && <HtmlFormRenderer form={form as HtmlForm} />}
             </div>
+            <Snackbar
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                message={message}
+            />
         </Fragment>
     );
 }
