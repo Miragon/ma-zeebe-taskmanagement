@@ -3,7 +3,7 @@ import { Fragment, useEffect, useState } from "react";
 import JsonFormRenderer from "../form/JsonFormRenderer.tsx";
 import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
 import { LoadUserTaskControllerApi } from "../../client/generated/taskmanager";
-import { Form, FormType, getFormType, HtmlForm, JsonForm } from "../../model/form.ts";
+import { FormProps, FormType, getFormType, HtmlForm, JsonForm } from "../../model/form.ts";
 import { makeStyles } from "@mui/styles";
 import { getUrlByType, taskManagerConfig, UrlType } from "../../config.ts";
 import { CompleteTaskControllerApi, LoadTaskControllerApi } from "../../client/process";
@@ -11,7 +11,7 @@ import { UserTask } from "../../model/UserTask.ts";
 import { AxiosRequestConfig } from "axios";
 import { JsonFormDto } from "../../client/generated/processModels/models/JsonFormDto.ts";
 import { HtmlFormDto } from "../../client/generated/processModels/models/HtmlFormDto.ts";
-import { Snackbar } from "@mui/material";
+import { Snackbar, SnackbarProps } from "@mui/material";
 
 const useStyles = makeStyles({
     taskList: {
@@ -28,12 +28,14 @@ const useStyles = makeStyles({
 
 function TaskList() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [task, setTask] = useState<UserTask | null>(null);
     const [tasks, setTasks] = useState<UserTask[]>([]);
-    const [formType, setFormType] = useState<FormType | null>(null);
-    const [form, setForm] = useState<Form | null>(null);
+    const [task, setTask] = useState<UserTask | null>(null);
     const [completedTask, setCompletedTask] = useState<UserTask | null>(null);
-    const [message, setMessage] = useState<string>("");
+    const [form, setForm] = useState<FormProps | null>(null);
+    const [snackbarProps, setSnackbarProps] = useState<SnackbarProps>({
+        open: false,
+        message: "",
+    });
 
     const classes = useStyles();
 
@@ -85,14 +87,18 @@ function TaskList() {
             switch (getFormType(response.data)) {
                 case FormType.JSON_FROM: {
                     const jsonForm = form as JsonFormDto;
-                    setFormType(FormType.JSON_FROM);
-                    setForm(new JsonForm({ ...jsonForm }));
+                    setForm({
+                        type: FormType.JSON_FROM,
+                        content: new JsonForm({ ...jsonForm }),
+                    });
                     return;
                 }
                 case FormType.HTML: {
                     const htmlForm = form as HtmlFormDto;
-                    setFormType(FormType.HTML);
-                    setForm(new HtmlForm({ ...htmlForm }));
+                    setForm({
+                        type: FormType.HTML,
+                        content: new HtmlForm({ ...htmlForm }),
+                    });
                     return;
                 }
             }
@@ -119,14 +125,16 @@ function TaskList() {
             }, config);
 
             const taskId = response.data.taskId;
-            setMessage(`Task ${taskId} completed.`);
+            setSnackbarProps({
+                open: true,
+                message: `Task ${taskId} completed.`,
+            });
 
         } catch (error) {
             console.error("Failed to complete task:", error);
         }
 
         setTask(null);
-        setFormType(null);
         setForm(null);
 
         setIsLoading(true);
@@ -137,18 +145,19 @@ function TaskList() {
         <Fragment>
             <div className={classes.taskContainer}>
                 <TaskList />
-                {formType === "jsonForm" && (
+                {form?.type === "jsonForm" && (
                     <JsonFormRenderer
-                        form={form as JsonForm}
+                        form={form.content as JsonForm}
                         // userTask={task}
                         submitEvent={submit}
                     />
                 )}
-                {formType === "htmlForm" && <HtmlFormRenderer form={form as HtmlForm} />}
+                {form?.type === "htmlForm" && <HtmlFormRenderer form={form.content as HtmlForm} />}
             </div>
             <Snackbar
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                message={message}
+                message={snackbarProps.message}
+                open={snackbarProps.open}
             />
         </Fragment>
     );

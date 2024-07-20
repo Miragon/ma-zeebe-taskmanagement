@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import ProcessStartButton from "./ProcessStartButton.tsx";
-import { Form, FormType, getFormType, HtmlForm, JsonForm } from "../../model/form.ts";
+import { FormProps, FormType, getFormType, HtmlForm, JsonForm } from "../../model/form.ts";
 import JsonFormRenderer from "../form/JsonFormRenderer.tsx";
 import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
 import { getAllProcessApplications, getUrlByType, UrlType } from "../../config.ts";
@@ -10,7 +10,7 @@ import { StartProcessControllerApi } from "../../client/process";
 import { AxiosRequestConfig } from "axios";
 import { JsonFormDto } from "../../client/generated/processModels/models/JsonFormDto.ts";
 import { HtmlFormDto } from "../../client/generated/processModels/models/HtmlFormDto.ts";
-import { Snackbar } from "@mui/material";
+import { Snackbar, SnackbarProps } from "@mui/material";
 
 const useStyles = makeStyles({
     processContainer: {
@@ -25,14 +25,15 @@ const useStyles = makeStyles({
     },
 });
 
-
 function ProcessList() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [processId, setProcessId] = useState<string>("");
     const [processApplications, setProcessApplications] = useState<ProcessApplication[]>([]);
-    const [formType, setFormType] = useState<FormType | null>(null);
-    const [form, setForm] = useState<Form | null>(null);
-    const [message, setMessage] = useState<string>("");
+    const [form, setForm] = useState<FormProps | null>(null);
+    const [snackbarProps, setSnackbarProps] = useState<SnackbarProps>({
+        open: false,
+        message: "",
+    });
 
     const initialized = useRef(false);
 
@@ -63,14 +64,18 @@ function ProcessList() {
             switch (getFormType(form)) {
                 case FormType.JSON_FROM: {
                     const jsonForm = form as JsonFormDto;
-                    setFormType(FormType.JSON_FROM);
-                    setForm(new JsonForm({ ...jsonForm }));
+                    setForm({
+                        type: FormType.JSON_FROM,
+                        content: new JsonForm({ ...jsonForm }),
+                    });
                     return;
                 }
                 case FormType.HTML: {
                     const htmlForm = form as HtmlFormDto;
-                    setFormType(FormType.HTML);
-                    setForm(new HtmlForm({ ...htmlForm }));
+                    setForm({
+                        type: FormType.HTML,
+                        content: new HtmlForm({ ...htmlForm }),
+                    });
                     return;
                 }
             }
@@ -88,7 +93,10 @@ function ProcessList() {
 
         try {
             const response = await api.startProcess(data, config);
-            setMessage(response.data.message);
+            setSnackbarProps({
+                open: true,
+                message: response.data.message,
+            });
 
         } catch (error) {
             console.error("Failed to start process:", error);
@@ -122,17 +130,18 @@ function ProcessList() {
         <Fragment>
             <div className={classes.processContainer}>
                 <ProcessList />
-                {formType === "jsonForm" && (
+                {form?.type === "jsonForm" && (
                     <JsonFormRenderer
-                        form={form as JsonForm}
+                        form={form.content as JsonForm}
                         submitEvent={submit}
                     />
                 )}
-                {formType === "htmlForm" && <HtmlFormRenderer form={form as HtmlForm} />}
+                {form?.type === "htmlForm" && <HtmlFormRenderer form={form.content as HtmlForm} />}
             </div>
             <Snackbar
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                message={message}
+                message={snackbarProps.message}
+                open={snackbarProps.open}
             />
         </Fragment>
     );

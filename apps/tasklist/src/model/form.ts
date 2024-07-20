@@ -13,6 +13,11 @@ interface HtmlFormParameters {
     formData?: any;
 }
 
+export interface FormProps {
+    type: FormType;
+    content: Form;
+}
+
 export enum FormType {
     JSON_FROM = "jsonForm",
     HTML = "htmlForm",
