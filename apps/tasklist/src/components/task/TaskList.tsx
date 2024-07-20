@@ -63,14 +63,14 @@ function TaskList() {
             return (
                 <ul className={classes.taskList}>
                     {tasks.map((task) => (
-                        <Task key={task.key} task={task} event={getForm} />
+                        <Task key={task.key} task={task} event={selectTask} />
                     ))}
                 </ul>
             );
         }
     }
 
-    const getForm = async (userTask: UserTask) => {
+    const selectTask = async (userTask: UserTask) => {
         setTask(userTask);
 
         const api = new LoadTaskControllerApi();
@@ -104,6 +104,34 @@ function TaskList() {
             }
         } catch (error) {
             console.error("Failed to load form:", error);
+        }
+    };
+
+    const update = async (data: any) => {
+        console.debug("Updating form data:", data);
+        if (!task) {
+            console.error("No user task found");
+            return;
+        }
+
+        const api = new CompleteTaskControllerApi();
+        const config: AxiosRequestConfig = {
+            url: getUrlByType(UrlType.UPDATE_TASK, task.bpmnProcessId),
+        };
+
+        try {
+            const response = await api.updateTask({
+                userTask: task,
+                formData: data,
+            }, config);
+
+            const taskId = response.data.taskId;
+            setSnackbarProps({
+                open: true,
+                message: `Task ${taskId} updated.`,
+            });
+        } catch (error) {
+            console.error("Failed to update task:", error);
         }
     };
 
@@ -148,11 +176,17 @@ function TaskList() {
                 {form?.type === "jsonForm" && (
                     <JsonFormRenderer
                         form={form.content as JsonForm}
-                        // userTask={task}
+                        updateEvent={update}
                         submitEvent={submit}
                     />
                 )}
-                {form?.type === "htmlForm" && <HtmlFormRenderer form={form.content as HtmlForm} />}
+                {form?.type === "htmlForm" && (
+                    <HtmlFormRenderer
+                        form={form.content as HtmlForm}
+                        updateEvent={update}
+                        submitEvent={submit}
+                    />
+                )}
             </div>
             <Snackbar
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

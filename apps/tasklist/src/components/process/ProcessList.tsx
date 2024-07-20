@@ -136,7 +136,12 @@ function ProcessList() {
                         submitEvent={submit}
                     />
                 )}
-                {form?.type === "htmlForm" && <HtmlFormRenderer form={form.content as HtmlForm} />}
+                {form?.type === "htmlForm" && (
+                    <HtmlFormRenderer
+                        form={form.content as HtmlForm}
+                        submitEvent={submit}
+                    />
+                )}
             </div>
             <Snackbar
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

@@ -1,16 +1,16 @@
-import { Fragment, useEffect, useState } from "react";
-import { JsonSchema, UISchemaElement } from "@jsonforms/core";
+import { Fragment, useState } from "react";
 import { JsonForms } from "@jsonforms/react";
 import { materialCells, materialRenderers } from "@jsonforms/material-renderers";
 import { Button, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { JsonForm } from "../../model/form.ts";
-import SendIcon from "@mui/icons-material/Send";
+import SendIcon from "@mui/icons-material/Save";
+import SaveIcon from "@mui/icons-material/Save";
 
 interface Props {
     form: JsonForm;
-    // userTask: UserTaskDto | null;
     submitEvent: (formData: any) => void;
+    updateEvent?: (formData: any) => void;
 }
 
 const useStyles = makeStyles({
@@ -25,38 +25,36 @@ const useStyles = makeStyles({
         margin: "auto",
         padding: "1rem",
     },
-    submitButton: {
+    buttonContainer: {
+        display: "flex",
+        justifyContent: "center",
+    },
+    btn: {
         width: "100%",
         margin: "auto",
         marginTop: "1rem",
     },
 });
 
+
 function JsonFormRenderer(props: Props) {
-    const [schema, setSchema] = useState<JsonSchema | undefined>();
-    const [uiSchema, setUiSchema] = useState<UISchemaElement | undefined>();
-    const [data, setData] = useState<any>({});
+    const [jsonForm] = useState<JsonForm>(props.form);
     const [formError, setFormError] = useState<boolean>(true);
 
     const classes = useStyles();
     const renderers = [...materialRenderers];
 
-    useEffect(() => {
-        const schema = props.form.getSchema();
-        const uiSchema = props.form.getUiSchema();
-        const data = props.form.getFormData();
-        setSchema(schema);
-        setUiSchema(uiSchema);
-        setData(data);
-    }, [props.form]);
-
     function handleFormChange({ errors, data }: any) {
         setFormError(errors.length > 0);
-        setData(data);
+        jsonForm.setFormData(data);
+    }
+
+    async function update() {
+        props.updateEvent?.(jsonForm.getFormData());
     }
 
     async function submit() {
-        props.submitEvent(data);
+        props.submitEvent(jsonForm.getFormData());
     }
 
     return (
@@ -70,9 +68,9 @@ function JsonFormRenderer(props: Props) {
                 <Grid item>
                     <div className={classes.demoform}>
                         <JsonForms
-                            schema={schema}
-                            uischema={uiSchema}
-                            data={data}
+                            schema={jsonForm.getSchema()}
+                            uischema={jsonForm.getUiSchema()}
+                            data={jsonForm.getFormData()}
                             renderers={renderers}
                             cells={materialCells}
                             onChange={({ errors, data }) =>
@@ -80,17 +78,32 @@ function JsonFormRenderer(props: Props) {
                             }
                         />
                     </div>
-                    <Button
-                        className={classes.submitButton}
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        endIcon={<SendIcon />}
-                        disabled={formError}
-                        onClick={submit}
-                    >
-                        Submit
-                    </Button>
+                    <div className={classes.buttonContainer}>
+                        {jsonForm.getUpdatable() && (
+                            <Button
+                                className={classes.btn}
+                                variant="contained"
+                                color="secondary"
+                                size="large"
+                                endIcon={<SaveIcon />}
+                                disabled={formError}
+                                onClick={update}
+                            >
+                                Update
+                            </Button>
+                        )}
+                        <Button
+                            className={classes.btn}
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            endIcon={<SendIcon />}
+                            disabled={formError}
+                            onClick={submit}
+                        >
+                            Submit
+                        </Button>
+                    </div>
                 </Grid>
             </Grid>
         </Fragment>
