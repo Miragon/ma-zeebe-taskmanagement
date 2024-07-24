@@ -56,7 +56,7 @@ function TaskList() {
         setIsLoading(false);
     }, [completedTask]);
 
-    function TaskList() {
+    function Tasks() {
         if (isLoading) {
             return <p>Loading...</p>;
         } else {
@@ -172,7 +172,7 @@ function TaskList() {
     return (
         <Fragment>
             <div className={classes.taskContainer}>
-                <TaskList />
+                <Tasks />
                 {form?.type === "jsonForm" && (
                     <JsonFormRenderer
                         form={form.content as JsonForm}

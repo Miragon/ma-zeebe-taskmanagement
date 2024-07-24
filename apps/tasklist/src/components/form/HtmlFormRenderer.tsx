@@ -25,13 +25,18 @@ interface Props {
     updateEvent?: (formData: any) => void;
 }
 
+interface IFrameEvent {
+    type: string;
+    data: any;
+}
+
 function HtmlFormRenderer(props: Props) {
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
     const classes = useStyles();
 
     useEffect(() => {
-        const handleMessageEvent = (event: MessageEvent) => {
+        const handleMessageEvent = (event: MessageEvent<IFrameEvent>) => {
             const { type, data } = event.data;
 
             switch (type) {
