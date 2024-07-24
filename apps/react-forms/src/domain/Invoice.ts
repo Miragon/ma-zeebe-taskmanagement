@@ -5,9 +5,9 @@ export interface InvoiceProps {
 }
 
 export class Invoice {
-    private _id: string;
-    private _date: string;
-    private _amount: number;
+    private readonly _id: string;
+    private readonly _date: string;
+    private readonly _amount: number;
 
     constructor({id, date, amount}: InvoiceProps) {
         this._id = id;
