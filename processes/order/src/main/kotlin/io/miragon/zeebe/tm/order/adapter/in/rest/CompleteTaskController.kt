@@ -4,10 +4,9 @@ import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.CompleteTaskDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.TaskIdDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderSchema
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareOrderSchema
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.toCommand
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.toCommand
 import io.miragon.zeebe.tm.order.application.port.`in`.CompleteCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareOrderTaskUseCase
-import io.miragon.zeebe.tm.order.application.service.CompletePrepareOrderTaskService
 import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController
 class CompleteTaskController(
     private val completeCheckOrderTaskUseCase: CompleteCheckOrderTaskUseCase,
     private val completePrepareOrderTaskUseCase: CompletePrepareOrderTaskUseCase,
-    private val completePrepareOrderTaskService: CompletePrepareOrderTaskService,
 )
 {
     private val logger = KotlinLogging.logger {}

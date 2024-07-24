@@ -4,7 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.FormDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.MessageDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.StartProcessSchema
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.toCommand
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.toCommand
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadProcessStartFormUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.StartProcessUseCase
 import io.miragon.zeebe.tm.order.domain.Order
