@@ -1,44 +1,68 @@
 import {useEffect, useState} from 'react'
-import { postMessage, TasklistEventType } from "./tasklist.ts";
-import { IFrameEvent } from "./tasklist.ts";
-import InvoiceForm from "./components/InvoiceForm.tsx";
+import {IFrameEvent, postMessage, TasklistEventType} from "./tasklist.ts";
 
-import "./components/InvoiceForm.tsx"
 import './App.css'
+import OrderStepper from "./components/OrderStepper.tsx";
+import OrderOverview from "./components/OrderOverview.tsx";
+
+interface FormProps {
+    elementId: string;
+    data: any;
+    variables?: Map<string, any>;
+}
 
 function App() {
-    const [formData, setFormData] = useState<any>();
+    const [formProps, setFormProps] = useState<FormProps>();
 
     useEffect(() => {
         const handleMessageEvent = (event: MessageEvent<IFrameEvent<any>>) => {
-            const { type, data } = event.data;
+            const {type, userTask, data} = event.data;
+            const {elementId, variables} = userTask;
+
+            console.debug("Received message", type, data);
 
             switch (type) {
                 case "FormDataEvent": {
-                    setFormData(data);
+                    setFormProps({
+                        elementId,
+                        variables,
+                        data
+                    });
                     break;
                 }
             }
         }
 
         window.addEventListener("message", handleMessageEvent);
-        postMessage({ type: TasklistEventType.FORM_DATA_EVENT });
+        postMessage({type: TasklistEventType.FORM_DATA_EVENT});
 
         return () => {
             window.removeEventListener("message", handleMessageEvent);
         }
     }, []);
 
+    const Form = (props: FormProps) => {
+        const {elementId, variables, data} = props;
+        switch (elementId) {
+            case "OrderReceived": {
+                return <OrderStepper items={data}/>
+            }
+            case "CheckOrder": {
+                const orderId = variables?.get("orderId") as string;
+                return <OrderOverview order={data} orderId={orderId} checkable={true}/>
+            }
+            default: {
+                return <div>Form not found</div>
+            }
+        }
+    }
 
     return (
         <>
-            { formData && (
-                <InvoiceForm
-                    id={formData.id}
-                    date={formData.date}
-                    amount={formData.amount}
-                />
-            )}
+            {formProps
+                ? <Form elementId={formProps.elementId} variables={formProps.variables} data={formProps.data}/>
+                : <div>Loading...</div>
+            }
         </>
     )
 }
