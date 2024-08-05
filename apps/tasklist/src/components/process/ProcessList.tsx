@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from "react";
-import { makeStyles } from "@mui/styles";
 import { Snackbar, SnackbarProps } from "@mui/material";
+import { tss } from "tss-react/mui";
 import { AxiosRequestConfig } from "axios";
 import { JsonFormDto } from "../../client/generated/processModels/models/JsonFormDto.ts";
 import { HtmlFormDto } from "../../client/generated/processModels/models/HtmlFormDto.ts";
@@ -13,7 +13,7 @@ import ProcessStartButton from "./ProcessStartButton.tsx";
 import JsonFormRenderer from "../form/JsonFormRenderer.tsx";
 import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
 
-const useStyles = makeStyles({
+const useStyles = tss.create({
     processContainer: {
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
@@ -38,7 +38,7 @@ function ProcessList() {
 
     const initialized = useRef(false);
 
-    const classes = useStyles();
+    const { classes } = useStyles();
 
     useEffect(() => {
         if (!initialized.current) {

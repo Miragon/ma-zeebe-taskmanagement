@@ -1,6 +1,6 @@
-import { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Snackbar, SnackbarProps } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { tss } from "tss-react/mui";
 import { AxiosRequestConfig } from "axios";
 import { JsonFormDto } from "../../client/generated/processModels/models/JsonFormDto.ts";
 import { HtmlFormDto } from "../../client/generated/processModels/models/HtmlFormDto.ts";
@@ -13,7 +13,7 @@ import Task from "./Task.tsx";
 import JsonFormRenderer from "../form/JsonFormRenderer.tsx";
 import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
 
-const useStyles = makeStyles({
+const useStyles = tss.create({
     taskList: {
         margin: "0",
         padding: "0",
@@ -37,7 +37,7 @@ function TaskList() {
         message: "",
     });
 
-    const classes = useStyles();
+    const { classes } = useStyles();
 
     useEffect(() => {
         async function fetchTasks(): Promise<UserTask[]> {

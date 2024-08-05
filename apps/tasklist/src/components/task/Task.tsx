@@ -1,8 +1,8 @@
-import { makeStyles } from "@mui/styles";
 import { Card, CardContent, Typography } from "@mui/material";
+import { tss } from "tss-react/mui";
 import { UserTaskDto } from "../../client/generated/taskmanager";
 
-const useStyles = makeStyles({
+const useStyles = tss.create({
     task: {
         margin: "1rem",
         cursor: "pointer",
@@ -15,7 +15,7 @@ interface Props {
 }
 
 function Task(props: Props) {
-    const classes = useStyles();
+    const { classes } = useStyles();
 
     return (
         <li className={classes.task}>

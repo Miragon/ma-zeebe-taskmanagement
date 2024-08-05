@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { makeStyles } from "@mui/styles";
+import { tss } from "tss-react/mui";
 
 interface Props {
     id: string;
@@ -9,7 +9,7 @@ interface Props {
     onClick: (id: string) => void;
 }
 
-const useStyles = makeStyles({
+const useStyles = tss.create({
     listItem: {
         width: "100%",
         margin: "auto",
@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 });
 
 function ProcessStartButton(props: Props) {
-    const classes = useStyles();
+    const { classes } = useStyles();
 
     const handleButtonClick = async () => {
         props.onClick(props.id);

@@ -13,22 +13,20 @@
     "client:ms": "openapi-generator-cli generate -i ../../processes/order/openapi.json -o src/client/generated/processModels -g typescript --global-property models"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
     "@jsonforms/core": "^3.2.1",
     "@jsonforms/material-renderers": "^3.2.1",
     "@jsonforms/react": "^3.2.1",
-    "@mui/icons-material": "^5.15.17",
-    "@mui/lab": "^5.0.0-alpha.170",
-    "@mui/material": "^5.15.17",
-    "@mui/styles": "^5.15.20",
-    "@mui/system": "^5.15.20",
-    "@mui/x-date-pickers": "^6.0.0",
+    "@mui/icons-material": "^5.16.6",
+    "@mui/material": "^5.16.6",
+    "@mui/x-date-pickers": "^7.12.0",
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
     "form-data": "^4.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tss-react": "^4.9.12"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.13.4",
@@ -45,5 +43,5 @@
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "packageManager": "yarn@4.4.0"
 }

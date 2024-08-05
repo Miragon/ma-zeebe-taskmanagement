@@ -1,21 +1,21 @@
-import { Fragment, useEffect, useRef } from "react";
-import { makeStyles } from "@mui/styles";
-import { Grid } from "@mui/material";
+import { useEffect, useRef } from "react";
 import { HtmlForm } from "../../model";
+import { tss } from "tss-react/mui";
 
-const useStyles = makeStyles({
+const useStyles = tss.create({
     container: {
-        padding: "1em",
+        position: "relative",
         width: "100%",
-    },
-    demoform: {
-        margin: "auto",
-        padding: "1rem",
     },
     iframe: {
         width: "100%",
         height: "100vh",
         border: "none",
+    },
+    fullScreen: {
+        position: "absolute",
+        top: "0",
+        right: "0",
     },
 });
 
@@ -42,7 +42,7 @@ function HtmlFormRenderer(props: Props) {
 
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
-    const classes = useStyles();
+    const { classes } = useStyles();
 
     useEffect(() => {
         const handleMessageEvent = (event: MessageEvent<IFrameEvent>) => {
@@ -84,16 +84,10 @@ function HtmlFormRenderer(props: Props) {
     }, []);
 
     return (
-        <Fragment>
-            <Grid
-                container
-                justifyContent={"center"}
-                spacing={1}
-                className={classes.container}
-            >
-                <iframe className={classes.iframe} srcDoc={form.getHtml()} ref={iframeRef} />
-            </Grid>
-        </Fragment>
+        <div className={classes.container}>
+            <iframe className={classes.iframe} srcDoc={form.getHtml()}
+                    ref={iframeRef} />
+        </div>
     );
 }
 

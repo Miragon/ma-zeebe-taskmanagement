@@ -1,9 +1,9 @@
 import { Fragment, useState } from "react";
 import { Button, Grid } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import SendIcon from "@mui/icons-material/Save";
 import SaveIcon from "@mui/icons-material/Save";
 import { JsonForms } from "@jsonforms/react";
+import { tss } from "tss-react/mui";
 import { materialCells, materialRenderers } from "@jsonforms/material-renderers";
 import { JsonForm } from "../../model";
 
@@ -13,7 +13,7 @@ interface Props {
     updateEvent?: (formData: any) => void;
 }
 
-const useStyles = makeStyles({
+const useStyles = tss.create({
     container: {
         width: "100%",
     },
@@ -41,7 +41,7 @@ function JsonFormRenderer(props: Props) {
     const [jsonForm] = useState<JsonForm>(props.form);
     const [formError, setFormError] = useState<boolean>(true);
 
-    const classes = useStyles();
+    const { classes } = useStyles();
     const renderers = [...materialRenderers];
 
     function handleFormChange({ errors, data }: any) {
