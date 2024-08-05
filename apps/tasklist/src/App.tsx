@@ -1,10 +1,11 @@
 import "./App.css";
 import { ReactNode, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
-import TaskList from "./components/task/TaskList.tsx";
-import ProcessList from "./components/process/ProcessList.tsx";
 import { LoadMetadataControllerApi, MetadataDto } from "./client/generated/taskmanager";
 import { setProcessApplications, taskManagerConfig } from "./config.ts";
+
+import TaskList from "./components/task/TaskList.tsx";
+import ProcessList from "./components/process/ProcessList.tsx";
 
 interface TabPanelProps {
     children?: ReactNode;

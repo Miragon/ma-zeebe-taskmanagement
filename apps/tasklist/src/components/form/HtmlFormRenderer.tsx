@@ -1,7 +1,7 @@
+import { Fragment, useEffect, useRef } from "react";
 import { makeStyles } from "@mui/styles";
 import { Grid } from "@mui/material";
-import { Fragment, useEffect, useRef } from "react";
-import { HtmlForm } from "../../model/form.ts";
+import { HtmlForm } from "../../model";
 
 const useStyles = makeStyles({
     container: {
@@ -14,54 +14,69 @@ const useStyles = makeStyles({
     },
     iframe: {
         width: "100%",
-        height: "100%",
+        height: "100vh",
         border: "none",
     },
 });
 
 interface Props {
     form: HtmlForm;
+    bpmnElement: { elementId?: string; variables?: { [key: string]: any } };
     submitEvent: (formData: any) => void;
     updateEvent?: (formData: any) => void;
 }
 
 interface IFrameEvent {
-    type: string;
-    data: any;
+    type: IFrameEventType;
+    formData: any;
+}
+
+enum IFrameEventType {
+    FORM_DATA_EVENT = "FormDataEvent",
+    UPDATE_EVENT = "UpdateEvent",
+    SUBMIT_EVENT = "SubmitEvent",
 }
 
 function HtmlFormRenderer(props: Props) {
+    const { form, bpmnElement, submitEvent, updateEvent } = props;
+
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
     const classes = useStyles();
 
     useEffect(() => {
         const handleMessageEvent = (event: MessageEvent<IFrameEvent>) => {
-            const { type, data } = event.data;
+            const { type, formData } = event.data;
 
             switch (type) {
-                case "FormDataEvent": {
+                case IFrameEventType.FORM_DATA_EVENT: {
                     iframeRef.current?.contentWindow?.postMessage(
                         {
-                            type: "FormDataEvent",
-                            data: props.form.getFormData(),
+                            type: IFrameEventType.FORM_DATA_EVENT,
+                            bpmnElement,
+                            formData: form.getFormData(),
+                            updatable: form.getUpdatable(),
                         },
                         "*",
                     );
                     break;
                 }
-                case "UpdateEvent": {
-                    props.updateEvent?.(data);
+                case IFrameEventType.UPDATE_EVENT: {
+                    updateEvent?.(formData);
                     break;
                 }
-                case "SubmitEvent": {
-                    props.submitEvent(data);
+                case IFrameEventType.SUBMIT_EVENT: {
+                    submitEvent(formData);
                     break;
                 }
             }
         };
 
         window.addEventListener("message", handleMessageEvent);
+
+        if (!bpmnElement.elementId) {
+            console.error("No elementId found is undefined. This may cause problems with your form.");
+        }
 
         return () => {
             window.removeEventListener("message", handleMessageEvent);
@@ -76,7 +91,7 @@ function HtmlFormRenderer(props: Props) {
                 spacing={1}
                 className={classes.container}
             >
-                <iframe className={classes.iframe} srcDoc={props.form.getHtml()} ref={iframeRef} />
+                <iframe className={classes.iframe} srcDoc={form.getHtml()} ref={iframeRef} />
             </Grid>
         </Fragment>
     );

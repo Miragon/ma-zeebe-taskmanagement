@@ -1,6 +1,6 @@
-import { UserTaskDto } from "../../client/generated/taskmanager";
 import { makeStyles } from "@mui/styles";
 import { Card, CardContent, Typography } from "@mui/material";
+import { UserTaskDto } from "../../client/generated/taskmanager";
 
 const useStyles = makeStyles({
     task: {

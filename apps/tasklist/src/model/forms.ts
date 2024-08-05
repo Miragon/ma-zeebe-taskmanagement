@@ -15,7 +15,7 @@ interface HtmlFormParameters {
 
 export interface FormProps {
     type: FormType;
-    content: Form;
+    content: Forms;
 }
 
 export enum FormType {
@@ -23,13 +23,13 @@ export enum FormType {
     HTML = "htmlForm",
 }
 
-export interface Form {
+export interface Forms {
     getUpdatable(): boolean;
 
     getFormData(): any;
 }
 
-export class JsonForm implements Form {
+export class JsonForm implements Forms {
     private readonly schema: JsonSchema;
 
     private readonly uiSchema: UISchemaElement;
@@ -66,7 +66,7 @@ export class JsonForm implements Form {
     }
 }
 
-export class HtmlForm implements Form {
+export class HtmlForm implements Forms {
     private readonly html: string;
 
     private readonly updatable: boolean;

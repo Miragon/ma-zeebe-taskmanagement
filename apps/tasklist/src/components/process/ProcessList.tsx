@@ -1,16 +1,17 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { makeStyles } from "@mui/styles";
-import ProcessStartButton from "./ProcessStartButton.tsx";
-import { FormProps, FormType, getFormType, HtmlForm, JsonForm } from "../../model/form.ts";
-import JsonFormRenderer from "../form/JsonFormRenderer.tsx";
-import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
-import { getAllProcessApplications, getUrlByType, UrlType } from "../../config.ts";
-import { ProcessApplication } from "../../client/generated/taskmanager";
-import { StartProcessControllerApi } from "../../client/process";
+import { Snackbar, SnackbarProps } from "@mui/material";
 import { AxiosRequestConfig } from "axios";
 import { JsonFormDto } from "../../client/generated/processModels/models/JsonFormDto.ts";
 import { HtmlFormDto } from "../../client/generated/processModels/models/HtmlFormDto.ts";
-import { Snackbar, SnackbarProps } from "@mui/material";
+import { ProcessApplication } from "../../client/generated/taskmanager";
+import { StartProcessControllerApi } from "../../client/process";
+import { FormProps, FormType, getFormType, HtmlForm, JsonForm } from "../../model";
+import { getAllProcessApplications, getUrlByType, UrlType } from "../../config.ts";
+
+import ProcessStartButton from "./ProcessStartButton.tsx";
+import JsonFormRenderer from "../form/JsonFormRenderer.tsx";
+import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
 
 const useStyles = makeStyles({
     processContainer: {
@@ -58,8 +59,6 @@ function ProcessList() {
         try {
             const response = await api.loadForm(config);
             const form = response.data;
-
-            console.debug("Form loaded:", form);
 
             switch (getFormType(form)) {
                 case FormType.JSON_FROM: {
@@ -139,6 +138,7 @@ function ProcessList() {
                 {form?.type === "htmlForm" && (
                     <HtmlFormRenderer
                         form={form.content as HtmlForm}
+                        bpmnElement={{ elementId: "StartEvent" }}
                         submitEvent={submit}
                     />
                 )}

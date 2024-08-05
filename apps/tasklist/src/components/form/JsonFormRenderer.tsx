@@ -1,11 +1,11 @@
 import { Fragment, useState } from "react";
-import { JsonForms } from "@jsonforms/react";
-import { materialCells, materialRenderers } from "@jsonforms/material-renderers";
 import { Button, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { JsonForm } from "../../model/form.ts";
 import SendIcon from "@mui/icons-material/Save";
 import SaveIcon from "@mui/icons-material/Save";
+import { JsonForms } from "@jsonforms/react";
+import { materialCells, materialRenderers } from "@jsonforms/material-renderers";
+import { JsonForm } from "../../model";
 
 interface Props {
     form: JsonForm;
