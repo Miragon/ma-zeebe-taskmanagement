@@ -1,11 +1,13 @@
 import {Checkbox, FormControlLabel, Paper, TableBody, TableCell, TableContainer, TableRow} from "@mui/material";
 import {tss} from "tss-react";
 
-import {Order, PersonalInformationProps} from "../domain";
+import {Order, OrderChecked, PersonalInformationProps} from "../domain";
 import ItemList from "./ItemList.tsx";
+import Button from "@mui/material/Button";
+import {postMessage, TasklistEventType, UserTaskFormProps} from "../tasklist.ts";
+import {ChangeEvent, useState} from "react";
 
-interface OrderOverviewProps {
-    order: Order;
+interface OrderOverviewProps extends UserTaskFormProps<Order> {
     orderId?: string;
     checkable?: boolean;
     className?: string;
@@ -28,12 +30,35 @@ const useStyles = tss.create({
         fontSize: "1.5em",
         margin: 0,
     },
+    buttonContainer: {
+        display: "flex",
+        justifyContent: "center",
+    }
 });
 
 const OrderOverview = (props: OrderOverviewProps) => {
-    const {order, orderId, checkable, className} = props;
+    const {formData, orderId, checkable, className} = props;
 
     const {classes, cx} = useStyles();
+
+    const [checked, setChecked] = useState(false);
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setChecked(event.target.checked);
+    }
+
+    const handleSubmit = () => {
+        const orderChecked = new OrderChecked({
+            isOrderValid: checked,
+            personalInformation: formData.personalInformation,
+            items: formData.items,
+        })
+
+        postMessage({
+            type: TasklistEventType.SUBMIT_EVENT,
+            formData: orderChecked,
+        })
+    }
 
     const PersonalInformation = (info: PersonalInformationProps) => {
         const name = `${info.firstname} ${info.lastname}`;
@@ -76,15 +101,26 @@ const OrderOverview = (props: OrderOverviewProps) => {
             )}
             <div>
                 <h2 className={classes.h2}>Personal Information</h2>
-                <PersonalInformation {...order.personalInformation.serialize()}/>
+                <PersonalInformation {...JSON.parse(formData.personalInformation.serialize())}/>
             </div>
             <div>
                 <h2 className={classes.h2}>Items</h2>
-                <ItemList items={order.items}/>
+                <ItemList items={formData.items}/>
             </div>
             {checkable && (
-                <FormControlLabel control={<Checkbox defaultChecked color="success"/>} label="Is order valid?"/>
+                <FormControlLabel
+                    required
+                    control={
+                        <Checkbox checked={checked} onChange={handleChange} color="success"/>
+                    }
+                    label="Is order valid?"
+                />
             )}
+            <div className={classes.buttonContainer}>
+                {checkable && (
+                    <Button onClick={handleSubmit}>Complete</Button>
+                )}
+            </div>
         </div>
     );
 }

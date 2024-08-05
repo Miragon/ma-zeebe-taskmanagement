@@ -1,3 +1,5 @@
+import {Serializable} from "../tasklist.ts";
+
 export interface ItemProps {
     id: string;
     name: string;
@@ -5,7 +7,7 @@ export interface ItemProps {
     image: string;
 }
 
-export class Item {
+export class Item implements Serializable {
     private readonly _id: string;
     private readonly _name: string;
     private readonly _price: number;
@@ -34,12 +36,12 @@ export class Item {
         return this._image;
     }
 
-    serialize(): ItemProps {
-        return {
+    serialize(): string {
+        return JSON.stringify({
             id: this._id,
             name: this._name,
             price: this._price,
             image: this._image
-        }
+        });
     }
 }

@@ -1,7 +1,7 @@
 import {forwardRef, useImperativeHandle, useState} from "react";
-import {PersonalInformation, PersonalInformationProps} from "../domain/PersonalInformation.ts";
-import {tss} from "tss-react";
 import {TextField} from "@mui/material";
+import {tss} from "tss-react";
+import {PersonalInformation, PersonalInformationProps} from "../domain";
 
 interface PersonalInfoProps {
     className?: string;

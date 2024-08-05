@@ -4,9 +4,9 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
+import {postMessage, TasklistEventType} from "../tasklist.ts";
+import {Item, Order} from "../domain";
 
-import {TasklistEventType} from "../tasklist.ts";
-import {Item, ItemProps, Order} from "../domain";
 import ItemSelection, {ItemSelectionRef} from "./ItemSelection.tsx";
 import PersonalInfo, {PersonalInfoRef} from "./PersonalInfo.tsx";
 import OrderOverview from "./OrderOverview.tsx";
@@ -15,7 +15,7 @@ import {Typography} from "@mui/material";
 const steps = ['Select items', 'Enter address', 'Finish'];
 
 interface OrderStepperProps {
-    items: ItemProps[];
+    items: Item[];
 }
 
 export default function OrderStepper(props: OrderStepperProps) {
@@ -27,8 +27,6 @@ export default function OrderStepper(props: OrderStepperProps) {
     const personalInfoRef = React.useRef<PersonalInfoRef>(null);
 
     const handleNext = () => {
-        console.debug("Active step", activeStep);
-
         switch (activeStep) {
             case 0: {
                 const selectedItems = itemsRef.current?.getSelectedItems();
@@ -37,7 +35,6 @@ export default function OrderStepper(props: OrderStepperProps) {
                     return;
                 }
 
-                console.debug("Selected items", selectedItems);
                 setItems(selectedItems);
                 break;
             }
@@ -53,15 +50,19 @@ export default function OrderStepper(props: OrderStepperProps) {
                     items: items
                 });
 
-                console.debug("Order", order);
                 setOrder(order);
 
                 break;
             }
             case steps.length - 1: {
-                postMessage({
+                if (!order) {
+                    console.error("Order is not set");
+                    return;
+                }
+
+                postMessage<Order>({
                     type: TasklistEventType.SUBMIT_EVENT,
-                    data: order?.serialize() ?? {}
+                    formData: order
                 })
             }
         }
@@ -103,7 +104,7 @@ export default function OrderStepper(props: OrderStepperProps) {
                         <PersonalInfo ref={personalInfoRef}/>
                     )}
                     {activeStep === steps.length - 1 && order && (
-                        <OrderOverview order={order}/>
+                        <OrderOverview formData={order} updatable={false}/>
                     )}
                     <Box sx={{display: 'flex', flexDirection: 'row', pt: 2}}>
                         <Button

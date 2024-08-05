@@ -1,32 +1,47 @@
 import {useEffect, useState} from 'react'
-import {IFrameEvent, postMessage, TasklistEventType} from "./tasklist.ts";
+import {MessageReceiveEvent, postMessage, TasklistEventType} from "./tasklist.ts";
 
 import './App.css'
 import OrderStepper from "./components/OrderStepper.tsx";
 import OrderOverview from "./components/OrderOverview.tsx";
+import {Item, Order, PersonalInformation} from "./domain";
+import {tss} from "tss-react/mui";
 
 interface FormProps {
     elementId: string;
-    data: any;
+    formData: any;
     variables?: Map<string, any>;
+    updatable?: boolean;
 }
+
+const useStyles = tss.create({
+    root: {
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start"
+    },
+})
 
 function App() {
     const [formProps, setFormProps] = useState<FormProps>();
 
-    useEffect(() => {
-        const handleMessageEvent = (event: MessageEvent<IFrameEvent<any>>) => {
-            const {type, userTask, data} = event.data;
-            const {elementId, variables} = userTask;
+    const {classes} = useStyles();
 
-            console.debug("Received message", type, data);
+    useEffect(() => {
+        const handleMessageEvent = (event: MessageEvent<MessageReceiveEvent>) => {
+            const {type, bpmnElement, formData, updatable} = event.data;
+            const {elementId, variables} = bpmnElement;
+
+            console.debug("Received message", type, formData);
 
             switch (type) {
                 case "FormDataEvent": {
                     setFormProps({
                         elementId,
-                        variables,
-                        data
+                        variables: variables ? new Map(Object.entries(variables)) : undefined,
+                        formData,
+                        updatable
                     });
                     break;
                 }
@@ -34,7 +49,9 @@ function App() {
         }
 
         window.addEventListener("message", handleMessageEvent);
-        postMessage({type: TasklistEventType.FORM_DATA_EVENT});
+        postMessage({
+            type: TasklistEventType.FORM_DATA_EVENT,
+        });
 
         return () => {
             window.removeEventListener("message", handleMessageEvent);
@@ -42,14 +59,55 @@ function App() {
     }, []);
 
     const Form = (props: FormProps) => {
-        const {elementId, variables, data} = props;
+        const {elementId, variables, formData, updatable} = props;
         switch (elementId) {
-            case "OrderReceived": {
-                return <OrderStepper items={data}/>
+            case "StartEvent": {
+                // TODO: use types generated from openapi generator
+                const items = formData.items.map((item: any) => {
+                    return new Item({
+                        id: item.id,
+                        name: item.name,
+                        price: item.price,
+                        image: item.image
+                    })
+                })
+                return (
+                    <div className={classes.root}>
+                        <OrderStepper items={items}/>
+                    </div>
+                )
             }
             case "CheckOrder": {
+                // TODO: use types generated from openapi generator
                 const orderId = variables?.get("orderId") as string;
-                return <OrderOverview order={data} orderId={orderId} checkable={true}/>
+                const order = new Order({
+                    personalInformation: new PersonalInformation({
+                        firstname: formData.firstname,
+                        lastname: formData.lastname,
+                        email: formData.email,
+                        street: formData.address.street,
+                        city: formData.address.city,
+                        zip: formData.address.zip
+                    }),
+                    items: formData.items.map((item: any) => {
+                        return new Item({
+                            id: item.id,
+                            name: item.name,
+                            price: item.price,
+                            image: item.image
+                        })
+                    }),
+                })
+                return (
+                    <div className={classes.root}>
+                        <OrderOverview
+                            orderId={orderId}
+                            formData={order}
+                            updatable={updatable ?? false}
+                            checkable={true}
+                        />
+                    </div>
+                )
             }
             default: {
                 return <div>Form not found</div>
@@ -60,7 +118,7 @@ function App() {
     return (
         <>
             {formProps
-                ? <Form elementId={formProps.elementId} variables={formProps.variables} data={formProps.data}/>
+                ? <Form elementId={formProps.elementId} variables={formProps.variables} formData={formProps.formData}/>
                 : <div>Loading...</div>
             }
         </>

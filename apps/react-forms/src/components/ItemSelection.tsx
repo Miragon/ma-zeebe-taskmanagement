@@ -1,10 +1,11 @@
 import {forwardRef, useImperativeHandle, useState} from "react";
-import {Item, ItemProps} from "../domain";
 import {tss} from "tss-react/mui";
+import {Item} from "../domain";
+
 import ItemList from "./ItemList.tsx";
 
 interface ItemSelectionProps {
-    itemsProp: ItemProps[];
+    itemsProp: Item[];
     className?: string;
 }
 
@@ -23,7 +24,7 @@ const useStyles = tss.create({
 const ItemSelection = forwardRef<ItemSelectionRef, ItemSelectionProps>((props, ref) => {
     const {itemsProp, className} = props;
 
-    const [items] = useState<Item[]>(itemsProp.map((item) => new Item(item)));
+    const [items] = useState<Item[]>(itemsProp); // itemsProp.map((item) => new Item(item)));
     const [cart, setCart] = useState<Item[]>([]);
 
     const {classes, cx} = useStyles();

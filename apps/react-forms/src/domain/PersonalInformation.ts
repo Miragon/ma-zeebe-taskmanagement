@@ -1,3 +1,5 @@
+import {Serializable} from "../tasklist.ts";
+
 export interface PersonalInformationProps {
     firstname: string;
     lastname: string;
@@ -7,7 +9,7 @@ export interface PersonalInformationProps {
     zip: string;
 }
 
-export class PersonalInformation {
+export class PersonalInformation implements Serializable {
     private readonly _firstname: string;
     private readonly _lastname: string;
     private readonly _email: string;
@@ -48,15 +50,15 @@ export class PersonalInformation {
         return this._zip;
     }
 
-    serialize(): PersonalInformationProps {
-        return {
+    serialize(): string {
+        return JSON.stringify({
             firstname: this._firstname,
             lastname: this._lastname,
             email: this._email,
             street: this._street,
             city: this._city,
             zip: this._zip
-        }
+        });
     }
 
     validate(): boolean {

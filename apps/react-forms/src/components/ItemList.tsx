@@ -1,7 +1,7 @@
-import {Item} from "../domain";
-import {tss} from "tss-react/mui";
 import Button from "@mui/material/Button";
 import {Divider} from "@mui/material";
+import {tss} from "tss-react/mui";
+import {Item} from "../domain";
 
 interface ItemListProps {
     items: Item[];
@@ -61,20 +61,19 @@ const ItemList = (props: ItemListProps) => {
     return (
         <ul className={cx(classes.list, className)}>
             {items.map((item, index) => (
-                <div>
-                    <li className={classes.item} key={item.id}>
-                        <div className={classes.imageContainer}>
-                            <img className={classes.image} src={item.image} alt={item.image}/>
-                        </div>
-                        <div className={classes.info}>
-                            <p>Name: {item.name}</p>
-                            <p>Price: {item.price}</p>
-                        </div>
-                        {addButtonClicked &&
-                            <Button className={classes.addButton} onClick={() => handleClick(item)}>Add</Button>}
-                    </li>
+                <li className={classes.item} key={item.id}>
+                    <div className={classes.imageContainer}>
+                        <img className={classes.image} src={item.image} alt={item.image}/>
+                    </div>
+                    <div className={classes.info}>
+                        <p>Name: {item.name}</p>
+                        <p>Price: {item.price}</p>
+                    </div>
+                    {addButtonClicked && (
+                        <Button className={classes.addButton} onClick={() => handleClick(item)}>Add</Button>
+                    )}
                     {index < items.length - 1 && <Divider/>}
-                </div>
+                </li>
             ))}
         </ul>
     )
