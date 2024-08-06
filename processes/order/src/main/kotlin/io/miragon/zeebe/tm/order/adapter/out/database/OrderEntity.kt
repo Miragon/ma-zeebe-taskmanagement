@@ -1,82 +1,40 @@
 package io.miragon.zeebe.tm.order.adapter.out.database
 
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.persistence.*
+import java.time.LocalDate
 import java.util.*
 
 @Entity
-@Table(name = "order_data")
-class OrderEntity(
+@Table(name = "orders")
+data class OrderEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
 
-    val customerName: String,
+    @Column(nullable = false)
+    val firstname: String,
 
-    @Convert(converter = MapConverter::class)
-    var deliveryAddress: Map<String, Any> = emptyMap(),
+    @Column(nullable = false)
+    val lastname: String,
 
-    @Convert(converter = ListMapConverter::class)
-    var items: List<Map<String, Any>> = emptyList(),
+    @Column(nullable = false)
+    val email: String,
 
+    @Column(nullable = false)
+    val street: String,
+
+    @Column(nullable = false)
+    val city: String,
+
+    @Column(nullable = false)
+    val zip: String,
+
+    @Column(nullable = true)
+    val deliveryDate: LocalDate? = null,
+
+    @Column(nullable = false)
     val state: String,
+
+    @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val orderItems: List<OrderItemEntity> = mutableListOf(),
 )
-
-@Converter(autoApply = true)
-class MapConverter : AttributeConverter<Map<String, Any>, String>
-{
-    private val objectMapper = jacksonObjectMapper()
-
-    override fun convertToDatabaseColumn(map: Map<String, Any>?): String
-    {
-        return try
-        {
-            objectMapper.writeValueAsString(map)
-        } catch (e: Exception)
-        {
-            throw IllegalArgumentException("Could not convert map to JSON", e)
-        }
-    }
-
-    override fun convertToEntityAttribute(json: String?): Map<String, Any>
-    {
-        return try
-        {
-            objectMapper.readValue(json, object : TypeReference<Map<String, Any>>()
-            {})
-        } catch (e: Exception)
-        {
-            throw IllegalArgumentException("Could not convert JSON to map", e)
-        }
-    }
-}
-
-@Converter(autoApply = true)
-class ListMapConverter : AttributeConverter<List<Map<String, Any>>, String>
-{
-    private val objectMapper = jacksonObjectMapper()
-
-    override fun convertToDatabaseColumn(map: List<Map<String, Any>>?): String
-    {
-        return try
-        {
-            objectMapper.writeValueAsString(map)
-        } catch (e: Exception)
-        {
-            throw IllegalArgumentException("Could not convert map to JSON", e)
-        }
-    }
-
-    override fun convertToEntityAttribute(json: String?): List<Map<String, Any>>
-    {
-        return try
-        {
-            objectMapper.readValue(json, object : TypeReference<List<Map<String, Any>>>()
-            {})
-        } catch (e: Exception)
-        {
-            throw IllegalArgumentException("Could not convert JSON to map", e)
-        }
-    }
-}

@@ -1,7 +1,6 @@
 package io.miragon.zeebe.tm.order.adapter.out.database
 
 import io.miragon.zeebe.tm.order.application.port.out.OrderPersistencePort
-import io.miragon.zeebe.tm.order.domain.Address
 import io.miragon.zeebe.tm.order.domain.Item
 import io.miragon.zeebe.tm.order.domain.Order
 import org.springframework.stereotype.Component
@@ -9,7 +8,8 @@ import java.util.*
 
 @Component
 class OrderPersistenceAdapter(
-    private val orderRepository: OrderRepository
+    private val orderRepository: OrderRepository,
+    private val itemRepository: ItemRepository,
 ) : OrderPersistencePort
 {
     override fun findAll(): List<Order>
@@ -39,42 +39,54 @@ class OrderPersistenceAdapter(
     private fun toOrder(orderEntity: OrderEntity): Order
     {
         return Order(
-            customerName = orderEntity.customerName,
-            deliveryAddress = orderEntity.deliveryAddress.let {
-                Address(
-                    street = it["street"] as String,
-                    zip = it["zipCode"] as String,
-                    city = it["city"] as String
-                )
-
-            },
-            items = orderEntity.items.map {
+            firstname = orderEntity.firstname,
+            lastname = orderEntity.lastname,
+            email = orderEntity.email,
+            street = orderEntity.street,
+            city = orderEntity.city,
+            zip = orderEntity.zip,
+            state = Order.OrderState.valueOf(orderEntity.state),
+            items = orderEntity.orderItems.map {
                 Item(
-                    id = (it["id"] as Int).toLong(),
-                    quantity = it["quantity"] as Int,
+                    id = it.item.id.toString(),
+                    name = it.item.name,
+                    price = it.item.price,
+                    image = it.item.image,
+                    quantity = it.quantity
                 )
-            },
-            state = Order.OrderState.valueOf(orderEntity.state)
+            }
         )
     }
 
     private fun toOrderEntity(order: Order, id: String? = null): OrderEntity
     {
-        return OrderEntity(
+        val orderEntity = OrderEntity(
             id = id?.let { UUID.fromString(it) },
-            customerName = order.customerName,
-            deliveryAddress = mapOf(
-                "street" to order.deliveryAddress.street,
-                "zipCode" to order.deliveryAddress.zip,
-                "city" to order.deliveryAddress.city
-            ),
-            items = order.items.map {
-                mapOf(
-                    "id" to it.id,
-                    "quantity" to it.quantity
-                )
-            },
-            state = order.state.toString()
+            firstname = order.firstname,
+            lastname = order.lastname,
+            email = order.email,
+            street = order.street,
+            city = order.city,
+            zip = order.zip,
+            deliveryDate = order.deliveryDate,
+            state = order.state.name,
         )
+
+        val orderItems = order.items.map { item ->
+            val itemEntity = itemRepository
+                .findById(UUID.fromString(item.id))
+                .orElseThrow {
+                    throw IllegalArgumentException("Item with id ${item.id} not found")
+                }
+
+            OrderItemEntity(
+                order = orderEntity,
+                item = itemEntity,
+                quantity = item.quantity ?: throw RuntimeException("Quantity must be set"),
+            )
+
+        }
+
+        return orderEntity.copy(orderItems = orderItems)
     }
 }

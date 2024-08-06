@@ -13,7 +13,7 @@ interface LoadCheckOrderTaskUseCase
     )
 
     data class Response(
-        val form: Form.JsonForm,
+        val form: Form.HtmlForm,
         val order: Order,
     )
 }

@@ -1,4 +1,4 @@
-import {Serializable} from "../tasklist.ts";
+import { Serializable } from "../tasklist.ts";
 
 export interface ItemProps {
     id: string;
@@ -13,11 +13,21 @@ export class Item implements Serializable {
     private readonly _price: number;
     private readonly _image: string;
 
-    constructor({id, name, price, image}: ItemProps) {
+    constructor({ id, name, price, image }: ItemProps) {
         this._id = id;
         this._name = name;
         this._price = price;
         this._image = image;
+    }
+
+    private _quantity: number = 0;
+
+    get quantity(): number {
+        return this._quantity;
+    }
+
+    set quantity(quantity: number) {
+        this._quantity = quantity;
     }
 
     get id(): string {
@@ -41,7 +51,8 @@ export class Item implements Serializable {
             id: this._id,
             name: this._name,
             price: this._price,
-            image: this._image
+            image: this._image,
+            quantity: this._quantity,
         });
     }
 }

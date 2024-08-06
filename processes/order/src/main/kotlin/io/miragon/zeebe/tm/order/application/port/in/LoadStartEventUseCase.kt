@@ -1,8 +1,9 @@
 package io.miragon.zeebe.tm.order.application.port.`in`
 
 import io.miragon.zeebe.tm.order.domain.Form
+import io.miragon.zeebe.tm.order.domain.Item
 
-interface LoadProcessStartFormUseCase
+interface LoadStartEventUseCase
 {
     fun load(command: Command): Response
 
@@ -11,6 +12,7 @@ interface LoadProcessStartFormUseCase
     )
 
     data class Response(
-        val form: Form.JsonForm,
+        val form: Form.HtmlForm,
+        val formData: List<Item>
     )
 }

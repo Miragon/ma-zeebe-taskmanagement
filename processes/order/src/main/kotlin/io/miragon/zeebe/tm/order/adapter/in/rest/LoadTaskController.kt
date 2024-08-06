@@ -3,7 +3,10 @@ package io.miragon.zeebe.tm.order.adapter.`in`.rest
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.FormDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.UserTaskDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.*
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckItemDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.ItemDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareOrderSchema
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadPrepareOrderTaskUseCase
 import mu.KotlinLogging
@@ -51,7 +54,7 @@ class LoadTaskController(
         }
     }
 
-    private fun loadCheckOrder(userTask: UserTaskDto): FormDto<CheckOrderSchema>
+    private fun loadCheckOrder(userTask: UserTaskDto): FormDto<CheckOrderDto>
     {
         val command = LoadCheckOrderTaskUseCase.Command(
             orderId = userTask.variables["orderId"].toString(),
@@ -59,30 +62,30 @@ class LoadTaskController(
         )
         val response = loadCheckOrderTask.load(command)
 
-        val schema = mapper.writeValueAsString(response.form.schema)
-        val uiSchema = mapper.writeValueAsString(response.form.uiSchema)
+        val form = response.form
         val order = response.order
 
-        val formData = CheckOrderSchema(
-            customerName = order.customerName,
-            deliveryAddress = order.deliveryAddress.let {
-                AddressDto(
-                    street = it.street,
-                    zipCode = it.zip,
-                    city = it.city
-                )
-            },
+        val formData = CheckOrderDto(
+            firstname = order.firstname,
+            lastname = order.lastname,
+            email = order.email,
+            street = order.street,
+            city = order.city,
+            zip = order.zip,
             items = order.items.map {
                 ItemDto(
                     id = it.id,
-                    quantity = it.quantity
+                    name = it.name,
+                    price = it.price,
+                    image = it.image,
                 )
-            },
-            isOrderValid = false
+            }
         )
 
-        return FormDto.JsonFormDto(
-            schema = schema, uiSchema = uiSchema, formData = formData
+        return FormDto.HtmlFormDto(
+            html = form.html,
+            updatable = form.updatable,
+            formData = formData
         )
     }
 
@@ -103,18 +106,18 @@ class LoadTaskController(
                 CheckItemDto(
                     item = ItemDto(
                         id = it.id,
+                        name = it.name,
                         quantity = it.quantity
                     ),
-                    isAvailable = false,
-                    deliveryDate = ""
                 )
-            }
+            },
+            deliveryDate = "",
         )
 
         return FormDto.JsonFormDto(
             schema = schema,
             uiSchema = uiSchema,
-            updatable = true,
+            updatable = response.form.updatable,
             formData = formData
         )
     }

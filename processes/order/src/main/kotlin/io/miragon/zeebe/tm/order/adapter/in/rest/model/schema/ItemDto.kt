@@ -1,7 +1,11 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema
 
-data class ItemDto(
-    val id: Long,
+import java.math.BigDecimal
 
-    val quantity: Int
+data class ItemDto(
+    val id: String,
+    val name: String? = null,
+    val price: BigDecimal? = null,
+    val image: String? = null,
+    val quantity: Int? = null,
 )

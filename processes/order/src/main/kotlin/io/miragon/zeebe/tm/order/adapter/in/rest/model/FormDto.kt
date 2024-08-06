@@ -9,13 +9,13 @@ sealed class FormDto<Schema>
     data class JsonFormDto<Schema>(
         val schema: String,
         val uiSchema: String,
-        override val updatable: Boolean = false,
+        override val updatable: Boolean,
         override val formData: Schema?
     ) : FormDto<Schema>()
 
     data class HtmlFormDto<Schema>(
         val html: String,
-        override val updatable: Boolean = false,
+        override val updatable: Boolean,
         override val formData: Schema?
     ) : FormDto<Schema>()
 }

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
 sealed class Form
 {
+    var updatable: Boolean = false
+
     companion object Factory
     {
         private val mapper = jacksonObjectMapper()

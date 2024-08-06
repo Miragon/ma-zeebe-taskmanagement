@@ -4,9 +4,9 @@ import io.miragon.zeebe.tm.order.domain.Form
 
 interface FormPersistencePort
 {
-    fun readProcessStartForm(path: String): Form.JsonForm
+    fun readProcessStartForm(path: String): Form.HtmlForm
 
-    fun readCheckOrderForm(path: String): Form.JsonForm
+    fun readCheckOrderForm(path: String): Form.HtmlForm
 
     fun readPrepareOrderForm(path: String): Form.JsonForm
 }

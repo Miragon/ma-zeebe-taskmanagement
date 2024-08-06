@@ -6,6 +6,8 @@ import io.miragon.zeebe.tm.order.application.port.out.CompleteTaskPort
 import io.miragon.zeebe.tm.order.application.port.out.OrderPersistencePort
 import io.miragon.zeebe.tm.order.domain.Order
 import org.springframework.stereotype.Service
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 @Service
@@ -18,13 +20,17 @@ class CompletePrepareOrderTaskService(
     {
         val taskId = command.taskId
         val orderId = command.orderId
-        val items = command.items
+        val deliveryDate = command.deliverDate
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").withLocale(java.util.Locale.GERMANY)
 
         val order = orderPersistencePort.findById(orderId)
-        order.state = Order.OrderState.DELIVER
-        order.items = items
+        order.deliveryDate = LocalDate.parse(deliveryDate, formatter)
+        order.state = Order.OrderState.PREPARED
         orderPersistencePort.update(orderId, order)
+
         completeTaskPort.completePrepareOrderTask(taskId)
+
         return taskId
     }
 
@@ -32,10 +38,8 @@ class CompletePrepareOrderTaskService(
     {
         val taskId = command.taskId
         val orderId = command.orderId
-        val items = command.items
 
         val order = orderPersistencePort.findById(orderId)
-        order.items = items
         orderPersistencePort.update(orderId, order)
         return taskId
     }

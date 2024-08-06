@@ -1,13 +1,11 @@
 package io.miragon.zeebe.tm.order.domain
 
+import java.math.BigDecimal
+
 data class Item(
-    val id: Long,
-    val quantity: Int,
-    val deliveryDate: String? = null
+    val id: String,
+    val name: String? = null,
+    val price: BigDecimal? = null,
+    val image: String? = null,
+    val quantity: Int? = null,
 )
-{
-    fun updateDeliveryDate(deliveryDate: String): Item
-    {
-        return this.copy(deliveryDate = deliveryDate)
-    }
-}

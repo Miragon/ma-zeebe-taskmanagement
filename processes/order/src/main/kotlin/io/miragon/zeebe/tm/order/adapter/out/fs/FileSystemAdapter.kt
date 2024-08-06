@@ -7,18 +7,18 @@ import org.springframework.stereotype.Component
 @Component
 class FileSystemAdapter : FormPersistencePort
 {
-    override fun readProcessStartForm(path: String): Form.JsonForm
+    override fun readProcessStartForm(path: String): Form.HtmlForm
     {
         val content = read(path) ?: throw IllegalStateException("Form not found: $path")
 
-        return Form.createJsonForm(content)
+        return Form.createHtmlForm(content)
     }
 
-    override fun readCheckOrderForm(path: String): Form.JsonForm
+    override fun readCheckOrderForm(path: String): Form.HtmlForm
     {
         val content = read(path) ?: throw IllegalStateException("Form not found: $path")
 
-        return Form.createJsonForm(content)
+        return Form.createHtmlForm(content)
     }
 
     override fun readPrepareOrderForm(path: String): Form.JsonForm

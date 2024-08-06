@@ -2,7 +2,7 @@ package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.CompleteTaskDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.TaskIdDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderSchema
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareOrderSchema
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.toCommand
 import io.miragon.zeebe.tm.order.application.port.`in`.CompleteCheckOrderTaskUseCase
@@ -32,7 +32,7 @@ class CompleteTaskController(
 
         when (val data = completeTaskDto.formData)
         {
-            is CheckOrderSchema ->
+            is CheckOrderDto ->
             {
                 val command = data.toCommand(userTask.key, userTask.variables["orderId"].toString())
                 val response = TaskIdDto(completeCheckOrderTaskUseCase.complete(command))
