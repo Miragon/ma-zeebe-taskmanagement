@@ -34,7 +34,10 @@
                     <sourceDirectory>${project.basedir}/src/main/resources/forms</sourceDirectory>
                     <targetPackage>io.miragon.zeebe.tm.order.generated</targetPackage>
                     <targetVersion>1.8</targetVersion>
-                    <excludes>*-schema.json</excludes>
+                    <excludes>
+                        <exclude>*-schema.json</exclude>
+                        <exclude>*.html</exclude>
+                    </excludes>
                     <generateBuilders>true</generateBuilders>
                     <useJakartaValidation>true</useJakartaValidation>
                     <useLongIntegers>true</useLongIntegers>
