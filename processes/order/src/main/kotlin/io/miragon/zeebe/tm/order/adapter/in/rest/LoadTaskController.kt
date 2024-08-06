@@ -27,7 +27,7 @@ class LoadTaskController(
 
     private val mapper = jacksonObjectMapper()
 
-    private val checkOrderFormPath = "/forms/CheckOrderSchema.form.json"
+    private val checkOrderFormPath = "/forms/index.html"
 
     private val prepareOrderFormPath = "/forms/PrepareOrderSchema.form.json"
 

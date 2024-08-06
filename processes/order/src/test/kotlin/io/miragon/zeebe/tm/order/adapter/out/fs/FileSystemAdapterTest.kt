@@ -13,26 +13,24 @@ class FileSystemAdapterTest
     fun readProcessStartForm()
     {
         // Arrange
-        val fileName = "StartProcessSchema.form.json"
+        val fileName = "index.html"
 
         // Read content
         val read = formPersistenceAdapter.readProcessStartForm("$directory/$fileName")
 
-        assert(read.schema.isNotEmpty())
-        assert(read.uiSchema.isNotEmpty())
+        assert(read.html.isNotEmpty())
     }
 
     @Test
     fun readCheckOrderForm()
     {
         // Arrange
-        val fileName = "CheckOrderSchema.form.json"
+        val fileName = "index.html"
 
         // Read content
         val read = formPersistenceAdapter.readCheckOrderForm("$directory/$fileName")
 
-        assert(read.schema.isNotEmpty())
-        assert(read.uiSchema.isNotEmpty())
+        assert(read.html.isNotEmpty())
     }
 
     @Test

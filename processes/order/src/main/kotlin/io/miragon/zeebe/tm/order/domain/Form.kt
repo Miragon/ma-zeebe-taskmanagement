@@ -30,8 +30,16 @@ sealed class Form
         val uiSchema: Map<String, Any>,
     ) : Form()
 
-    class HtmlForm(
-        val html: String,
-    ) : Form()
+    class HtmlForm(content: String) : Form()
+    {
+        val html: String = trimHtml(content)
+
+        private fun trimHtml(content: String): String
+        {
+            val removeWhitespace = content.replace("\\s".toRegex(), "")
+            val removeNewLines = removeWhitespace.replace("\n", "")
+            return removeNewLines
+        }
+    }
 
 }

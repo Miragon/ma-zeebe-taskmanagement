@@ -22,7 +22,7 @@ class StartProcessController(
 {
     private val logger = KotlinLogging.logger {}
 
-    private val processStartFormPath = "/forms/StartProcessSchema.form.json"
+    private val processStartFormPath = "/forms/index.html"
 
     @GetMapping("/start/form")
     fun loadForm(): ResponseEntity<FormDto<StartProcessResponseDto>>

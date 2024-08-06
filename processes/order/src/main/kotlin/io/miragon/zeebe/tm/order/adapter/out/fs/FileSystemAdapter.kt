@@ -29,5 +29,6 @@ class FileSystemAdapter : FormPersistencePort
     }
 
     private fun read(path: String) = this::class.java.getResource(path)?.readText()
+
 }
 
