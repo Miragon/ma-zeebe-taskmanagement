@@ -32,7 +32,7 @@ class LoadTaskController(
     private val prepareOrderFormPath = "/forms/PrepareOrderSchema.form.json"
 
     @PostMapping("/load")
-    fun loadData(@RequestBody userTask: UserTaskDto): ResponseEntity<FormDto<*>>
+    fun loadData(@RequestBody userTask: UserTaskDto): ResponseEntity<FormDto>
     {
         val userTaskId = userTask.elementId
 
@@ -54,7 +54,7 @@ class LoadTaskController(
         }
     }
 
-    private fun loadCheckOrder(userTask: UserTaskDto): FormDto<CheckOrderDto>
+    private fun loadCheckOrder(userTask: UserTaskDto): FormDto.HtmlForm<CheckOrderDto>
     {
         val command = LoadCheckOrderTaskUseCase.Command(
             orderId = userTask.variables["orderId"].toString(),
@@ -82,14 +82,14 @@ class LoadTaskController(
             }
         )
 
-        return FormDto.HtmlFormDto(
+        return FormDto.HtmlForm(
             html = form.html,
             updatable = form.updatable,
             formData = formData
         )
     }
 
-    private fun loadPrepareOrder(userTask: UserTaskDto): FormDto<PrepareOrderSchema>
+    private fun loadPrepareOrder(userTask: UserTaskDto): FormDto.JsonForm<PrepareOrderSchema>
     {
         val command = LoadPrepareOrderTaskUseCase.Command(
             orderId = userTask.variables["orderId"].toString(),
@@ -114,7 +114,7 @@ class LoadTaskController(
             deliveryDate = "",
         )
 
-        return FormDto.JsonFormDto(
+        return FormDto.JsonForm(
             schema = schema,
             uiSchema = uiSchema,
             updatable = response.form.updatable,

@@ -1,8 +1,8 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
 
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PlaceOrderDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareOrderSchema
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.StartProcessResultDto
 import io.miragon.zeebe.tm.order.application.port.`in`.CompleteCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.StartProcessUseCase
@@ -10,7 +10,7 @@ import io.miragon.zeebe.tm.order.domain.Item
 import io.miragon.zeebe.tm.order.domain.Order
 import io.miragon.zeebe.tm.order.domain.Order.OrderState
 
-fun StartProcessResultDto.toCommand(state: OrderState) = StartProcessUseCase.Command(
+fun PlaceOrderDto.toCommand(state: OrderState) = StartProcessUseCase.Command(
     order = Order(
         firstname = this.firstname,
         lastname = this.lastname,
@@ -22,7 +22,7 @@ fun StartProcessResultDto.toCommand(state: OrderState) = StartProcessUseCase.Com
         items = this.items.map {
             Item(
                 id = it.id,
-                quantity = it.quantity
+                quantity = it.quantity ?: throw IllegalArgumentException("Item quantity must not be null")
             )
         }
     )

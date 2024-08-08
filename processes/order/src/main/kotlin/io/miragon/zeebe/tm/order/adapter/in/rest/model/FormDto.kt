@@ -1,22 +1,20 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
 
-sealed class FormDto<Schema>
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.TaskDto
+
+sealed class FormDto
 {
-    abstract val updatable: Boolean
-
-    abstract val formData: Schema?
-
-    data class JsonFormDto<Schema>(
+    data class JsonForm<T : TaskDto>(
         val schema: String,
         val uiSchema: String,
-        override val updatable: Boolean,
-        override val formData: Schema?
-    ) : FormDto<Schema>()
+        val updatable: Boolean,
+        val formData: T?
+    ) : FormDto()
 
-    data class HtmlFormDto<Schema>(
+    data class HtmlForm<T : TaskDto>(
         val html: String,
-        override val updatable: Boolean,
-        override val formData: Schema?
-    ) : FormDto<Schema>()
+        val updatable: Boolean,
+        val formData: T?
+    ) : FormDto()
 }
 

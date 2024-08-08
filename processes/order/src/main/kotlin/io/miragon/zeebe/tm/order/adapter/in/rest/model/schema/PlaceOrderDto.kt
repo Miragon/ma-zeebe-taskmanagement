@@ -1,10 +1,6 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema
 
-data class StartProcessResponseDto(
-    val items: List<ItemDto>,
-)
-
-data class StartProcessResultDto(
+data class PlaceOrderDto(
     val firstname: String,
     val lastname: String,
     val email: String,

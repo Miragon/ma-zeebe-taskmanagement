@@ -90,7 +90,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <apiDocsUrl>http://localhost:9101/v3/api-docs</apiDocsUrl>
+                    <apiDocsUrl>http://localhost:8091/v3/api-docs</apiDocsUrl>
                     <outputDir>${project.basedir}</outputDir>
                 </configuration>
             </plugin>

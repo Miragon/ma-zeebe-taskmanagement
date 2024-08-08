@@ -3,8 +3,8 @@ package io.miragon.zeebe.tm.order.adapter.`in`.rest
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.FormDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.MessageDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.ItemDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.StartProcessResponseDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.StartProcessResultDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.LoadItemsDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PlaceOrderDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.toCommand
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadStartEventUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.StartProcessUseCase
@@ -24,8 +24,10 @@ class StartProcessController(
 
     private val processStartFormPath = "/forms/index.html"
 
+    /* TODO: What happens if a process has multiple start events? */
+
     @GetMapping("/start/form")
-    fun loadForm(): ResponseEntity<FormDto<StartProcessResponseDto>>
+    fun loadItems(): ResponseEntity<FormDto.HtmlForm<LoadItemsDto>>
     {
         val command = LoadStartEventUseCase.Command(
             filePath = processStartFormPath
@@ -34,19 +36,19 @@ class StartProcessController(
 
         val form = response.form
 
-        val formData = StartProcessResponseDto(
-            items = response.formData.map {
+        val formData = LoadItemsDto(
+            items = response.formData.map { item ->
                 ItemDto(
-                    id = it.id,
-                    name = it.name,
-                    price = it.price,
-                    image = it.image,
+                    id = item.id,
+                    name = item.name ?: throw IllegalArgumentException("Item name must not be null"),
+                    price = item.price ?: throw IllegalArgumentException("Item price must not be null"),
+                    image = item.image ?: throw IllegalArgumentException("Item image must not be null"),
                 )
             }
         )
 
         return ResponseEntity.ok(
-            FormDto.HtmlFormDto(
+            FormDto.HtmlForm(
                 html = form.html,
                 updatable = form.updatable,
                 formData = formData
@@ -55,7 +57,7 @@ class StartProcessController(
     }
 
     @PostMapping("/start")
-    fun startProcess(@RequestBody formData: StartProcessResultDto): ResponseEntity<MessageDto>
+    fun placeOrder(@RequestBody formData: PlaceOrderDto): ResponseEntity<MessageDto>
     {
         val command = formData.toCommand(Order.OrderState.CHECKED)
         val orderId = startProcessUseCase.startProcess(command)

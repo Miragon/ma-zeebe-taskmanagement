@@ -9,4 +9,4 @@ data class CheckOrderDto(
     val zip: String,
     val items: List<ItemDto>,
     val isOrderValid: Boolean? = null,
-)
+) : TaskDto()
