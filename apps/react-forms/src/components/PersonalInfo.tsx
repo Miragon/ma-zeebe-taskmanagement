@@ -1,7 +1,7 @@
-import {forwardRef, useImperativeHandle, useState} from "react";
-import {TextField} from "@mui/material";
-import {tss} from "tss-react";
-import {PersonalInformation, PersonalInformationProps} from "../domain";
+import { ChangeEvent, forwardRef, useImperativeHandle, useState } from "react";
+import { TextField } from "@mui/material";
+import { tss } from "tss-react";
+import { PersonalInformation, PersonalInformationProps } from "../domain";
 
 interface PersonalInfoProps {
     className?: string;
@@ -20,12 +20,12 @@ const useStyles = tss.create({
         "*": {
             marginBottom: "3px",
             width: "100%",
-        }
+        },
     },
 });
 
 const PersonalInfo = forwardRef<PersonalInfoRef, PersonalInfoProps>((props, ref) => {
-    const {className} = props;
+    const { className } = props;
 
     const [state, setState] = useState<PersonalInformationProps>({
         firstname: "",
@@ -33,10 +33,10 @@ const PersonalInfo = forwardRef<PersonalInfoRef, PersonalInfoProps>((props, ref)
         email: "",
         street: "",
         city: "",
-        zip: ""
-    })
+        zip: "",
+    });
 
-    const {classes, cx} = useStyles();
+    const { classes, cx } = useStyles();
 
     const getPersonalInfo = (): PersonalInformation => {
         return new PersonalInformation({
@@ -45,16 +45,16 @@ const PersonalInfo = forwardRef<PersonalInfoRef, PersonalInfoProps>((props, ref)
             email: state.email,
             street: state.street,
             city: state.city,
-            zip: state.zip
+            zip: state.zip,
         });
-    }
+    };
 
-    const handleChange = (event: any) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setState({
             ...state,
-            [event.target.name]: event.target.value
-        })
-    }
+            [event.target.name]: event.target.value,
+        });
+    };
 
     useImperativeHandle(ref, () => ({
         getPersonalInfo,
@@ -62,14 +62,14 @@ const PersonalInfo = forwardRef<PersonalInfoRef, PersonalInfoProps>((props, ref)
 
     return (
         <div className={cx(classes.root, className)}>
-            <TextField type="text" name="firstname" onChange={handleChange} label="Firstname"/>
-            <TextField type="text" name="lastname" onChange={handleChange} label="Lastname"/>
-            <TextField type="email" name="email" onChange={handleChange} label="E-Mail"/>
-            <TextField type="text" name="street" onChange={handleChange} label="Street"/>
-            <TextField type="text" name="city" onChange={handleChange} label="City"/>
-            <TextField type="text" name="zip" onChange={handleChange} label="ZIP"/>
+            <TextField type="text" name="firstname" onChange={handleChange} label="Firstname" />
+            <TextField type="text" name="lastname" onChange={handleChange} label="Lastname" />
+            <TextField type="email" name="email" onChange={handleChange} label="E-Mail" />
+            <TextField type="text" name="street" onChange={handleChange} label="Street" />
+            <TextField type="text" name="city" onChange={handleChange} label="City" />
+            <TextField type="text" name="zip" onChange={handleChange} label="ZIP" />
         </div>
-    )
+    );
 });
 
 export default PersonalInfo;

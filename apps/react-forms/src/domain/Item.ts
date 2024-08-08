@@ -1,28 +1,26 @@
 import { Serializable } from "../tasklist.ts";
-
-export interface ItemProps {
-    id: string;
-    name: string;
-    price: number;
-    image: string;
-}
+import { ItemDto } from "../api";
 
 export class Item implements Serializable {
     private readonly _id: string;
-    private readonly _name: string;
-    private readonly _price: number;
-    private readonly _image: string;
+    private readonly _name?: string;
+    private readonly _price?: number;
+    private readonly _image?: string;
 
-    constructor({ id, name, price, image }: ItemProps) {
+    constructor({ id, name, price, image, quantity }: ItemDto) {
         this._id = id;
         this._name = name;
         this._price = price;
         this._image = image;
+        this._quantity = quantity;
     }
 
-    private _quantity: number = 0;
+    private _quantity?: number;
 
     get quantity(): number {
+        if (!this._quantity) {
+            throw new Error("Quantity is not set");
+        }
         return this._quantity;
     }
 
@@ -35,24 +33,33 @@ export class Item implements Serializable {
     }
 
     get name(): string {
+        if (!this._name) {
+            throw new Error("Name is not set");
+        }
         return this._name;
     }
 
     get price(): string {
+        if (!this._price) {
+            throw new Error("Price is not set");
+        }
         return `${this._price} €`;
     }
 
     get image(): string {
+        if (!this._image) {
+            throw new Error("Image is not set");
+        }
         return this._image;
     }
 
-    serialize(): string {
-        return JSON.stringify({
+    serialize(): ItemDto {
+        return {
             id: this._id,
             name: this._name,
             price: this._price,
             image: this._image,
             quantity: this._quantity,
-        });
+        };
     }
 }

@@ -1,9 +1,25 @@
+import { FormData, UserTaskDto } from "./api";
+
 /**
  * Every component that represents a form for a user task should extend this interface when using custom props.
  */
 export interface UserTaskFormProps<T> {
     formData: T;
     updatable: boolean;
+}
+
+/**
+ * Interface for serializable objects.
+ * Only objects that implement this interface can be sent to the tasklist.
+ */
+export interface Serializable {
+    serialize: () => FormData;
+}
+
+export enum TasklistEventType {
+    FORM_DATA_EVENT = "FormDataEvent",
+    UPDATE_EVENT = "UpdateEvent",
+    SUBMIT_EVENT = "SubmitEvent",
 }
 
 export interface MessageReceiveEvent {
@@ -19,12 +35,12 @@ export interface MessageReceiveEvent {
      * If it is a start event, it will be "StartEvent".
      * @param variables The process variables that are available in the process instance.
      */
-    bpmnElement: { elementId: string; variables?: { [key: string]: object } };
+    userTask: UserTaskDto;
 
     /**
      * The form data that comes from the process application.
      */
-    formData: any;
+    formData: FormData;
 
     /**
      * A flag that indicates if the form is updatable or not.
@@ -36,26 +52,12 @@ export interface MessageReceiveEvent {
  * The message that is sent to the parent window.
  * `formData` is sent to the process application without further processing.
  */
-export interface MessagePostEvent<T> {
+export interface MessagePostEvent {
     type: TasklistEventType;
-    formData?: T;
+    data?: Serializable;
 }
 
-/**
- * Interface for serializable objects.
- * Only objects that implement this interface can be sent to the tasklist.
- */
-export interface Serializable {
-    serialize(): string;
-}
-
-export enum TasklistEventType {
-    FORM_DATA_EVENT = "FormDataEvent",
-    UPDATE_EVENT = "UpdateEvent",
-    SUBMIT_EVENT = "SubmitEvent",
-}
-
-export function postMessage<T extends Serializable>(message: MessagePostEvent<T>) {
+export function postMessage(message: MessagePostEvent) {
     if (import.meta.env.DEV) {
         mockPostMessage(message);
         return;
@@ -64,13 +66,13 @@ export function postMessage<T extends Serializable>(message: MessagePostEvent<T>
     window.parent.postMessage(
         {
             type: message.type,
-            formData: message.formData?.serialize(),
+            formData: message.data?.serialize(),
         },
         "*",
     );
 }
 
-function mockPostMessage<T extends Serializable>(message: MessagePostEvent<T>) {
+function mockPostMessage(message: MessagePostEvent) {
     switch (message.type) {
         case TasklistEventType.FORM_DATA_EVENT:
             console.debug("Ask for data");
@@ -86,25 +88,25 @@ function mockPostMessage<T extends Serializable>(message: MessagePostEvent<T>) {
                                 id: 1,
                                 name: "Item 1",
                                 price: 100,
-                                image: "https://via.placeholder.com/300"
+                                image: "https://via.placeholder.com/300",
                             },
                             {
                                 id: 2,
                                 name: "Item 2",
                                 price: 200,
-                                image: "https://via.placeholder.com/150"
+                                image: "https://via.placeholder.com/150",
                             },
-                        ]
+                        ],
                     },
                     updatable: false,
-                }
+                },
             }));
             break;
         case TasklistEventType.UPDATE_EVENT:
-            console.debug("Received update event", JSON.parse(message.formData?.serialize() ?? "{}"));
+            console.debug("Received update event", message.data?.serialize());
             break;
         case TasklistEventType.SUBMIT_EVENT:
-            console.debug("Received submit event", JSON.parse(message.formData?.serialize() ?? "{}"));
+            console.debug("Received submit event", message.data?.serialize());
             break;
     }
 }

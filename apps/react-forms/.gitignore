@@ -1,3 +1,6 @@
+# OpanApi
+src/**/generated
+
 # Logs
 logs
 *.log
