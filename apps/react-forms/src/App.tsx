@@ -10,15 +10,15 @@ import OrderOverview from "./components/OrderOverview.tsx";
 import { Alert } from "@mui/material";
 
 interface FormProps {
-    formData: FormData;
     elementId: string;
+    formData?: FormData;
     variables?: Map<string, any>;
     updatable?: boolean;
 }
 
 const useStyles = tss.create({
-    root: {
-        height: "100vh",
+    form: {
+        height: "100%",
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
@@ -81,7 +81,7 @@ function App() {
                     });
                 });
                 return (
-                    <div className={classes.root}>
+                    <div className={classes.form}>
                         <OrderStepper items={items} />
                     </div>
                 );
@@ -109,7 +109,7 @@ function App() {
                     }),
                 });
                 return (
-                    <div className={classes.root}>
+                    <div className={classes.form}>
                         <OrderOverview
                             orderId={orderId}
                             formData={order}

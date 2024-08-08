@@ -35,7 +35,7 @@ export interface MessageReceiveEvent {
      * If it is a start event, it will be "StartEvent".
      * @param variables The process variables that are available in the process instance.
      */
-    bpmnElement: { elementId: string; variables?: { [key: string]: any } } | UserTaskDto | undefined;
+    bpmnElement: { elementId: string; variables?: { [key: string]: any } } | UserTaskDto;
 
     /**
      * A flag that indicates if the form is updatable or not.
