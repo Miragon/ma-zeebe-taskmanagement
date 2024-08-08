@@ -35,17 +35,17 @@ export interface MessageReceiveEvent {
      * If it is a start event, it will be "StartEvent".
      * @param variables The process variables that are available in the process instance.
      */
-    userTask: UserTaskDto;
-
-    /**
-     * The form data that comes from the process application.
-     */
-    formData: FormData;
+    bpmnElement: { elementId: string; variables?: { [key: string]: any } } | UserTaskDto | undefined;
 
     /**
      * A flag that indicates if the form is updatable or not.
      */
-    updatable: boolean;
+    updatable?: boolean;
+
+    /**
+     * The form data that comes from the process application.
+     */
+    formData?: FormData;
 }
 
 /**
@@ -72,6 +72,24 @@ export function postMessage(message: MessagePostEvent) {
     );
 }
 
+export function validateReceivedMessage(message: MessageReceiveEvent): boolean {
+    const { type, bpmnElement, formData, updatable } = message;
+
+    let errorMsg = "";
+    if (!type) {
+        errorMsg += "Type is missing";
+    }
+    if (!bpmnElement) {
+        errorMsg += "BPMN element is missing";
+    }
+
+    if (errorMsg) {
+        throw new Error(errorMsg);
+    } else {
+        return true;
+    }
+}
+
 function mockPostMessage(message: MessagePostEvent) {
     switch (message.type) {
         case TasklistEventType.FORM_DATA_EVENT:
@@ -79,9 +97,6 @@ function mockPostMessage(message: MessagePostEvent) {
             window.dispatchEvent(new MessageEvent("message", {
                 data: {
                     type: TasklistEventType.FORM_DATA_EVENT,
-                    bpmnElement: {
-                        elementId: "StartEvent",
-                    },
                     formData: {
                         items: [
                             {

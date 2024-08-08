@@ -2,11 +2,12 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { tss } from "tss-react/mui";
 import { CheckOrderDto, FormData, LoadItemsDto } from "./api";
-import { MessageReceiveEvent, postMessage, TasklistEventType } from "./tasklist.ts";
+import { MessageReceiveEvent, postMessage, TasklistEventType, validateReceivedMessage } from "./tasklist.ts";
 import { Item, Order, PersonalInformation } from "./domain";
 
 import OrderStepper from "./components/OrderStepper.tsx";
 import OrderOverview from "./components/OrderOverview.tsx";
+import { Alert } from "@mui/material";
 
 interface FormProps {
     formData: FormData;
@@ -26,15 +27,21 @@ const useStyles = tss.create({
 
 function App() {
     const [formProps, setFormProps] = useState<FormProps>();
+    const [error, setError] = useState<string | undefined>(undefined);
 
     const { classes } = useStyles();
 
     useEffect(() => {
         const handleMessageEvent = (event: MessageEvent<MessageReceiveEvent>) => {
-            const { type, userTask, formData, updatable } = event.data;
-            const { elementId, variables } = userTask;
+            try {
+                validateReceivedMessage(event.data);
+            } catch (error) {
+                setError((error as Error).message);
+                return;
+            }
 
-            console.debug("Received message", type, formData);
+            const { type, bpmnElement, formData, updatable } = event.data;
+            const { elementId, variables } = bpmnElement;
 
             switch (type) {
                 case TasklistEventType.FORM_DATA_EVENT: {
@@ -122,7 +129,7 @@ function App() {
         <>
             {formProps
                 ? <Form elementId={formProps.elementId} variables={formProps.variables} formData={formProps.formData} />
-                : <div>Loading...</div>
+                : { error } ? <Alert severity="error">{error}</Alert> : <div>Loading...</div>
             }
         </>
     );
