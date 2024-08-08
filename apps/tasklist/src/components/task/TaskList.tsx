@@ -2,13 +2,11 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Snackbar, SnackbarProps } from "@mui/material";
 import { tss } from "tss-react/mui";
 import { AxiosRequestConfig } from "axios";
-import { JsonFormDto } from "../../client/generated/processModels/models/JsonFormDto.ts";
-import { HtmlFormDto } from "../../client/generated/processModels/models/HtmlFormDto.ts";
-import { LoadUserTaskControllerApi } from "../../client/generated/taskmanager";
+import { LoadUserTaskControllerApi, UserTaskDto } from "../../client/generated/taskmanager";
+import { HtmlFormDto, JsonFormDto } from "../../client/process/models";
 import { CompleteTaskControllerApi, LoadTaskControllerApi } from "../../client/process";
-import { FormProps, FormType, getFormType, HtmlForm, JsonForm, UserTask } from "../../model";
+import { FormProps, FormType, getFormType, HtmlForm, JsonForm } from "../../model";
 import { getUrlByType, taskManagerConfig, UrlType } from "../../config.ts";
-
 import Task from "./Task.tsx";
 import JsonFormRenderer from "../form/JsonFormRenderer.tsx";
 import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
@@ -28,9 +26,9 @@ const useStyles = tss.create({
 
 function TaskList() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [tasks, setTasks] = useState<UserTask[]>([]);
-    const [task, setTask] = useState<UserTask | null>(null);
-    const [completedTask, setCompletedTask] = useState<UserTask | null>(null);
+    const [tasks, setTasks] = useState<UserTaskDto[]>([]);
+    const [task, setTask] = useState<UserTaskDto | null>(null);
+    const [completedTask, setCompletedTask] = useState<UserTaskDto | null>(null);
     const [form, setForm] = useState<FormProps | null>(null);
     const [snackbarProps, setSnackbarProps] = useState<SnackbarProps>({
         open: false,
@@ -40,11 +38,11 @@ function TaskList() {
     const { classes } = useStyles();
 
     useEffect(() => {
-        async function fetchTasks(): Promise<UserTask[]> {
+        async function fetchTasks(): Promise<UserTaskDto[]> {
             const api = new LoadUserTaskControllerApi(taskManagerConfig);
             const response = await api.loadTasks();
 
-            return response.data.map((task) => new UserTask({ ...task }));
+            return response.data;
         }
 
         fetchTasks()
@@ -70,7 +68,7 @@ function TaskList() {
         }
     }
 
-    const selectTask = async (userTask: UserTask) => {
+    const selectTask = async (userTask: UserTaskDto) => {
         setTask(userTask);
 
         const api = new LoadTaskControllerApi();
@@ -180,7 +178,7 @@ function TaskList() {
                 {form?.type === "htmlForm" && (
                     <HtmlFormRenderer
                         form={form.content as HtmlForm}
-                        bpmnElement={{ elementId: task?.elementId, variables: task?.variables }}
+                        bpmnElement={task ?? undefined}
                         updateEvent={update}
                         submitEvent={submit}
                     />

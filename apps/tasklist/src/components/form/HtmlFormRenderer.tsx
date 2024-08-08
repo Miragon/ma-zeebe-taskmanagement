@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
-import { HtmlForm } from "../../model";
 import { tss } from "tss-react/mui";
+import { HtmlForm } from "../../model";
+import { UserTaskDto } from "../../client/generated/taskmanager";
 
 const useStyles = tss.create({
     container: {
@@ -21,7 +22,7 @@ const useStyles = tss.create({
 
 interface Props {
     form: HtmlForm;
-    bpmnElement: { elementId?: string; variables?: { [key: string]: any } };
+    bpmnElement: { elementId: string; variables?: { [key: string]: any } } | UserTaskDto | undefined;
     submitEvent: (formData: any) => void;
     updateEvent?: (formData: any) => void;
 }
@@ -74,8 +75,8 @@ function HtmlFormRenderer(props: Props) {
 
         window.addEventListener("message", handleMessageEvent);
 
-        if (!bpmnElement.elementId) {
-            console.error("No elementId found is undefined. This may cause problems with your form.");
+        if (!bpmnElement) {
+            console.error("BpmnElement is undefined. This may cause problems with your form.");
         }
 
         return () => {
