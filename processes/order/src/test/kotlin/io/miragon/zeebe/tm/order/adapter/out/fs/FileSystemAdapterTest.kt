@@ -43,7 +43,7 @@ class FileSystemAdapterTest
         val read = formPersistenceAdapter.readPrepareOrderForm("$directory/$fileName")
 
         assert(read.schema.isNotEmpty())
-        assert(read.uiSchema.isNotEmpty())
+        assert(read.uischema.isNotEmpty())
     }
 
     @Test

@@ -99,7 +99,7 @@ class LoadTaskController(
         val response = loadPrepareOrderTask.load(command)
 
         val schema = mapper.writeValueAsString(response.form.schema)
-        val uiSchema = mapper.writeValueAsString(response.form.uiSchema)
+        val uiSchema = mapper.writeValueAsString(response.form.uischema)
         val items = response.items
 
         val formData = PrepareOrderSchema(
