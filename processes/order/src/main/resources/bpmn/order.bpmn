@@ -12,7 +12,7 @@
     <bpmn:userTask id="CheckOrder" name="Check order">
       <bpmn:extensionElements>
         <zeebe:ioMapping>
-          <zeebe:output source="=isOrderOk" target="isOrderValid" />
+          <zeebe:output source="=isOrderValid" target="isOrderValid" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0t8y9hy</bpmn:incoming>
