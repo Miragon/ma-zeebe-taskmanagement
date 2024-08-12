@@ -1,17 +1,17 @@
 import { PersonalInformation } from "./PersonalInformation.ts";
 import { Item } from "./Item.ts";
 import { Serializable } from "../tasklist.ts";
-import { CheckOrderDto, PlaceOrderDto } from "../api";
+import { CheckOrderDto, FormData, PlaceOrderDto } from "../api";
 
 interface OrderProps {
     personalInformation: PersonalInformation;
     items: Item[];
 }
 
-export class Order implements Serializable {
+abstract class OrderBase<T extends FormData> implements Serializable<T> {
     private readonly _personalInformation: PersonalInformation;
 
-    constructor({ personalInformation, items }: OrderProps) {
+    protected constructor({ personalInformation, items }: OrderProps) {
         this._personalInformation = personalInformation;
         this._items = items;
     }
@@ -30,23 +30,34 @@ export class Order implements Serializable {
         return this._personalInformation;
     }
 
-    serialize(): PlaceOrderDto {
+    abstract serialize(): T
+}
+
+export class Order extends OrderBase<PlaceOrderDto> {
+
+    constructor({ personalInformation, items }: OrderProps) {
+        super({ personalInformation, items });
+    }
+
+    override serialize(): PlaceOrderDto {
         return {
-            firstname: this._personalInformation.firstname,
-            lastname: this._personalInformation.lastname,
-            email: this._personalInformation.email,
-            street: this._personalInformation.street,
-            city: this._personalInformation.city,
-            zip: this._personalInformation.zip,
-            items: this._items.map(item => ({
+            firstname: super.personalInformation.firstname,
+            lastname: super.personalInformation.lastname,
+            email: super.personalInformation.email,
+            street: super.personalInformation.street,
+            city: super.personalInformation.city,
+            zip: super.personalInformation.zip,
+            items: super.items.map(item => ({
                 id: item.id,
-                quantity: item.quantity,
+                quantity: item.quantity ?? (() => {
+                    throw new Error("Quantity is not set");
+                })(),
             })),
         };
     }
 }
 
-export class OrderChecked extends Order {
+export class OrderChecked extends OrderBase<CheckOrderDto> {
     private readonly _isOrderValid: boolean;
 
     constructor({ isOrderValid, personalInformation, items }: OrderProps & { isOrderValid: boolean }) {
@@ -58,18 +69,8 @@ export class OrderChecked extends Order {
         return this._isOrderValid;
     }
 
-    serialize(): CheckOrderDto {
+    override serialize(): CheckOrderDto {
         return {
-            firstname: super.personalInformation.firstname,
-            lastname: super.personalInformation.lastname,
-            email: super.personalInformation.email,
-            street: super.personalInformation.street,
-            city: super.personalInformation.city,
-            zip: super.personalInformation.zip,
-            items: super.items.map(item => ({
-                id: item.id,
-                quantity: item.quantity,
-            })),
             isOrderValid: this.isOrderValid,
         };
     }

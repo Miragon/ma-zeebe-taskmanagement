@@ -12,8 +12,8 @@ export interface UserTaskFormProps<T> {
  * Interface for serializable objects.
  * Only objects that implement this interface can be sent to the tasklist.
  */
-export interface Serializable {
-    serialize: () => FormData;
+export interface Serializable<T extends FormData> {
+    serialize: () => T;
 }
 
 export enum TasklistEventType {
@@ -35,7 +35,7 @@ export interface MessageReceiveEvent {
      * If it is a start event, it will be "StartEvent".
      * @param variables The process variables that are available in the process instance.
      */
-    bpmnElement: { elementId: string; variables?: { [key: string]: any } } | UserTaskDto;
+    bpmnElement: { elementId: string; variables?: Record<string, any> } | UserTaskDto;
 
     /**
      * A flag that indicates if the form is updatable or not.
@@ -54,7 +54,7 @@ export interface MessageReceiveEvent {
  */
 export interface MessagePostEvent {
     type: TasklistEventType;
-    data?: Serializable;
+    data?: Serializable<FormData>;
 }
 
 export function postMessage(message: MessagePostEvent) {
@@ -73,7 +73,7 @@ export function postMessage(message: MessagePostEvent) {
 }
 
 export function validateReceivedMessage(message: MessageReceiveEvent): boolean {
-    const { type, bpmnElement, formData, updatable } = message;
+    const { type, bpmnElement } = message;
 
     let errorMsg = "";
     if (!type) {

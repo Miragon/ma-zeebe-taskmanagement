@@ -81,6 +81,7 @@ const ItemList = (props: ItemListProps) => {
                     <div className={classes.info}>
                         <p>Name: {item.name}</p>
                         <p>Price: {item.price}</p>
+                        {item.quantity && <p>Quantity: {item.quantity}</p>}
                     </div>
                     {addButtonClicked && (
                         <div className={classes.buttonContainer}>

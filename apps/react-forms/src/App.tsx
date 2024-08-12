@@ -1,13 +1,13 @@
 import "./App.css";
 import { useEffect, useState } from "react";
+import { Alert } from "@mui/material";
 import { tss } from "tss-react/mui";
-import { CheckOrderDto, FormData, LoadItemsDto } from "./api";
+import { FormData, LoadItemsDto, LoadOrderDto } from "./api";
 import { MessageReceiveEvent, postMessage, TasklistEventType, validateReceivedMessage } from "./tasklist.ts";
 import { Item, Order, PersonalInformation } from "./domain";
 
 import OrderStepper from "./components/OrderStepper.tsx";
 import OrderOverview from "./components/OrderOverview.tsx";
-import { Alert } from "@mui/material";
 
 interface FormProps {
     elementId: string;
@@ -71,7 +71,6 @@ function App() {
         switch (elementId) {
             case "StartEvent": {
                 const data = formData as LoadItemsDto;
-                // TODO: use types generated from openapi generator
                 const items = data.items.map((item) => {
                     return new Item({
                         id: item.id,
@@ -87,8 +86,7 @@ function App() {
                 );
             }
             case "CheckOrder": {
-                const data = formData as CheckOrderDto;
-                // TODO: use types generated from openapi generator
+                const data = formData as LoadOrderDto;
                 const orderId = variables?.get("orderId") as string;
                 const order = new Order({
                     personalInformation: new PersonalInformation({
@@ -105,6 +103,7 @@ function App() {
                             name: item.name,
                             price: item.price,
                             image: item.image,
+                            quantity: item.quantity,
                         });
                     }),
                 });

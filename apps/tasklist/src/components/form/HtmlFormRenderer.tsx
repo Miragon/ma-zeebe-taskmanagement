@@ -48,6 +48,8 @@ function HtmlFormRenderer(props: Props) {
     const { classes } = useStyles();
 
     useEffect(() => {
+        console.log("Form", form.getHtml());
+
         const handleMessageEvent = (event: MessageEvent<IFrameEvent>) => {
             const { type, formData } = event.data;
 

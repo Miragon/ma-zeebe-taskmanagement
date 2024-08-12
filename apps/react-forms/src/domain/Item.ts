@@ -1,13 +1,18 @@
-import { Serializable } from "../tasklist.ts";
-import { ItemDto } from "../api";
+interface ItemProps {
+    id: string;
+    name?: string;
+    price?: number;
+    image?: string;
+    quantity?: number;
+}
 
-export class Item implements Serializable {
+export class Item {
     private readonly _id: string;
     private readonly _name?: string;
     private readonly _price?: number;
     private readonly _image?: string;
 
-    constructor({ id, name, price, image, quantity }: ItemDto) {
+    constructor({ id, name, price, image, quantity }: ItemProps) {
         this._id = id;
         this._name = name;
         this._price = price;
@@ -17,10 +22,7 @@ export class Item implements Serializable {
 
     private _quantity?: number;
 
-    get quantity(): number {
-        if (!this._quantity) {
-            throw new Error("Quantity is not set");
-        }
+    get quantity(): number | undefined {
         return this._quantity;
     }
 
@@ -51,15 +53,5 @@ export class Item implements Serializable {
             throw new Error("Image is not set");
         }
         return this._image;
-    }
-
-    serialize(): ItemDto {
-        return {
-            id: this._id,
-            name: this._name,
-            price: this._price,
-            image: this._image,
-            quantity: this._quantity,
-        };
     }
 }

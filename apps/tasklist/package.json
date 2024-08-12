@@ -6,7 +6,7 @@
   "scripts": {
     "prod": "vite --mode production",
     "dev": "vite --mode development",
-    "build": "yarn client && tsc && vite build",
+    "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "client": "openapi-generator-cli generate -i ../../taskmanager/openapi.json -o src/client/generated/taskmanager -g typescript-axios"
