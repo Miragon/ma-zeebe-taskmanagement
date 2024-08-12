@@ -97,6 +97,9 @@ function mockPostMessage(message: MessagePostEvent) {
             window.dispatchEvent(new MessageEvent("message", {
                 data: {
                     type: TasklistEventType.FORM_DATA_EVENT,
+                    bpmnElement: {
+                        elementId: "StartEvent",
+                    },
                     formData: {
                         items: [
                             {

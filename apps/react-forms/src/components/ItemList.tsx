@@ -62,7 +62,7 @@ const ItemList = (props: ItemListProps) => {
 
     const handleClick = (item: Item) => {
         if (addButtonClicked) {
-            item.quantity = quantity;
+            item.addQuantity(quantity);
             addButtonClicked(item);
         }
     };

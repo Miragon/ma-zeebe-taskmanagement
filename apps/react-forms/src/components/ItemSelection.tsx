@@ -38,7 +38,12 @@ const ItemSelection = forwardRef<ItemSelectionRef, ItemSelectionProps>((props, r
     }));
 
     const addToCart = (item: Item) => {
-        setCart([...cart, item]);
+        const cartItem = cart.find((cartItem) => cartItem.id === item.id);
+        if (cartItem) {
+            setCart([...cart]);
+        } else {
+            setCart([...cart, item]);
+        }
     };
 
     return (

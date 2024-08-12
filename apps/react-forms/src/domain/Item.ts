@@ -17,17 +17,13 @@ export class Item {
         this._name = name;
         this._price = price;
         this._image = image;
-        this._quantity = quantity;
+        this._quantity = quantity ?? 0;
     }
 
-    private _quantity?: number;
+    private _quantity: number;
 
-    get quantity(): number | undefined {
+    get quantity(): number {
         return this._quantity;
-    }
-
-    set quantity(quantity: number) {
-        this._quantity = quantity;
     }
 
     get id(): string {
@@ -53,5 +49,9 @@ export class Item {
             throw new Error("Image is not set");
         }
         return this._image;
+    }
+
+    addQuantity(quantity: number): void {
+        this._quantity += quantity;
     }
 }
