@@ -1,14 +1,16 @@
 import { PersonalInformation } from "./PersonalInformation.ts";
 import { Item } from "./Item.ts";
 import { Serializable } from "../tasklist.ts";
-import { CheckOrderDto, FormData, PlaceOrderDto } from "../api";
+import { CheckOrderDto, PlaceOrderDto } from "../api";
 
 interface OrderProps {
     personalInformation: PersonalInformation;
     items: Item[];
 }
 
-abstract class OrderBase<T extends FormData> implements Serializable<T> {
+type ReturnValues = PlaceOrderDto | CheckOrderDto;
+
+abstract class OrderBase<T extends ReturnValues> implements Serializable<T> {
     private readonly _personalInformation: PersonalInformation;
 
     protected constructor({ personalInformation, items }: OrderProps) {
