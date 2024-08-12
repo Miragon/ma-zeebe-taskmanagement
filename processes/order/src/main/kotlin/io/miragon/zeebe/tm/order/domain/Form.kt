@@ -36,9 +36,9 @@ sealed class Form
 
         private fun trimHtml(content: String): String
         {
-            val removeWhitespace = content.replace("\\s".toRegex(), "")
-            val removeNewLines = removeWhitespace.replace("\n", "")
-            return removeNewLines
+            val split = content.split("\n")
+            val trimmed = split.map { it.trim() }
+            return trimmed.joinToString("")
         }
     }
 

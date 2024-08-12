@@ -9,20 +9,20 @@
       </bpmn:extensionElements>
       <bpmn:outgoing>Flow_0t8y9hy</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="checkOrder" name="Check order">
+    <bpmn:userTask id="CheckOrder" name="Check order">
       <bpmn:extensionElements>
         <zeebe:ioMapping>
-          <zeebe:output source="=isOrderOk" target="isOrderOk" />
+          <zeebe:output source="=isOrderOk" target="isOrderValid" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0t8y9hy</bpmn:incoming>
       <bpmn:outgoing>Flow_13agsff</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_0t8y9hy" sourceRef="StartEvent_1" targetRef="checkOrder" />
+    <bpmn:sequenceFlow id="Flow_0t8y9hy" sourceRef="StartEvent_1" targetRef="CheckOrder" />
     <bpmn:endEvent id="Event_1t3yd4l" name="Order processed">
       <bpmn:incoming>Flow_1y9k46h</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:boundaryEvent id="Event_061lt2n" name="5min" attachedToRef="checkOrder">
+    <bpmn:boundaryEvent id="Event_061lt2n" name="5min" attachedToRef="CheckOrder">
       <bpmn:outgoing>Flow_1rf7bsb</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_19ez2n9">
         <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT5M</bpmn:timeDuration>
@@ -32,23 +32,23 @@
       <bpmn:incoming>Flow_1rf7bsb</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1rf7bsb" sourceRef="Event_061lt2n" targetRef="Event_1l3bm07" />
-    <bpmn:userTask id="prepareOrder" name="Prepare order">
+    <bpmn:userTask id="PrepareOrder" name="Prepare order">
       <bpmn:incoming>Flow_0wi71fc</bpmn:incoming>
       <bpmn:outgoing>Flow_1y9k46h</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_13agsff" sourceRef="checkOrder" targetRef="Gateway_1oqjd57" />
-    <bpmn:sequenceFlow id="Flow_1y9k46h" sourceRef="prepareOrder" targetRef="Event_1t3yd4l" />
+    <bpmn:sequenceFlow id="Flow_13agsff" sourceRef="CheckOrder" targetRef="Gateway_1oqjd57" />
+    <bpmn:sequenceFlow id="Flow_1y9k46h" sourceRef="PrepareOrder" targetRef="Event_1t3yd4l" />
     <bpmn:exclusiveGateway id="Gateway_1oqjd57" name="Order ok?" default="Flow_0wi71fc">
       <bpmn:incoming>Flow_13agsff</bpmn:incoming>
       <bpmn:outgoing>Flow_0wi71fc</bpmn:outgoing>
       <bpmn:outgoing>Flow_0dm4lct</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_0wi71fc" name="Yes" sourceRef="Gateway_1oqjd57" targetRef="prepareOrder" />
+    <bpmn:sequenceFlow id="Flow_0wi71fc" name="Yes" sourceRef="Gateway_1oqjd57" targetRef="PrepareOrder" />
     <bpmn:endEvent id="Event_0hxie89" name="Order canceled">
       <bpmn:incoming>Flow_0dm4lct</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0dm4lct" name="No" sourceRef="Gateway_1oqjd57" targetRef="Event_0hxie89">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=isOrderOk = false</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=isOrderValid = false</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -59,7 +59,7 @@
           <dc:Bounds x="161" y="202" width="73" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_088o44v_di" bpmnElement="checkOrder">
+      <bpmndi:BPMNShape id="Activity_088o44v_di" bpmnElement="CheckOrder">
         <dc:Bounds x="270" y="137" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
@@ -75,7 +75,7 @@
           <dc:Bounds x="712" y="425" width="76" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_16791gq_di" bpmnElement="prepareOrder">
+      <bpmndi:BPMNShape id="Activity_16791gq_di" bpmnElement="PrepareOrder">
         <dc:Bounds x="560" y="137" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>

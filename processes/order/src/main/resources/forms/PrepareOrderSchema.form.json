@@ -3,33 +3,21 @@
     "type": "object",
     "properties": {
       "deliveryDate": {
-        "type": "string",
-        "format": "date"
+        "type": "string"
       },
       "itemCheckList": {
         "type": "array",
         "items": {
           "type": "object",
           "properties": {
-            "item": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "image": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "price": {
-                  "type": "number"
-                },
-                "quantity": {
-                  "type": "integer"
-                }
-              }
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "quantity": {
+              "type": "integer"
             }
           }
         }

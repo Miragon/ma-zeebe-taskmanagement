@@ -10,6 +10,7 @@ import java.util.*
 class OrderPersistenceAdapter(
     private val orderRepository: OrderRepository,
     private val itemRepository: ItemRepository,
+    private val orderItemRepository: OrderItemRepository,
 ) : OrderPersistencePort
 {
     override fun findAll(): List<Order>
@@ -26,14 +27,20 @@ class OrderPersistenceAdapter(
 
     override fun update(id: String, order: Order): String
     {
-        val res = orderRepository.save(toOrderEntity(order, id))
+        val orderEntity = toOrderEntity(order, id)
+        val orderItemEntity = toOrderItemEntity(orderEntity, order.items)
+        val res = orderRepository.save(orderEntity.copy(orderItems = orderItemEntity))
         return res.id.toString()
     }
 
     override fun save(order: Order): String
     {
-        val res = orderRepository.save(toOrderEntity(order))
-        return res.id.toString()
+        val orderEntity = toOrderEntity(order)
+        val orderSaved = orderRepository.save(orderEntity)
+        val orderItemsEntity = toOrderItemEntity(orderSaved, order.items)
+        orderItemRepository.saveAll(orderItemsEntity)
+
+        return orderSaved.id.toString()
     }
 
     private fun toOrder(orderEntity: OrderEntity): Order
@@ -45,7 +52,7 @@ class OrderPersistenceAdapter(
             street = orderEntity.street,
             city = orderEntity.city,
             zip = orderEntity.zip,
-            state = Order.OrderState.valueOf(orderEntity.state),
+            state = Order.State.valueOf(orderEntity.state),
             items = orderEntity.orderItems.map {
                 Item(
                     id = it.item.id.toString(),
@@ -58,9 +65,9 @@ class OrderPersistenceAdapter(
         )
     }
 
-    private fun toOrderEntity(order: Order, id: String? = null): OrderEntity
+    private fun toOrderEntity(order: Order, id: String? = null, orderItems: List<OrderItemEntity>? = null): OrderEntity
     {
-        val orderEntity = OrderEntity(
+        return OrderEntity(
             id = id?.let { UUID.fromString(it) },
             firstname = order.firstname,
             lastname = order.lastname,
@@ -69,10 +76,14 @@ class OrderPersistenceAdapter(
             city = order.city,
             zip = order.zip,
             deliveryDate = order.deliveryDate,
-            state = order.state.name,
+            state = order.state?.name ?: throw IllegalArgumentException("State must be set"),
+            orderItems = orderItems ?: emptyList()
         )
+    }
 
-        val orderItems = order.items.map { item ->
+    private fun toOrderItemEntity(orderEntity: OrderEntity, orderItems: List<Item>): List<OrderItemEntity>
+    {
+        return orderItems.map { item ->
             val itemEntity = itemRepository
                 .findById(UUID.fromString(item.id))
                 .orElseThrow {
@@ -84,9 +95,6 @@ class OrderPersistenceAdapter(
                 item = itemEntity,
                 quantity = item.quantity ?: throw RuntimeException("Quantity must be set"),
             )
-
         }
-
-        return orderEntity.copy(orderItems = orderItems)
     }
 }

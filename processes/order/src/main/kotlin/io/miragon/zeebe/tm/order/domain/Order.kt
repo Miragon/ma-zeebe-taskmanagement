@@ -11,11 +11,11 @@ data class Order(
     val city: String,
     val zip: String,
     val items: List<Item>,
-    var state: OrderState,
+    var state: State? = null,
     var deliveryDate: LocalDate? = null,
 )
 {
-    enum class OrderState
+    enum class State
     {
         CREATED,
         CHECKED,

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.FormDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.UserTaskDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckItemDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.ItemDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderItemDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.LoadOrderDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareOrderSchema
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadPrepareOrderTaskUseCase
@@ -54,7 +54,7 @@ class LoadTaskController(
         }
     }
 
-    private fun loadCheckOrder(userTask: UserTaskDto): FormDto.HtmlForm<CheckOrderDto>
+    private fun loadCheckOrder(userTask: UserTaskDto): FormDto.HtmlForm<LoadOrderDto>
     {
         val command = LoadCheckOrderTaskUseCase.Command(
             orderId = userTask.variables["orderId"].toString(),
@@ -65,7 +65,7 @@ class LoadTaskController(
         val form = response.form
         val order = response.order
 
-        val formData = CheckOrderDto(
+        val formData = LoadOrderDto(
             firstname = order.firstname,
             lastname = order.lastname,
             email = order.email,
@@ -73,11 +73,12 @@ class LoadTaskController(
             city = order.city,
             zip = order.zip,
             items = order.items.map {
-                ItemDto(
+                CheckOrderItemDto(
                     id = it.id,
-                    name = it.name,
-                    price = it.price,
-                    image = it.image,
+                    name = it.name ?: throw IllegalArgumentException("Item name must not be null"),
+                    price = it.price ?: throw IllegalArgumentException("Item price must not be null"),
+                    image = it.image ?: throw IllegalArgumentException("Item image must not be null"),
+                    quantity = it.quantity ?: throw IllegalArgumentException("Item quantity must not be null"),
                 )
             }
         )
@@ -104,11 +105,9 @@ class LoadTaskController(
         val formData = PrepareOrderSchema(
             itemCheckList = items.map {
                 CheckItemDto(
-                    item = ItemDto(
-                        id = it.id,
-                        name = it.name,
-                        quantity = it.quantity
-                    ),
+                    id = it.id,
+                    name = it.name ?: throw IllegalArgumentException("Item name must not be null"),
+                    quantity = it.quantity ?: throw IllegalArgumentException("Item quantity must not be null")
                 )
             },
             deliveryDate = "",

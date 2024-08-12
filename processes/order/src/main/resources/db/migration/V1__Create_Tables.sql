@@ -1,18 +1,30 @@
-CREATE TABLE form_data
+CREATE TABLE orders
 (
-    id      VARCHAR(255)     NOT NULL,
-    version DOUBLE PRECISION NOT NULL,
-    type    VARCHAR(255),
-    form    TEXT,
-    CONSTRAINT pk_form_data PRIMARY KEY (id, version)
+    id            UUID PRIMARY KEY,
+    firstname     VARCHAR(255) NOT NULL,
+    lastname      VARCHAR(255) NOT NULL,
+    email         VARCHAR(255) NOT NULL,
+    street        VARCHAR(255) NOT NULL,
+    city          VARCHAR(255) NOT NULL,
+    zip           VARCHAR(20)  NOT NULL,
+    delivery_date DATE,
+    state         VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE order_data
+CREATE TABLE items
 (
-    id               UUID NOT NULL,
-    customer_name    VARCHAR(255),
-    delivery_address VARCHAR(255),
-    items            VARCHAR(255),
-    state            VARCHAR(255),
-    CONSTRAINT pk_order_data PRIMARY KEY (id)
+    id    UUID PRIMARY KEY,
+    name  VARCHAR(255),
+    price DECIMAL(10, 2),
+    image VARCHAR(255)
+);
+
+CREATE TABLE order_items
+(
+    id       UUID PRIMARY KEY,
+    order_id UUID NOT NULL,
+    item_id  UUID NOT NULL,
+    quantity INTEGER,
+    FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE
 );

@@ -3,8 +3,8 @@ package io.miragon.zeebe.tm.order.adapter.`in`.rest
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.CompleteTaskDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.TaskIdDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.FormDataDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareOrderSchema
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.TaskDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.toCommand
 import io.miragon.zeebe.tm.order.application.port.`in`.CompleteCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareOrderTaskUseCase
@@ -25,7 +25,7 @@ class CompleteTaskController(
     private val logger = KotlinLogging.logger {}
 
     @PostMapping("/complete")
-    fun completeTask(@RequestBody completeTaskDto: CompleteTaskDto<TaskDto>): ResponseEntity<TaskIdDto>
+    fun completeTask(@RequestBody completeTaskDto: CompleteTaskDto<FormDataDto>): ResponseEntity<TaskIdDto>
     {
         val userTask = completeTaskDto.userTask
 
@@ -52,7 +52,7 @@ class CompleteTaskController(
     }
 
     @PostMapping("/update")
-    fun updateTask(@RequestBody completeTaskDto: CompleteTaskDto<TaskDto>): ResponseEntity<TaskIdDto>
+    fun updateTask(@RequestBody completeTaskDto: CompleteTaskDto<FormDataDto>): ResponseEntity<TaskIdDto>
     {
         val userTask = completeTaskDto.userTask
         val formData = completeTaskDto.formData

@@ -1,48 +1,24 @@
-### POST Deploy CheckOrder Form
-POST http://localhost:8081/order/deploy/checkOrder
-Content-Type: application/json
-
-{
-  "version": 1.0,
-  "type": "JSON_FORM",
-  "form": "{\"schema\":{\"type\":\"object\",\"properties\":{\"customerName\":{\"type\":\"string\"},\"deliveryAddress\":{\"type\":\"object\",\"properties\":{\"street\":{\"type\":\"string\"},\"zipCode\":{\"type\":\"string\"},\"city\":{\"type\":\"string\"}}},\"items\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"quantity\":{\"type\":\"integer\"}}}},\"isOrderValid\":{\"type\":\"boolean\"}},\"required\":[\"isOrderValid\"]},\"uischema\":{\"type\":\"VerticalLayout\",\"elements\":[{\"type\":\"Control\",\"scope\":\"#/properties/customerName\",\"label\":\"Name\"},{\"type\":\"Control\",\"scope\":\"#/properties/deliveryAddress\",\"label\":\"Address\"},{\"type\":\"Control\",\"scope\":\"#/properties/items\",\"label\":\"Items\"},{\"type\":\"Control\",\"scope\":\"#/properties/isOrderValid\",\"label\":\"Isordervalid?\"}]}}"
-}
-
-### POST Deploy PrepareOrder Form
-POST http://localhost:9101/rest/deploy/prepareOrder
-Content-Type: application/json
-
-{
-  "version": 1.0,
-  "type": "JSON_FORM",
-  "form": "{\"schema\":{\"type\":\"object\",\"properties\":{\"itemCheckList\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"quantity\":{\"type\":\"integer\"},\"isAvailable\":{\"type\":\"boolean\"},\"deliveryDate\":{\"type\":\"string\",\"format\":\"date\"}},\"required\":[\"isAvailable\",\"deliveryDate\"]}}}},\"uischema\":{\"type\":\"VerticalLayout\",\"elements\":[{\"type\":\"Control\",\"scope\":\"#/properties/itemCheckList\",\"label\":\"Item Check List\"}]}}"
-}
-
 ### POST Start Process
-POST http://localhost:9101/rest/process/placeOrder
+POST http://localhost:8091/rest/process/start
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "address": {
-    "street": "1234 Main St",
-    "zipCode": "12345",
-    "city": "Springfield"
-  },
+  "firstname": "John",
+  "lastname": "Doe",
+  "email": "john.doe@gmail.com",
+  "street": "1234 Main St",
+  "zip": "12345",
+  "city": "Springfield",
   "items": [
     {
-      "id": 1234,
+      "id": "123e4567-e89b-12d3-a456-426614174000",
       "quantity": 1
-    },
-    {
-      "id": 5678,
-      "quantity": 2
     }
   ]
 }
 
 ### GET CheckOrder Task
-GET http://localhost:9100/rest/load/tasks
+GET http://localhost:9100/rest/tasks
 Accept: application/json
 
 > {%
@@ -56,23 +32,40 @@ Accept: application/json
 %}
 
 ### POST Load form for CheckOrderTask
-POST http://localhost:9101/rest/task/load/{{element_id}}
+POST http://localhost:8091/rest/task/load
 Content-Type: application/json
 Accept: application/json
 
 {{user_task}}
 
 ### POST Complete CheckOrderTask
-POST http://localhost:9101/rest/task/complete/{{element_id}}
+POST http://localhost:8091/rest/task/complete
 Content-Type: application/json
 
 {
   "userTask": {{user_task}},
-  "approved": true
+  "formData": {
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john.doe@gmail.com",
+    "street": "1234 Main St",
+    "zip": "12345",
+    "city": "Springfield",
+    "items": [
+      {
+        "id": "123e4567-e89b-12d3-a456-426614174000",
+        "name": "Item 1",
+        "price": 10.99,
+        "image": "https://via.placeholder.com/300",
+        "quantity": 1
+      }
+    ],
+    "isOrderValid": true
+  }
 }
 
 ### GET PrepareOrder Task
-GET http://localhost:9100/rest/load/tasks
+GET http://localhost:9100/rest/tasks
 Accept: application/json
 
 > {%
@@ -86,30 +79,26 @@ Accept: application/json
 %}
 
 ### POST Load form for PrepareOrderTask
-POST http://localhost:9101/rest/task/load/{{element_id}}
+POST http://localhost:8091/rest/task/load
 Content-Type: application/json
 Accept: application/json
 
 {{user_task}}
 
 ### PUT Complete PrepareOrderTask
-POST http://localhost:9101/rest/task/complete/{{element_id}}
+POST http://localhost:8091/rest/task/complete
 Content-Type: application/json
 
 {
   "userTask": {{user_task}},
-  "items": [
-    {
-      "id": 1234,
-      "quantity": 1,
-      "isAvailable": true,
-      "deliveryDate": "2020-12-31"
-    },
-    {
-      "name": 5678,
-      "quantity": 2,
-      "isAvailable": true,
-      "deliveryDate": "2020-12-31"
-    }
-  ]
+  "formData": {
+    "deliveryDate": "2021-12-31",
+    "itemCheckList": [
+      {
+        "id": "123e4567-e89b-12d3-a456-426614174000",
+        "name": "Item 1",
+        "quantity": 1
+      }
+    ]
+  }
 }

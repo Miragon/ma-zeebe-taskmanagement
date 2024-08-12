@@ -26,7 +26,7 @@ class CompletePrepareOrderTaskService(
 
         val order = orderPersistencePort.findById(orderId)
         order.deliveryDate = LocalDate.parse(deliveryDate, formatter)
-        order.state = Order.OrderState.PREPARED
+        order.state = Order.State.PREPARED
         orderPersistencePort.update(orderId, order)
 
         completeTaskPort.completePrepareOrderTask(taskId)

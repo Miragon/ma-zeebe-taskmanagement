@@ -8,7 +8,6 @@ import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PlaceOrderDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.toCommand
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadStartEventUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.StartProcessUseCase
-import io.miragon.zeebe.tm.order.domain.Order
 import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -59,7 +58,7 @@ class StartProcessController(
     @PostMapping("/start")
     fun placeOrder(@RequestBody formData: PlaceOrderDto): ResponseEntity<MessageDto>
     {
-        val command = formData.toCommand(Order.OrderState.CHECKED)
+        val command = formData.toCommand()
         val orderId = startProcessUseCase.startProcess(command)
         val response = MessageDto("Order with id $orderId created!")
 

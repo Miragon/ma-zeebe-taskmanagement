@@ -8,9 +8,8 @@ import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareOrderTaskU
 import io.miragon.zeebe.tm.order.application.port.`in`.StartProcessUseCase
 import io.miragon.zeebe.tm.order.domain.Item
 import io.miragon.zeebe.tm.order.domain.Order
-import io.miragon.zeebe.tm.order.domain.Order.OrderState
 
-fun PlaceOrderDto.toCommand(state: OrderState) = StartProcessUseCase.Command(
+fun PlaceOrderDto.toCommand() = StartProcessUseCase.Command(
     order = Order(
         firstname = this.firstname,
         lastname = this.lastname,
@@ -18,11 +17,10 @@ fun PlaceOrderDto.toCommand(state: OrderState) = StartProcessUseCase.Command(
         street = this.street,
         city = this.city,
         zip = this.zip,
-        state = state,
         items = this.items.map {
             Item(
                 id = it.id,
-                quantity = it.quantity ?: throw IllegalArgumentException("Item quantity must not be null")
+                quantity = it.quantity
             )
         }
     )
@@ -33,7 +31,7 @@ fun CheckOrderDto.toCommand(taskId: Long, orderId: String): CompleteCheckOrderTa
     return CompleteCheckOrderTaskUseCase.Command(
         taskId = taskId,
         orderId = orderId,
-        isAccepted = this.isOrderValid ?: false
+        isAccepted = this.isOrderValid
     )
 }
 

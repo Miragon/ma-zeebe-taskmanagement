@@ -6,7 +6,7 @@ import java.util.*
 
 @Entity
 @Table(name = "orders")
-data class OrderEntity(
+class OrderEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
@@ -35,6 +35,33 @@ data class OrderEntity(
     @Column(nullable = false)
     val state: String,
 
-    @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
     val orderItems: List<OrderItemEntity> = mutableListOf(),
 )
+{
+    fun copy(
+        firstname: String = this.firstname,
+        lastname: String = this.lastname,
+        email: String = this.email,
+        street: String = this.street,
+        city: String = this.city,
+        zip: String = this.zip,
+        deliveryDate: LocalDate? = this.deliveryDate,
+        state: String = this.state,
+        orderItems: List<OrderItemEntity> = this.orderItems,
+    ): OrderEntity
+    {
+        return OrderEntity(
+            id = this.id,
+            firstname = firstname,
+            lastname = lastname,
+            email = email,
+            street = street,
+            city = city,
+            zip = zip,
+            deliveryDate = deliveryDate,
+            state = state,
+            orderItems = orderItems,
+        )
+    }
+}

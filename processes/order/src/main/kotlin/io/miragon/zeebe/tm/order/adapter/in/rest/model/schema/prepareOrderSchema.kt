@@ -3,4 +3,10 @@ package io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema
 data class PrepareOrderSchema(
     val itemCheckList: List<CheckItemDto> = ArrayList(),
     val deliveryDate: String,
-) : TaskDto()
+) : FormDataDto()
+
+data class CheckItemDto(
+    val id: String,
+    val name: String,
+    val quantity: Int,
+)
