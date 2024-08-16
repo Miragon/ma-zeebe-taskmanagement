@@ -44,7 +44,7 @@
     <bpmn:endEvent id="Event_0rb7mi1" name="Order processed">
       <bpmn:incoming>Flow_03urfco</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:userTask id="Activity_0blzev4" name="Lieferung erstellen">
+    <bpmn:userTask id="Activity_0blzev4" name="Lieferung vorbereiten">
       <bpmn:incoming>Flow_008xg05</bpmn:incoming>
       <bpmn:outgoing>Flow_03urfco</bpmn:outgoing>
     </bpmn:userTask>
