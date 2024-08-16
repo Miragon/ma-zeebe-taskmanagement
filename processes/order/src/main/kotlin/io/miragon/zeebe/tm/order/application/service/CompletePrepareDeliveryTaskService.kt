@@ -22,6 +22,13 @@ class CompletePrepareDeliveryTaskService(
     {
         val (taskId, orderId, deliveryDate, modeOfDispatch, items) = command
 
+        items.forEach { item ->
+            if (item.ready != true)
+            {
+                throw IllegalStateException("Item ${item.id} is not ready for delivery!")
+            }
+        }
+
         val order = orderPersistencePort.findById(orderId)
         order.deliveryDate = LocalDate.parse(deliveryDate, formatter)
         order.modeOfDispatch = modeOfDispatch

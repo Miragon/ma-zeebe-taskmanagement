@@ -56,8 +56,9 @@
         "type": "Control",
         "scope": "#/properties/itemCheckList",
         "options": {
+          "elementLabelProp": "name",
           "detail": {
-            "type": "HorizontalLayout",
+            "type": "VerticalLayout",
             "elements": [
               {
                 "type": "Control",
@@ -67,25 +68,30 @@
                 }
               },
               {
-                "type": "Control",
-                "scope": "#/properties/name",
-                "options": {
-                  "readonly": true
-                }
-              },
-              {
-                "type": "Control",
-                "scope": "#/properties/quantity",
-                "options": {
-                  "readonly": true
-                }
-              },
-              {
-                "type": "Control",
-                "scope": "#/properties/ready",
-                "options": {
-                  "readonly": false
-                }
+                "type": "HorizontalLayout",
+                "elements": [
+                  {
+                    "type": "Control",
+                    "scope": "#/properties/name",
+                    "options": {
+                      "readonly": true
+                    }
+                  },
+                  {
+                    "type": "Control",
+                    "scope": "#/properties/quantity",
+                    "options": {
+                      "readonly": true
+                    }
+                  },
+                  {
+                    "type": "Control",
+                    "scope": "#/properties/ready",
+                    "options": {
+                      "readonly": false
+                    }
+                  }
+                ]
               }
             ]
           }
@@ -95,7 +101,8 @@
           "condition": {
             "scope": "#/properties/itemCheckList"
           }
-        }
+        },
+        "label": "Checklist"
       }
     ]
   }

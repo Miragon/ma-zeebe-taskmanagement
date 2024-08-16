@@ -1,7 +1,7 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.CompleteTaskDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.TaskIdDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.MessageDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.FormDataDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareDeliverySchema
@@ -25,7 +25,7 @@ class CompleteTaskController(
     private val logger = KotlinLogging.logger {}
 
     @PostMapping("/complete")
-    fun completeTask(@RequestBody completeTaskDto: CompleteTaskDto<FormDataDto>): ResponseEntity<TaskIdDto>
+    fun completeTask(@RequestBody completeTaskDto: CompleteTaskDto<FormDataDto>): ResponseEntity<MessageDto>
     {
         val userTask = completeTaskDto.userTask
 
@@ -36,15 +36,24 @@ class CompleteTaskController(
             is CheckOrderDto ->
             {
                 val command = data.toCommand(userTask.key, userTask.variables["orderId"].toString())
-                val response = TaskIdDto(checkOrderUseCase.complete(command))
-                return ResponseEntity.ok(response)
+                val taskId = checkOrderUseCase.complete(command)
+                val message = MessageDto("""Task $taskId completed""")
+                return ResponseEntity.ok(message)
             }
 
             is PrepareDeliverySchema ->
             {
-                val command = data.toCommand(userTask.key, userTask.variables["orderId"].toString())
-                val response = TaskIdDto(prepareDeliveryUseCase.complete(command))
-                return ResponseEntity.ok(response)
+                try
+                {
+                    val command = data.toCommand(userTask.key, userTask.variables["orderId"].toString())
+                    val taskId = prepareDeliveryUseCase.complete(command)
+                    val message = MessageDto("""Task $taskId completed""")
+                    return ResponseEntity.ok(message)
+                } catch (e: IllegalStateException)
+                {
+                    val message = MessageDto(e.message ?: "Task could not be completed")
+                    return ResponseEntity.ok(message)
+                }
             }
 
             else -> return ResponseEntity.badRequest().build()
@@ -52,7 +61,7 @@ class CompleteTaskController(
     }
 
     @PostMapping("/update")
-    fun updateTask(@RequestBody completeTaskDto: CompleteTaskDto<FormDataDto>): ResponseEntity<TaskIdDto>
+    fun updateTask(@RequestBody completeTaskDto: CompleteTaskDto<FormDataDto>): ResponseEntity<MessageDto>
     {
         val userTask = completeTaskDto.userTask
         val formData = completeTaskDto.formData
@@ -63,8 +72,9 @@ class CompleteTaskController(
             {
                 val data = formData as PrepareDeliverySchema
                 val command = data.toCommand(userTask.key, userTask.variables["orderId"].toString())
-                val response = TaskIdDto(prepareDeliveryUseCase.update(command))
-                ResponseEntity.ok(response)
+                val taskId = prepareDeliveryUseCase.update(command)
+                val message = MessageDto("""Task $taskId updated""")
+                ResponseEntity.ok(message)
             }
 
             else -> ResponseEntity.badRequest().build()
