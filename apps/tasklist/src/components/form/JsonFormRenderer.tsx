@@ -26,8 +26,10 @@ const useStyles = tss.create({
         padding: "1rem",
     },
     buttonContainer: {
+        padding: "1rem",
         display: "flex",
         justifyContent: "center",
+        gap: "1rem",
     },
     btn: {
         width: "100%",

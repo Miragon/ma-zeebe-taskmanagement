@@ -15,7 +15,6 @@ import type { Configuration } from "./configuration.ts";
 import type { AxiosInstance, AxiosPromise, RawAxiosRequestConfig } from "axios";
 import globalAxios from "axios";
 // Some imports not used depending on template conditions
-// @ts-ignore
 import {
     assertParamExists,
     createRequestFunction,
@@ -23,9 +22,8 @@ import {
     setSearchParams,
     toPathString,
 } from "./common.ts";
-// @ts-ignore
-import { BASE_PATH, BaseAPI, operationServerMap, RequestArgs, RequiredError } from "./base.ts";
-import { CompleteTaskDto, FormDto, MessageDto, TaskIdDto } from "./models";
+import { BaseAPI, RequestArgs, RequiredError } from "./base.ts";
+import { CompleteTaskDto, FormDto, MessageDto } from "./models";
 import { UserTaskDto } from "../generated/taskmanager";
 
 /**
@@ -60,7 +58,7 @@ export const CompleteTaskControllerApiAxiosParamCreator = function(configuration
             localVarHeaderParameter["Content-Type"] = "application/json";
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            const headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
             localVarRequestOptions.data = serializeDataIfNeeded(completeTaskDto, localVarRequestOptions, configuration);
 
@@ -95,7 +93,7 @@ export const CompleteTaskControllerApiAxiosParamCreator = function(configuration
             localVarHeaderParameter["Content-Type"] = "application/json";
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            const headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
             localVarRequestOptions.data = serializeDataIfNeeded(completeTaskDto, localVarRequestOptions, configuration);
 
@@ -120,10 +118,8 @@ export const CompleteTaskControllerApiFp = function(configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async completeTask(completeTaskDto: CompleteTaskDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TaskIdDto>> {
+        async completeTask(completeTaskDto: CompleteTaskDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MessageDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.completeTask(completeTaskDto, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap["CompleteTaskControllerApi.completeTask"]?.[localVarOperationServerIndex]?.url;
             return (axios) => createRequestFunction(localVarAxiosArgs, globalAxios)(axios);
         },
         /**
@@ -132,10 +128,8 @@ export const CompleteTaskControllerApiFp = function(configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateTask(completeTaskDto: CompleteTaskDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TaskIdDto>> {
+        async updateTask(completeTaskDto: CompleteTaskDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MessageDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateTask(completeTaskDto, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap["CompleteTaskControllerApi.updateTask"]?.[localVarOperationServerIndex]?.url;
             return (axios) => createRequestFunction(localVarAxiosArgs, globalAxios)(axios);
         },
     };
@@ -154,7 +148,7 @@ export const CompleteTaskControllerApiFactory = function(configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        completeTask(completeTaskDto: CompleteTaskDto, options?: any): AxiosPromise<TaskIdDto> {
+        completeTask(completeTaskDto: CompleteTaskDto, options?: any): AxiosPromise<MessageDto> {
             return localVarFp.completeTask(completeTaskDto, options).then((request) => request(axios, basePath));
         },
         /**
@@ -163,7 +157,7 @@ export const CompleteTaskControllerApiFactory = function(configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateTask(completeTaskDto: CompleteTaskDto, options?: any): AxiosPromise<TaskIdDto> {
+        updateTask(completeTaskDto: CompleteTaskDto, options?: any): AxiosPromise<MessageDto> {
             return localVarFp.updateTask(completeTaskDto, options).then((request) => request(axios, basePath));
         },
     };
@@ -232,7 +226,7 @@ export const LoadTaskControllerApiAxiosParamCreator = function(configuration?: C
             localVarHeaderParameter["Content-Type"] = "application/json";
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            const headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
             localVarRequestOptions.data = serializeDataIfNeeded(userTaskDto, localVarRequestOptions, configuration);
 
@@ -259,8 +253,6 @@ export const LoadTaskControllerApiFp = function(configuration?: Configuration) {
          */
         async loadData(userTaskDto: UserTaskDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FormDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.loadData(userTaskDto, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap["LoadTaskControllerApi.loadData"]?.[localVarOperationServerIndex]?.url;
             return (axios) => createRequestFunction(localVarAxiosArgs, globalAxios)(axios);
         },
     };
@@ -332,7 +324,7 @@ export const StartProcessControllerApiAxiosParamCreator = function(configuration
 
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            const headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
@@ -366,7 +358,7 @@ export const StartProcessControllerApiAxiosParamCreator = function(configuration
             localVarHeaderParameter["Content-Type"] = "application/json";
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            const headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
             localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration);
 
@@ -392,8 +384,6 @@ export const StartProcessControllerApiFp = function(configuration?: Configuratio
          */
         async loadForm(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FormDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.loadForm(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap["StartProcessControllerApi.loadForm"]?.[localVarOperationServerIndex]?.url;
             return (axios) => createRequestFunction(localVarAxiosArgs, globalAxios)(axios);
         },
         /**
@@ -404,8 +394,6 @@ export const StartProcessControllerApiFp = function(configuration?: Configuratio
          */
         async startProcess(body: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MessageDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.startProcess(body, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap["StartProcessControllerApi.startProcess"]?.[localVarOperationServerIndex]?.url;
             return (axios) => createRequestFunction(localVarAxiosArgs, globalAxios)(axios);
         },
     };

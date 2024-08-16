@@ -120,10 +120,10 @@ function TaskList() {
                 formData: data,
             }, config);
 
-            const taskId = response.data.taskId;
+            const message = response.data.message;
             setSnackbarProps({
                 open: true,
-                message: `Task ${taskId} updated.`,
+                message,
             });
         } catch (error) {
             console.error("Failed to update task:", error);
@@ -147,10 +147,10 @@ function TaskList() {
                 formData: data,
             }, config);
 
-            const taskId = response.data.taskId;
+            const message = response.data.message;
             setSnackbarProps({
                 open: true,
-                message: `Task ${taskId} completed.`,
+                message,
             });
 
         } catch (error) {
