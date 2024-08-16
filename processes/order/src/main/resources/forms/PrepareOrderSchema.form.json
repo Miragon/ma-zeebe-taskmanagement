@@ -3,7 +3,9 @@
     "type": "object",
     "properties": {
       "deliveryDate": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1,
+        "format": "date"
       },
       "itemCheckList": {
         "type": "array",
@@ -18,12 +20,26 @@
             },
             "quantity": {
               "type": "integer"
+            },
+            "ready": {
+              "type": "boolean"
             }
           }
         }
+      },
+      "modeOfDispatch": {
+        "type": "string",
+        "enum": [
+          "STANDARD",
+          "EXPRESS"
+        ]
       }
     },
-    "$schema": "http://json-schema.org/draft-07/schema#"
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "required": [
+      "deliveryDate",
+      "modeOfDispatch"
+    ]
   },
   "uischema": {
     "type": "VerticalLayout",
@@ -34,7 +50,52 @@
       },
       {
         "type": "Control",
-        "scope": "#/properties/itemCheckList"
+        "scope": "#/properties/modeOfDispatch"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/itemCheckList",
+        "options": {
+          "detail": {
+            "type": "HorizontalLayout",
+            "elements": [
+              {
+                "type": "Control",
+                "scope": "#/properties/id",
+                "options": {
+                  "readonly": true
+                }
+              },
+              {
+                "type": "Control",
+                "scope": "#/properties/name",
+                "options": {
+                  "readonly": true
+                }
+              },
+              {
+                "type": "Control",
+                "scope": "#/properties/quantity",
+                "options": {
+                  "readonly": true
+                }
+              },
+              {
+                "type": "Control",
+                "scope": "#/properties/ready",
+                "options": {
+                  "readonly": false
+                }
+              }
+            ]
+          }
+        },
+        "rule": {
+          "effect": "DISABLE",
+          "condition": {
+            "scope": "#/properties/itemCheckList"
+          }
+        }
       }
     ]
   }

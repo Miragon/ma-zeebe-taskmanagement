@@ -3,10 +3,7 @@ package io.miragon.zeebe.tm.order.adapter.`in`.rest
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.FormDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.UserTaskDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckItemDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderItemDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.LoadOrderDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareOrderSchema
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.*
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadPrepareOrderTaskUseCase
 import mu.KotlinLogging
@@ -45,7 +42,7 @@ class LoadTaskController(
                 return ResponseEntity.ok(loadCheckOrder(userTask))
             }
 
-            UserTaskId.PREPARE_ORDER.id ->
+            UserTaskId.PREPARE_DELIVERY.id ->
             {
                 return ResponseEntity.ok(loadPrepareOrder(userTask))
             }
@@ -90,7 +87,7 @@ class LoadTaskController(
         )
     }
 
-    private fun loadPrepareOrder(userTask: UserTaskDto): FormDto.JsonForm<PrepareOrderSchema>
+    private fun loadPrepareOrder(userTask: UserTaskDto): FormDto.JsonForm<PrepareDeliverySchema>
     {
         val command = LoadPrepareOrderTaskUseCase.Command(
             orderId = userTask.variables["orderId"].toString(),
@@ -102,15 +99,17 @@ class LoadTaskController(
         val uiSchema = mapper.writeValueAsString(response.form.uischema)
         val items = response.items
 
-        val formData = PrepareOrderSchema(
+        val formData = PrepareDeliverySchema(
             itemCheckList = items.map {
                 CheckItemDto(
                     id = it.id,
                     name = it.name ?: throw IllegalArgumentException("Item name must not be null"),
-                    quantity = it.quantity ?: throw IllegalArgumentException("Item quantity must not be null")
+                    quantity = it.quantity ?: throw IllegalArgumentException("Item quantity must not be null"),
+                    ready = false,
                 )
             },
             deliveryDate = "",
+            modeOfDispatch = ModeOfDispatch.STANDARD
         )
 
         return FormDto.JsonForm(

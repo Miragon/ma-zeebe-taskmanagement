@@ -75,9 +75,10 @@ class OrderPersistenceAdapter(
             street = order.street,
             city = order.city,
             zip = order.zip,
-            deliveryDate = order.deliveryDate,
             state = order.state?.name ?: throw IllegalArgumentException("State must be set"),
-            orderItems = orderItems ?: emptyList()
+            orderItems = orderItems ?: emptyList(),
+            deliveryDate = order.deliveryDate,
+            modeOfDispatch = order.modeOfDispatch,
         )
     }
 
@@ -94,6 +95,7 @@ class OrderPersistenceAdapter(
                 order = orderEntity,
                 item = itemEntity,
                 quantity = item.quantity ?: throw RuntimeException("Quantity must be set"),
+                ready = item.ready ?: false,
             )
         }
     }

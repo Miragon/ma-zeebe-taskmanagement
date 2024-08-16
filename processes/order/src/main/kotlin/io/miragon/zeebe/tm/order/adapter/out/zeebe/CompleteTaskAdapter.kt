@@ -19,7 +19,7 @@ class CompleteTaskAdapter(private val zeebeClient: ZeebeClient) : CompleteTaskPo
         return true
     }
 
-    override fun completePrepareOrderTask(id: Long): Boolean
+    override fun completePrepareDeliveryTask(id: Long): Boolean
     {
         zeebeClient
             .newCompleteCommand(id)

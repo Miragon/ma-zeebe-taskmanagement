@@ -1,6 +1,9 @@
 package io.miragon.zeebe.tm.order.application.port.`in`
 
-interface CompletePrepareOrderTaskUseCase
+import io.miragon.zeebe.tm.order.domain.Item
+
+
+interface CompletePrepareDeliveryTaskUseCase
 {
     /**
      * Completes the prepare order task.
@@ -17,6 +20,8 @@ interface CompletePrepareOrderTaskUseCase
     data class Command(
         val taskId: Long,
         val orderId: String,
-        val deliverDate: String,
+        val deliveryDate: String,
+        val modeOfDispatch: String,
+        val items: List<Item>,
     )
 }

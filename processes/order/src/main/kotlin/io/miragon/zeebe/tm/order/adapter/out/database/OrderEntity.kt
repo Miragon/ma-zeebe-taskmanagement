@@ -29,14 +29,17 @@ class OrderEntity(
     @Column(nullable = false)
     val zip: String,
 
-    @Column(nullable = true)
-    val deliveryDate: LocalDate? = null,
-
     @Column(nullable = false)
     val state: String,
 
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
     val orderItems: List<OrderItemEntity> = mutableListOf(),
+
+    @Column(nullable = true, name = "delivery_date")
+    val deliveryDate: LocalDate? = null,
+
+    @Column(nullable = true, name = "mode_of_dispatch")
+    val modeOfDispatch: String? = null,
 )
 {
     fun copy(

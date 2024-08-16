@@ -4,10 +4,10 @@ import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.CompleteTaskDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.TaskIdDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.FormDataDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareOrderSchema
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareDeliverySchema
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.toCommand
 import io.miragon.zeebe.tm.order.application.port.`in`.CompleteCheckOrderTaskUseCase
-import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareOrderTaskUseCase
+import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareDeliveryTaskUseCase
 import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/rest/task")
 class CompleteTaskController(
-    private val completeCheckOrderTaskUseCase: CompleteCheckOrderTaskUseCase,
-    private val completePrepareOrderTaskUseCase: CompletePrepareOrderTaskUseCase,
+    private val checkOrderUseCase: CompleteCheckOrderTaskUseCase,
+    private val prepareDeliveryUseCase: CompletePrepareDeliveryTaskUseCase,
 )
 {
     private val logger = KotlinLogging.logger {}
@@ -36,14 +36,14 @@ class CompleteTaskController(
             is CheckOrderDto ->
             {
                 val command = data.toCommand(userTask.key, userTask.variables["orderId"].toString())
-                val response = TaskIdDto(completeCheckOrderTaskUseCase.complete(command))
+                val response = TaskIdDto(checkOrderUseCase.complete(command))
                 return ResponseEntity.ok(response)
             }
 
-            is PrepareOrderSchema ->
+            is PrepareDeliverySchema ->
             {
                 val command = data.toCommand(userTask.key, userTask.variables["orderId"].toString())
-                val response = TaskIdDto(completePrepareOrderTaskUseCase.complete(command))
+                val response = TaskIdDto(prepareDeliveryUseCase.complete(command))
                 return ResponseEntity.ok(response)
             }
 
@@ -59,11 +59,11 @@ class CompleteTaskController(
 
         return when (userTask.elementId)
         {
-            UserTaskId.PREPARE_ORDER.id ->
+            UserTaskId.PREPARE_DELIVERY.id ->
             {
-                val data = formData as PrepareOrderSchema
+                val data = formData as PrepareDeliverySchema
                 val command = data.toCommand(userTask.key, userTask.variables["orderId"].toString())
-                val response = TaskIdDto(completePrepareOrderTaskUseCase.update(command))
+                val response = TaskIdDto(prepareDeliveryUseCase.update(command))
                 ResponseEntity.ok(response)
             }
 

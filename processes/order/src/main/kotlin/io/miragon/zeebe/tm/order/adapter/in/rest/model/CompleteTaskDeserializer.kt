@@ -8,7 +8,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.UserTaskId
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.FormDataDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareOrderSchema
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareDeliverySchema
 import org.springframework.boot.jackson.JsonComponent
 
 @JsonComponent
@@ -29,9 +29,9 @@ class CompleteTaskDeserializer : JsonDeserializer<CompleteTaskDto<FormDataDto>>(
                 mapper.treeToValue(dataNode, CheckOrderDto::class.java)
             }
 
-            UserTaskId.PREPARE_ORDER.id ->
+            UserTaskId.PREPARE_DELIVERY.id ->
             {
-                mapper.treeToValue(dataNode, PrepareOrderSchema::class.java)
+                mapper.treeToValue(dataNode, PrepareDeliverySchema::class.java)
             }
 
             else -> throw IllegalArgumentException("Unknown user task id: $id")

@@ -8,4 +8,5 @@ data class Item(
     val price: BigDecimal? = null,
     val image: String? = null,
     val quantity: Int? = null,
+    val ready: Boolean? = null,
 )

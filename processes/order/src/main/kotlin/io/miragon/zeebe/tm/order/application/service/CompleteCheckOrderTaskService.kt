@@ -15,9 +15,7 @@ class CompleteCheckOrderTaskService(
 {
     override fun complete(command: Command): Long
     {
-        val taskId = command.taskId
-        val orderId = command.orderId
-        val isAccepted = command.isAccepted
+        val (taskId, orderId, isAccepted) = command
 
         val order = orderPersistencePort.findById(orderId)
         order.state = if (isAccepted) Order.State.CHECKED else Order.State.DECLINED

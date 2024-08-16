@@ -21,4 +21,7 @@ class OrderItemEntity(
 
     @Column(nullable = false)
     val quantity: Int,
+
+    @Column(nullable = false)
+    val ready: Boolean,
 )
