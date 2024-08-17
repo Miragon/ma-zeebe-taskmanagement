@@ -1,5 +1,5 @@
 server:
-  port: 9102
+  port: ${PAYMENT_PORT:8092}
 
 payment:
   id: paymentProcess
@@ -16,7 +16,7 @@ spring:
     enabled: true
   datasource:
     driver-class-name: ${LOCAL_DATASOURCE_DRIVER:org.postgresql.Driver}
-    url: ${JDBC_BASE_URL:jdbc:postgresql://localhost:5432/paymentprocess}?currentSchema=payment_schema
+    url: ${PAYMENT_JDBC_URL:jdbc:postgresql://localhost:5432/paymentprocess}?currentSchema=payment_schema
     username: ${LOCAL_DATASOURCE_USER:postgres}
     password: ${LOCAL_DATASOURCE_PASSWORD:postgres}
 

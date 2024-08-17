@@ -21,7 +21,7 @@ data class ProcessApplicationMetadata(
 
         @get:NotBlank
         @get:Pattern(regexp = "^https?://.+:[0-9]")
-        val baseUrl: String,                // http://localhost:8080
+        val baseUrl: String,
 
         val startable: Boolean = true,
 
