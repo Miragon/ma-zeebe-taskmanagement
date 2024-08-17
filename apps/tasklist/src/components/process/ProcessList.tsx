@@ -90,9 +90,10 @@ function ProcessList() {
 
         try {
             const response = await api.startProcess(data, config);
+            const message = response.data.message;
             setSnackbarProps({
                 open: true,
-                message: response.data.message,
+                message: message.length > 0 ? message : "Process started successfully",
             });
 
         } catch (error) {

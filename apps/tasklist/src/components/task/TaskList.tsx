@@ -123,7 +123,7 @@ function TaskList() {
             const message = response.data.message;
             setSnackbarProps({
                 open: true,
-                message,
+                message: message.length > 0 ? message : "Task updated successfully",
             });
         } catch (error) {
             console.error("Failed to update task:", error);
@@ -150,7 +150,7 @@ function TaskList() {
             const message = response.data.message;
             setSnackbarProps({
                 open: true,
-                message,
+                message: message.length > 0 ? message : "Task completed successfully",
             });
 
         } catch (error) {
