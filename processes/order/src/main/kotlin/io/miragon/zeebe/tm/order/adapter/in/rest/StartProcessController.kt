@@ -1,11 +1,6 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.FormDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.MessageDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.ItemDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.LoadItemsDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PlaceOrderDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.toCommand
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.*
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadStartEventUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.StartProcessUseCase
 import mu.KotlinLogging

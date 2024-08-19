@@ -1,4 +1,4 @@
-package io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema
+package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
 
 import java.math.BigDecimal
 

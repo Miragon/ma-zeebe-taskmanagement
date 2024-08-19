@@ -1,8 +1,8 @@
-package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
+package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PlaceOrderDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareDeliverySchema
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.CheckOrderDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.PlaceOrderDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.PrepareDeliverySchema
 import io.miragon.zeebe.tm.order.application.port.`in`.CompleteCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareDeliveryTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.StartProcessUseCase

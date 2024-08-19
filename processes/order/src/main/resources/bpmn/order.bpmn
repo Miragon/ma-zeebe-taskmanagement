@@ -44,7 +44,7 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="requestPayment" />
         <zeebe:ioMapping>
-          <zeebe:output source="=false" target="paymentReceived" />
+          <zeebe:output source="=paymentId" target="paymentId" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0wi71fc</bpmn:incoming>
@@ -65,7 +65,7 @@
   </bpmn:process>
   <bpmn:message id="Message_20j8qkd" name="PaymentReceived">
     <bpmn:extensionElements>
-      <zeebe:subscription correlationKey="=paymentReceived" />
+      <zeebe:subscription correlationKey="=paymentId" />
     </bpmn:extensionElements>
   </bpmn:message>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -80,20 +80,6 @@
         <dc:Bounds x="270" y="137" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1oqjd57_di" bpmnElement="Gateway_1oqjd57" isMarkerVisible="true">
-        <dc:Bounds x="435" y="152" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="435" y="128" width="49" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_04bhgde_di" bpmnElement="RequestPayment">
-        <dc:Bounds x="560" y="137" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_09vtvd0_di" bpmnElement="Activity_09vtvd0">
-        <dc:Bounds x="560" y="250" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1t3yd4l_di" bpmnElement="Event_1t3yd4l">
         <dc:Bounds x="1002" y="159" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -104,11 +90,25 @@
         <dc:Bounds x="830" y="137" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1oqjd57_di" bpmnElement="Gateway_1oqjd57" isMarkerVisible="true">
+        <dc:Bounds x="435" y="152" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="435" y="128" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0hxie89_di" bpmnElement="Event_0hxie89">
         <dc:Bounds x="1002" y="272" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="982" y="315" width="76" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_04bhgde_di" bpmnElement="RequestPayment">
+        <dc:Bounds x="560" y="137" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_09vtvd0_di" bpmnElement="Activity_09vtvd0">
+        <dc:Bounds x="560" y="250" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_08ah165_di" bpmnElement="PaymentReceivedEvent">
         <dc:Bounds x="732" y="159" width="36" height="36" />

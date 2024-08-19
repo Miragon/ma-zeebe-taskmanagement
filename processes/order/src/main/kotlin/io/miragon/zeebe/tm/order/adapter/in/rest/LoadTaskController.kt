@@ -1,9 +1,7 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.FormDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.UserTaskDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.*
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.*
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadPrepareOrderTaskUseCase
 import mu.KotlinLogging

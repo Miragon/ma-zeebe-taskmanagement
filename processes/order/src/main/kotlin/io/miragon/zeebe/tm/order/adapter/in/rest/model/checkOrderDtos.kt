@@ -1,7 +1,8 @@
-package io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema
+package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
 
 import java.math.BigDecimal
 
+// Data to show in the UI
 data class LoadOrderDto(
     val firstname: String,
     val lastname: String,
@@ -20,6 +21,7 @@ data class CheckOrderItemDto(
     val quantity: Int,
 )
 
+// Data that is sent to the application
 data class CheckOrderDto(
     val isOrderValid: Boolean,
 ) : FormDataDto()

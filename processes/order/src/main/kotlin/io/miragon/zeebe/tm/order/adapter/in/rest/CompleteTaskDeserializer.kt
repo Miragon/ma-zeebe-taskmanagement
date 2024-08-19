@@ -1,14 +1,11 @@
-package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
+package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.UserTaskId
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.CheckOrderDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.FormDataDto
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.PrepareDeliverySchema
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.*
 import org.springframework.boot.jackson.JsonComponent
 
 @JsonComponent

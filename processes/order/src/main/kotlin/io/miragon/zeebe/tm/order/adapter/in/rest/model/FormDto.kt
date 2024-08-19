@@ -1,6 +1,9 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
 
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.schema.FormDataDto
+/**
+ * Base class for all classes that hold data that is shown in the UI.
+ */
+sealed class FormDataDto
 
 sealed class FormDto
 {
