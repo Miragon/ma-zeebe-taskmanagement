@@ -16,7 +16,7 @@ class DeclineOrderWorker(
     @JobWorker(type = "declineOrder")
     fun declineOrder(@Variable("orderId") orderId: String)
     {
-        val res = useCase.decline(DeclineOrderUseCase.Command(orderId))
-        log.info { "Order $orderId declined: $res" }
+        useCase.decline(DeclineOrderUseCase.Command(orderId))
+        log.info { "Order $orderId declined!" }
     }
 }

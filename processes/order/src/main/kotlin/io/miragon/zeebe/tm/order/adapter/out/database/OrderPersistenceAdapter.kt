@@ -52,7 +52,6 @@ class OrderPersistenceAdapter(
             street = orderEntity.street,
             city = orderEntity.city,
             zip = orderEntity.zip,
-            state = Order.State.valueOf(orderEntity.state),
             items = orderEntity.orderItems.map {
                 Item(
                     id = it.item.id.toString(),
@@ -61,7 +60,11 @@ class OrderPersistenceAdapter(
                     image = it.item.image,
                     quantity = it.quantity
                 )
-            }
+            },
+            state = Order.State.valueOf(orderEntity.state),
+            processInstanceKey = orderEntity.processInstanceKey,
+            deliveryDate = orderEntity.deliveryDate,
+            modeOfDispatch = orderEntity.modeOfDispatch,
         )
     }
 
@@ -75,8 +78,9 @@ class OrderPersistenceAdapter(
             street = order.street,
             city = order.city,
             zip = order.zip,
-            state = order.state?.name ?: throw IllegalArgumentException("State must be set"),
             orderItems = orderItems ?: emptyList(),
+            state = order.state?.name ?: throw IllegalArgumentException("State must be set"),
+            processInstanceKey = order.processInstanceKey,
             deliveryDate = order.deliveryDate,
             modeOfDispatch = order.modeOfDispatch,
         )

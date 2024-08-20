@@ -35,11 +35,14 @@ class OrderEntity(
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
     val orderItems: List<OrderItemEntity> = mutableListOf(),
 
+    @Column(nullable = true, name = "process_instance_key")
+    val processInstanceKey: Long?,
+
     @Column(nullable = true, name = "delivery_date")
-    val deliveryDate: LocalDate? = null,
+    val deliveryDate: LocalDate?,
 
     @Column(nullable = true, name = "mode_of_dispatch")
-    val modeOfDispatch: String? = null,
+    val modeOfDispatch: String?,
 )
 {
     fun copy(
@@ -49,9 +52,11 @@ class OrderEntity(
         street: String = this.street,
         city: String = this.city,
         zip: String = this.zip,
-        deliveryDate: LocalDate? = this.deliveryDate,
-        state: String = this.state,
         orderItems: List<OrderItemEntity> = this.orderItems,
+        state: String = this.state,
+        processInstanceKey: Long? = this.processInstanceKey,
+        deliveryDate: LocalDate? = this.deliveryDate,
+        modeOfDispatch: String? = this.modeOfDispatch,
     ): OrderEntity
     {
         return OrderEntity(
@@ -62,9 +67,11 @@ class OrderEntity(
             street = street,
             city = city,
             zip = zip,
-            deliveryDate = deliveryDate,
-            state = state,
             orderItems = orderItems,
+            state = state,
+            processInstanceKey = processInstanceKey,
+            deliveryDate = deliveryDate,
+            modeOfDispatch = modeOfDispatch,
         )
     }
 }

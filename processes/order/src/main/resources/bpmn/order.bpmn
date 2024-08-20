@@ -43,9 +43,6 @@
     <bpmn:sendTask id="RequestPayment" name="Request payment">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="requestPayment" />
-        <zeebe:ioMapping>
-          <zeebe:output source="=paymentId" target="paymentId" />
-        </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0wi71fc</bpmn:incoming>
       <bpmn:outgoing>Flow_0hkw20k</bpmn:outgoing>
@@ -65,7 +62,7 @@
   </bpmn:process>
   <bpmn:message id="Message_20j8qkd" name="PaymentReceived">
     <bpmn:extensionElements>
-      <zeebe:subscription correlationKey="=paymentId" />
+      <zeebe:subscription correlationKey="=invoiceId" />
     </bpmn:extensionElements>
   </bpmn:message>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">

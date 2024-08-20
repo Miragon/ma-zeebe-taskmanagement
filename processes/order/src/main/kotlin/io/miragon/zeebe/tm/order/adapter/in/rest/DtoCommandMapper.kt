@@ -22,7 +22,11 @@ fun PlaceOrderDto.toCommand() = StartProcessUseCase.Command(
                 id = it.id,
                 quantity = it.quantity
             )
-        }
+        },
+        state = null,
+        processInstanceKey = null,
+        deliveryDate = null,
+        modeOfDispatch = null
     )
 )
 

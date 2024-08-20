@@ -43,6 +43,32 @@ services:
     networks:
       - internal
 
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - internal
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    networks:
+      - internal
+
   postgres:
     image: postgres:15.3
     container_name: postgres
@@ -59,7 +85,7 @@ services:
     env_file:
       - common.env
     environment:
-      - POSTGRES_MULTIPLE_DATABASES=${TM_DATASOURCE_DB},${ORDER_DATASOURCE_DB},${PAYMENT_DATASOURCE_DB}
+      POSTGRES_MULTIPLE_DATABASES: ${TM_DATASOURCE_DB},${ORDER_DATASOURCE_DB},${PAYMENT_DATASOURCE_DB}
     networks:
       - internal
 
@@ -117,10 +143,10 @@ services:
     env_file:
       - common.env
     environment:
-      - TM_PORT=${TM_PORT}
-      - TM_JDBC_URL=${TM_JDBC_URL}
-      - ORDER_BASE_URL=${ORDER_BASE_URL}
-      - PAYMENT_BASE_URL=${PAYMENT_BASE_URL}
+      TM_PORT: ${TM_PORT}
+      TM_JDBC_URL: ${TM_JDBC_URL}
+      ORDER_BASE_URL: ${ORDER_BASE_URL}
+      PAYMENT_BASE_URL: ${PAYMENT_BASE_URL}
     profiles:
       - prod
     depends_on:
@@ -146,8 +172,8 @@ services:
     env_file:
       - common.env
     environment:
-      - ORDER_PORT=${ORDER_PORT}
-      - ORDER_JDBC_URL=${ORDER_JDBC_URL}
+      ORDER_PORT: ${ORDER_PORT}
+      ORDER_JDBC_URL: ${ORDER_JDBC_URL}
     profiles:
       - prod
     depends_on:
@@ -173,8 +199,8 @@ services:
     env_file:
       - common.env
     environment:
-      - PAYMENT_PORT=${PAYMENT_PORT}
-      - PAYMENT_JDBC_URL=${PAYMENT_JDBC_URL}
+      PAYMENT_PORT: ${PAYMENT_PORT}
+      PAYMENT_JDBC_URL: ${PAYMENT_JDBC_URL}
     profiles:
       - prod
     depends_on:

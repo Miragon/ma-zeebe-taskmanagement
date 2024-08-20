@@ -11,9 +11,10 @@ data class Order(
     val city: String,
     val zip: String,
     var items: List<Item>,
-    var state: State? = null,
-    var deliveryDate: LocalDate? = null,
-    var modeOfDispatch: String? = null
+    var state: State?,
+    var processInstanceKey: Long?,
+    var deliveryDate: LocalDate?,
+    var modeOfDispatch: String?,
 )
 {
     enum class State

@@ -1,15 +1,16 @@
 CREATE TABLE orders
 (
-    id                 UUID PRIMARY KEY,
-    firstname          VARCHAR(255) NOT NULL,
-    lastname           VARCHAR(255) NOT NULL,
-    email              VARCHAR(255) NOT NULL,
-    street             VARCHAR(255) NOT NULL,
-    city               VARCHAR(255) NOT NULL,
-    zip                VARCHAR(20)  NOT NULL,
-    state              VARCHAR(255) NOT NULL,
-    delivery_date      DATE,
-    "mode_of_dispatch" VARCHAR(255)
+    id                     UUID PRIMARY KEY,
+    firstname              VARCHAR(255) NOT NULL,
+    lastname               VARCHAR(255) NOT NULL,
+    email                  VARCHAR(255) NOT NULL,
+    street                 VARCHAR(255) NOT NULL,
+    city                   VARCHAR(255) NOT NULL,
+    zip                    VARCHAR(20)  NOT NULL,
+    state                  VARCHAR(255) NOT NULL,
+    delivery_date          DATE,
+    "process_instance_key" BIGINT,
+    "mode_of_dispatch"     VARCHAR(255)
 );
 
 CREATE TABLE items
