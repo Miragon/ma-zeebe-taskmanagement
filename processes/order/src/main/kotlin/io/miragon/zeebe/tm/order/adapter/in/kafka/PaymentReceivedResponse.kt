@@ -1,5 +1,5 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.kafka
 
-data class PaymentIdResponse(
+data class PaymentReceivedResponse(
     val invoiceId: String
 )

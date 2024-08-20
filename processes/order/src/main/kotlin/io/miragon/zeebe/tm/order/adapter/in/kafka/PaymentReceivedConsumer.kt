@@ -14,7 +14,7 @@ class PaymentReceivedConsumer(
     private val log = KotlinLogging.logger {}
 
     @KafkaListener(topics = ["payment-received"], groupId = "order-process")
-    fun receivePayment(response: PaymentIdResponse)
+    fun receivePayment(response: PaymentReceivedResponse)
     {
         val invoiceId = response.invoiceId
         useCase.handle(Query(invoiceId))

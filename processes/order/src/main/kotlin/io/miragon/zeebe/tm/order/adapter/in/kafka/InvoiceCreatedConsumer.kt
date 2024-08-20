@@ -7,7 +7,7 @@ import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
 
 @Component
-class InvoiceIdConsumer(
+class InvoiceCreatedConsumer(
     private val useCase: InvoiceCreatedUseCase
 )
 {

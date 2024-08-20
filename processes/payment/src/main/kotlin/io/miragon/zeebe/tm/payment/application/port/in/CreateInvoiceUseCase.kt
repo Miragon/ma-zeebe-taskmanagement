@@ -4,15 +4,10 @@ import java.math.BigDecimal
 
 interface CreateInvoiceUseCase
 {
-    fun create(command: Command): Response
+    fun create(command: Command)
 
     data class Command(
         val orderId: String,
         val amount: BigDecimal,
-    )
-
-    data class Response(
-        val invoiceId: String,
-        val processInstanceKey: Long,
     )
 }

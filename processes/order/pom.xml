@@ -14,6 +14,7 @@
     <properties>
         <pojo.generator.version>1.2.1</pojo.generator.version>
         <jsonschema.generator.version>4.35.0</jsonschema.generator.version>
+        <openapi.generator.version>1.4</openapi.generator.version>
     </properties>
 
     <dependencies>
@@ -80,7 +81,7 @@
             <plugin>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-maven-plugin</artifactId>
-                <version>1.4</version>
+                <version>${openapi.generator.version}</version>
                 <executions>
                     <execution>
                         <phase>integration-test</phase>
