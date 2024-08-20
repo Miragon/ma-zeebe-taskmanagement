@@ -3,8 +3,6 @@ server:
 
 payment:
   id: paymentProcess
-  name: Payment Process
-  startable: true
 
 spring:
   application:
