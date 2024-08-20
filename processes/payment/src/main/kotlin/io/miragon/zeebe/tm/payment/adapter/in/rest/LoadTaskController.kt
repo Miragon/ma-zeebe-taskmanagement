@@ -5,6 +5,7 @@ import io.miragon.zeebe.tm.payment.adapter.`in`.rest.model.CheckPaymentSchema
 import io.miragon.zeebe.tm.payment.adapter.`in`.rest.model.FormDto
 import io.miragon.zeebe.tm.payment.adapter.`in`.rest.model.UserTaskDto
 import io.miragon.zeebe.tm.payment.application.port.`in`.LoadCheckPaymentTaskUseCase
+import io.miragon.zeebe.tm.payment.application.port.`in`.LoadCheckPaymentTaskUseCase.Command
 import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -45,7 +46,7 @@ class LoadTaskController(
     private fun loadCheckPayment(userTask: UserTaskDto): FormDto.JsonForm<CheckPaymentSchema>
     {
         val invoiceId = userTask.variables["invoiceId"].toString()
-        val command = LoadCheckPaymentTaskUseCase.Command(
+        val command = Command(
             invoiceId,
             filePath = checkPaymentFormPath
         )
