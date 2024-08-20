@@ -8,7 +8,7 @@
     <bpmn:participant id="Participant_1nugz9w" name="Payment" processRef="Process_0amjsze" />
     <bpmn:participant id="Participant_0a5aa2y" name="E-Mail" />
     <bpmn:messageFlow id="Flow_1xekm6d" name="loadData" sourceRef="Activity_1h27gek" targetRef="Participant_18zdyly" />
-    <bpmn:messageFlow id="Flow_0unhj1x" name="ConfirmationWorker" sourceRef="Activity_077n8q9" targetRef="Participant_18zdyly" />
+    <bpmn:messageFlow id="Flow_0unhj1x" name="ConfirmationWorker" sourceRef="RequestPayment" targetRef="Participant_18zdyly" />
     <bpmn:messageFlow id="Flow_0crvker" sourceRef="Activity_0fvnufh" targetRef="Participant_18zdyly" />
     <bpmn:messageFlow id="Flow_0ardf05" name="PaymentReceivedCommand" sourceRef="Participant_18zdyly" targetRef="Event_1s0xikm" />
     <bpmn:messageFlow id="Flow_0ukzdy5" name="loadData" sourceRef="Activity_0blzev4" targetRef="Participant_18zdyly" />
@@ -26,8 +26,8 @@
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_0sosd96" sourceRef="StartEvent_1" targetRef="Activity_1h27gek" />
     <bpmn:sequenceFlow id="Flow_073td8q" sourceRef="Activity_1h27gek" targetRef="Gateway_01tkbz6" />
-    <bpmn:sequenceFlow id="Flow_0kj9a84" name="yes" sourceRef="Gateway_01tkbz6" targetRef="Activity_077n8q9" />
-    <bpmn:sequenceFlow id="Flow_0rfk0th" sourceRef="Activity_077n8q9" targetRef="Event_1s0xikm" />
+    <bpmn:sequenceFlow id="Flow_0kj9a84" name="yes" sourceRef="Gateway_01tkbz6" targetRef="RequestPayment" />
+    <bpmn:sequenceFlow id="Flow_0rfk0th" sourceRef="RequestPayment" targetRef="Event_1s0xikm" />
     <bpmn:sequenceFlow id="Flow_008xg05" sourceRef="Event_1s0xikm" targetRef="Activity_0blzev4" />
     <bpmn:sequenceFlow id="Flow_03urfco" sourceRef="Activity_0blzev4" targetRef="Event_0rb7mi1" />
     <bpmn:sequenceFlow id="Flow_0tg8zwv" name="no" sourceRef="Gateway_01tkbz6" targetRef="Activity_0fvnufh">
@@ -53,7 +53,13 @@
       <bpmn:outgoing>Flow_008xg05</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0dtsm00" />
     </bpmn:intermediateCatchEvent>
-    <bpmn:sendTask id="Activity_077n8q9" name="Request payment">
+    <bpmn:sendTask id="RequestPayment" name="Request payment">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="requestPayment" />
+        <zeebe:ioMapping>
+          <zeebe:output source="=paymentReceived" target="paymentReceived" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0kj9a84</bpmn:incoming>
       <bpmn:outgoing>Flow_0rfk0th</bpmn:outgoing>
     </bpmn:sendTask>
@@ -165,7 +171,7 @@
           <dc:Bounds x="855" y="358" width="89" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_077n8q9_di" bpmnElement="Activity_077n8q9">
+      <bpmndi:BPMNShape id="Activity_077n8q9_di" bpmnElement="RequestPayment">
         <dc:Bounds x="720" y="360" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
