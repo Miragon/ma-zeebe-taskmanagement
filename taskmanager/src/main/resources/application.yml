@@ -35,5 +35,5 @@ miranum.tm.process-application:
   paymentProcess:
     label: Payment Process
     base-url: ${PAYMENT_BASE_URL:http://localhost:8092}
-    startable: true
+    startable: false
 
