@@ -37,7 +37,7 @@
     <bpmn:endEvent id="Event_0hxie89" name="Order canceled">
       <bpmn:incoming>Flow_0wxvd28</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0dm4lct" name="No" sourceRef="Gateway_1oqjd57" targetRef="Activity_09vtvd0">
+    <bpmn:sequenceFlow id="Flow_0dm4lct" name="No" sourceRef="Gateway_1oqjd57" targetRef="SendCancellation">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=isOrderValid = false</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sendTask id="RequestPayment" name="Request payment">
@@ -48,11 +48,14 @@
       <bpmn:outgoing>Flow_0hkw20k</bpmn:outgoing>
     </bpmn:sendTask>
     <bpmn:sequenceFlow id="Flow_0hkw20k" sourceRef="RequestPayment" targetRef="PaymentReceivedEvent" />
-    <bpmn:sendTask id="Activity_09vtvd0" name="Send cancellation">
+    <bpmn:sendTask id="SendCancellation" name="Send cancellation">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendCancellation" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0dm4lct</bpmn:incoming>
       <bpmn:outgoing>Flow_0wxvd28</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:sequenceFlow id="Flow_0wxvd28" sourceRef="Activity_09vtvd0" targetRef="Event_0hxie89" />
+    <bpmn:sequenceFlow id="Flow_0wxvd28" sourceRef="SendCancellation" targetRef="Event_0hxie89" />
     <bpmn:sequenceFlow id="Flow_14acku6" sourceRef="PaymentReceivedEvent" targetRef="PrepareDelivery" />
     <bpmn:intermediateCatchEvent id="PaymentReceivedEvent" name="Payment received">
       <bpmn:incoming>Flow_0hkw20k</bpmn:incoming>
@@ -103,7 +106,7 @@
         <dc:Bounds x="560" y="137" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_09vtvd0_di" bpmnElement="Activity_09vtvd0">
+      <bpmndi:BPMNShape id="Activity_09vtvd0_di" bpmnElement="SendCancellation">
         <dc:Bounds x="560" y="250" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>

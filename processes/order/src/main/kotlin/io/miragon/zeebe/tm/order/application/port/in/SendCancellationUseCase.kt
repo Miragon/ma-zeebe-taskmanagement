@@ -1,6 +1,6 @@
 package io.miragon.zeebe.tm.order.application.port.`in`
 
-interface DeclineOrderUseCase
+interface SendCancellationUseCase
 {
     /**
      * Declines the order.

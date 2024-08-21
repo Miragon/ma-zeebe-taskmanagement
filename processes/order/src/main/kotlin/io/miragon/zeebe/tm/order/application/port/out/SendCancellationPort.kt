@@ -1,6 +1,6 @@
 package io.miragon.zeebe.tm.order.application.port.out
 
-interface DeclineOrderPort
+interface SendCancellationPort
 {
     /**
      * Declines the order.

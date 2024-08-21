@@ -1,11 +1,11 @@
 package io.miragon.zeebe.tm.order.adapter.out.kafka
 
-import io.miragon.zeebe.tm.order.application.port.out.DeclineOrderPort
+import io.miragon.zeebe.tm.order.application.port.out.SendCancellationPort
 import mu.KotlinLogging
 import org.springframework.stereotype.Component
 
 @Component
-class DeclineOrderProducer : DeclineOrderPort
+class SendCancellationProducer : SendCancellationPort
 {
     private val log = KotlinLogging.logger {}
 
