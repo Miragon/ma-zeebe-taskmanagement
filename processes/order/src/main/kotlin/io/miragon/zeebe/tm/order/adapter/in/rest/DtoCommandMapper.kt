@@ -1,6 +1,6 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.CheckOrderDto
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.CheckOrder
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.PlaceOrderDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.PrepareDeliverySchema
 import io.miragon.zeebe.tm.order.application.port.`in`.CompleteCheckOrderTaskUseCase
@@ -30,7 +30,7 @@ fun PlaceOrderDto.toCommand() = StartProcessUseCase.Command(
     )
 )
 
-fun CheckOrderDto.toCommand(taskId: Long, orderId: String): CompleteCheckOrderTaskUseCase.Command
+fun CheckOrder.toCommand(taskId: Long, orderId: String): CompleteCheckOrderTaskUseCase.Command
 {
     return CompleteCheckOrderTaskUseCase.Command(
         taskId = taskId,

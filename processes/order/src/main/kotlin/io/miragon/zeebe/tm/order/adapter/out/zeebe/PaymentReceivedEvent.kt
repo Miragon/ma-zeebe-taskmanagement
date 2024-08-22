@@ -9,11 +9,11 @@ class PaymentReceivedEvent(
     private val zeebeClient: ZeebeClient
 ) : PaymentReceivedPort
 {
-    override fun correlateMessage(paymentId: String)
+    override fun correlateMessage(invoiceId: String)
     {
         zeebeClient.newPublishMessageCommand()
             .messageName("PaymentReceived")
-            .correlationKey(paymentId)
+            .correlationKey(invoiceId)
             .send()
             .join()
     }

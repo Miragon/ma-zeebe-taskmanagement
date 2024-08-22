@@ -26,7 +26,7 @@ class CreateInvoiceService(
         )
 
         val invoiceId = invoicePersistencePort.save(invoice)
-        invoiceCreatedPort.handle(invoiceId, orderId)
+        invoiceCreatedPort.publish(invoiceId, orderId)
         startProcessPort.startProcess(invoiceId)
     }
 }

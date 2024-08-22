@@ -1,4 +1,4 @@
-package io.miragon.zeebe.tm.payment.adapter.`in`.kafka
+package io.miragon.zeebe.tm.shared.kafka
 
 import java.math.BigDecimal
 

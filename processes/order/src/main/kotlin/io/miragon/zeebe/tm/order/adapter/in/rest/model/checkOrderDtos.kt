@@ -1,9 +1,10 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
 
+import io.miragon.zeebe.tm.tasklist.FormData
 import java.math.BigDecimal
 
 // Data to show in the UI
-data class LoadOrderDto(
+data class LoadOrder(
     val firstname: String,
     val lastname: String,
     val email: String,
@@ -11,7 +12,7 @@ data class LoadOrderDto(
     val city: String,
     val zip: String,
     val items: List<CheckOrderItemDto>,
-) : FormDataDto()
+) : FormData
 
 data class CheckOrderItemDto(
     val id: String,
@@ -22,6 +23,6 @@ data class CheckOrderItemDto(
 )
 
 // Data that is sent to the application
-data class CheckOrderDto(
+data class CheckOrder(
     val isOrderValid: Boolean,
-) : FormDataDto()
+) : FormData

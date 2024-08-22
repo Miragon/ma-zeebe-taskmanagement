@@ -13,9 +13,6 @@ class StartProcessService(
     private val startProcessPort: StartProcessPort
 ) : StartProcessUseCase
 {
-    /**
-     * @return order id
-     */
     override fun startProcess(command: Command): String
     {
         val order = command.order

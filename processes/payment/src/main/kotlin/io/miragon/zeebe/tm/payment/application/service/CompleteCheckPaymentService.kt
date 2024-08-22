@@ -24,7 +24,7 @@ class CompleteCheckPaymentService(
         invoicePersistencePort.update(invoice)
         completeTaskPort.completeCheckPaymentTask(taskId, isAccepted)
 
-        paymentReceivedPort.handle(invoiceId)
+        paymentReceivedPort.publish(invoiceId)
 
         return taskId
     }

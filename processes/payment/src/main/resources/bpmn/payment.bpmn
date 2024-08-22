@@ -9,7 +9,7 @@
       </bpmn:extensionElements>
       <bpmn:outgoing>Flow_1rrpel3</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="Activity_0v364ul" name="Check payment">
+    <bpmn:userTask id="CheckPayment" name="Check payment">
       <bpmn:extensionElements>
         <zeebe:ioMapping>
           <zeebe:output source="=isAccepted" target="isAccepted" />
@@ -18,26 +18,29 @@
       <bpmn:incoming>Flow_1rrpel3</bpmn:incoming>
       <bpmn:outgoing>Flow_0f66uwj</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_1rrpel3" sourceRef="Event_15oppzv" targetRef="Activity_0v364ul" />
+    <bpmn:sequenceFlow id="Flow_1rrpel3" sourceRef="Event_15oppzv" targetRef="CheckPayment" />
     <bpmn:endEvent id="Event_0wrdna2" name="Invoice checked">
       <bpmn:incoming>Flow_0f66uwj</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0f66uwj" sourceRef="Activity_0v364ul" targetRef="Event_0wrdna2" />
-    <bpmn:boundaryEvent id="Event_1yhk5c3" name="Remind of payment" cancelActivity="false" attachedToRef="Activity_0v364ul">
+    <bpmn:sequenceFlow id="Flow_0f66uwj" sourceRef="CheckPayment" targetRef="Event_0wrdna2" />
+    <bpmn:boundaryEvent id="Event_1yhk5c3" name="Remind of payment" cancelActivity="false" attachedToRef="CheckPayment">
       <bpmn:outgoing>Flow_0uj3m51</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_1836t8b">
         <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P3D</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
-    <bpmn:sendTask id="Activity_14e24fo" name="Send reminder">
+    <bpmn:sendTask id="SendReminder" name="Send reminder">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendReminder" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0uj3m51</bpmn:incoming>
       <bpmn:outgoing>Flow_1iht8ux</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:sequenceFlow id="Flow_0uj3m51" sourceRef="Event_1yhk5c3" targetRef="Activity_14e24fo" />
+    <bpmn:sequenceFlow id="Flow_0uj3m51" sourceRef="Event_1yhk5c3" targetRef="SendReminder" />
     <bpmn:endEvent id="Event_0hff5mb" name="Reminder sent">
       <bpmn:incoming>Flow_1iht8ux</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1iht8ux" sourceRef="Activity_14e24fo" targetRef="Event_0hff5mb" />
+    <bpmn:sequenceFlow id="Flow_1iht8ux" sourceRef="SendReminder" targetRef="Event_0hff5mb" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="paymentProcess">
@@ -47,11 +50,17 @@
           <dc:Bounds x="143" y="165" width="75" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0v364ul_di" bpmnElement="Activity_0v364ul">
+      <bpmndi:BPMNShape id="Activity_0v364ul_di" bpmnElement="CheckPayment">
         <dc:Bounds x="250" y="100" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_14e24fo_di" bpmnElement="Activity_14e24fo">
+      <bpmndi:BPMNShape id="Event_0wrdna2_di" bpmnElement="Event_0wrdna2">
+        <dc:Bounds x="542" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="521" y="165" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14e24fo_di" bpmnElement="SendReminder">
         <dc:Bounds x="390" y="220" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
@@ -59,12 +68,6 @@
         <dc:Bounds x="542" y="242" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="524" y="285" width="72" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0wrdna2_di" bpmnElement="Event_0wrdna2">
-        <dc:Bounds x="542" y="122" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="521" y="165" width="79" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0u9lk1k_di" bpmnElement="Event_1yhk5c3">

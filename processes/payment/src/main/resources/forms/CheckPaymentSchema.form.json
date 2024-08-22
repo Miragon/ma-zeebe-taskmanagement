@@ -30,18 +30,27 @@
     "elements": [
       {
         "type": "Control",
-        "scope": "#/properties/invoiceId"
+        "scope": "#/properties/invoiceId",
+        "options": {
+          "readonly": true
+        }
       },
       {
         "type": "Control",
-        "scope": "#/properties/orderId"
+        "scope": "#/properties/orderId",
+        "options": {
+          "readonly": true
+        }
       },
       {
         "type": "HorizontalLayout",
         "elements": [
           {
             "type": "Control",
-            "scope": "#/properties/amount"
+            "scope": "#/properties/amount",
+            "options": {
+              "readonly": true
+            }
           },
           {
             "type": "Control",

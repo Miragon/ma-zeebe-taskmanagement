@@ -1,6 +1,7 @@
 package io.miragon.zeebe.tm.payment.adapter.out.kafka
 
 import io.miragon.zeebe.tm.payment.application.port.out.PaymentReceivedPort
+import io.miragon.zeebe.tm.shared.kafka.PaymentReceivedRequest
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
 
@@ -9,7 +10,7 @@ class PaymentReceivedProducer(
     private val kafkaTemplate: KafkaTemplate<String, PaymentReceivedRequest>
 ) : PaymentReceivedPort
 {
-    override fun handle(invoiceId: String)
+    override fun publish(invoiceId: String)
     {
         val request = PaymentReceivedRequest(invoiceId)
 

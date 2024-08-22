@@ -1,5 +1,6 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
 
+import io.miragon.zeebe.tm.tasklist.FormData
 import jakarta.annotation.Nonnull
 import jakarta.validation.constraints.NotBlank
 import org.jetbrains.annotations.NotNull
@@ -15,7 +16,7 @@ data class PrepareDeliverySchema(
     @get:NotBlank(message = "Please provide the mode of dispatch.")
     val modeOfDispatch: ModeOfDispatch,
 
-    ) : FormDataDto()
+    ) : FormData
 
 data class CheckItemDto(
     val id: String,

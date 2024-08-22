@@ -4,6 +4,8 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.*
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadPrepareOrderTaskUseCase
+import io.miragon.zeebe.tm.tasklist.FormDto
+import io.miragon.zeebe.tm.tasklist.UserTaskDto
 import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -49,7 +51,7 @@ class LoadTaskController(
         }
     }
 
-    private fun loadCheckOrder(userTask: UserTaskDto): FormDto.HtmlForm<LoadOrderDto>
+    private fun loadCheckOrder(userTask: UserTaskDto): FormDto.HtmlForm<LoadOrder>
     {
         val command = LoadCheckOrderTaskUseCase.Command(
             orderId = userTask.variables["orderId"].toString(),
@@ -60,7 +62,7 @@ class LoadTaskController(
         val form = response.form
         val order = response.order
 
-        val formData = LoadOrderDto(
+        val formData = LoadOrder(
             firstname = order.firstname,
             lastname = order.lastname,
             email = order.email,

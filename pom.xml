@@ -11,6 +11,7 @@
     <modules>
         <module>taskmanager</module>
         <module>processes</module>
+        <module>tasklistApi</module>
     </modules>
 
     <properties>

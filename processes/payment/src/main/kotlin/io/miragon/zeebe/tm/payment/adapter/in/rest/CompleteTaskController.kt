@@ -1,10 +1,10 @@
 package io.miragon.zeebe.tm.payment.adapter.`in`.rest
 
 import io.miragon.zeebe.tm.payment.adapter.`in`.rest.model.CheckPaymentSchema
-import io.miragon.zeebe.tm.payment.adapter.`in`.rest.model.CompleteTaskDto
-import io.miragon.zeebe.tm.payment.adapter.`in`.rest.model.FormDataDto
-import io.miragon.zeebe.tm.payment.adapter.`in`.rest.model.MessageDto
 import io.miragon.zeebe.tm.payment.application.port.`in`.CompleteCheckPaymentUseCase
+import io.miragon.zeebe.tm.tasklist.CompleteTaskDto
+import io.miragon.zeebe.tm.tasklist.FormData
+import io.miragon.zeebe.tm.tasklist.MessageDto
 import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -21,7 +21,7 @@ class CompleteTaskController(
     private val logger = KotlinLogging.logger {}
 
     @PostMapping("/complete")
-    fun completeTask(@RequestBody completeTaskDto: CompleteTaskDto<FormDataDto>): ResponseEntity<MessageDto>
+    fun completeTask(@RequestBody completeTaskDto: CompleteTaskDto<FormData>): ResponseEntity<MessageDto>
     {
         val userTask = completeTaskDto.userTask
 

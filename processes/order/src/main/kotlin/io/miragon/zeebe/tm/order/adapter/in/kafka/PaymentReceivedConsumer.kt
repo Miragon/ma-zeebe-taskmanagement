@@ -2,6 +2,7 @@ package io.miragon.zeebe.tm.order.adapter.`in`.kafka
 
 import io.miragon.zeebe.tm.order.application.port.`in`.PaymentReceivedUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.PaymentReceivedUseCase.Query
+import io.miragon.zeebe.tm.shared.kafka.PaymentReceivedRequest
 import mu.KotlinLogging
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
@@ -14,7 +15,7 @@ class PaymentReceivedConsumer(
     private val log = KotlinLogging.logger {}
 
     @KafkaListener(topics = ["payment-received"], groupId = "order-process")
-    fun receivePayment(response: PaymentReceivedResponse)
+    fun receivePayment(response: PaymentReceivedRequest)
     {
         val invoiceId = response.invoiceId
         useCase.handle(Query(invoiceId))

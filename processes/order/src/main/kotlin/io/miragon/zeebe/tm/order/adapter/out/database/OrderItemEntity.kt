@@ -25,3 +25,18 @@ class OrderItemEntity(
     @Column(nullable = false)
     val ready: Boolean,
 )
+{
+    fun copy(
+        quantity: Int = this.quantity,
+        ready: Boolean = this.ready,
+    ): OrderItemEntity
+    {
+        return OrderItemEntity(
+            id = this.id,
+            order = this.order,
+            item = this.item,
+            quantity = quantity,
+            ready = ready,
+        )
+    }
+}

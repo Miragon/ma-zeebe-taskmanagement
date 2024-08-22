@@ -2,10 +2,10 @@ package io.miragon.zeebe.tm.payment.adapter.`in`.rest
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.miragon.zeebe.tm.payment.adapter.`in`.rest.model.CheckPaymentSchema
-import io.miragon.zeebe.tm.payment.adapter.`in`.rest.model.FormDto
-import io.miragon.zeebe.tm.payment.adapter.`in`.rest.model.UserTaskDto
 import io.miragon.zeebe.tm.payment.application.port.`in`.LoadCheckPaymentTaskUseCase
 import io.miragon.zeebe.tm.payment.application.port.`in`.LoadCheckPaymentTaskUseCase.Command
+import io.miragon.zeebe.tm.tasklist.FormDto
+import io.miragon.zeebe.tm.tasklist.UserTaskDto
 import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping

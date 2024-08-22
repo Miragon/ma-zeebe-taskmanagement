@@ -2,19 +2,20 @@
 
 # Setup
 
-1. Build the project
-    ```shell
-    mvn clean package
-    ```
-
-2. Start the stack (this will may take some seconds)
+1. Start the stack (this will may take some seconds)
     ```shell
     cd stack
     docker-compose --profile prod up -d
     ```
    > ℹ️ You can use the `run scripts` if you are using `Intellij`.
 
-3. Open the [Tasklist](http://localhost:8081)
+2. Open the [Tasklist](http://localhost:8080)
 
+# Overview
 ![overview](images/overview.excalidraw.png)
 
+# Structure of the task manager
+![taskmanager](images/taskmanager.excalidraw.png)
+
+# Structure of a process application
+![process](images/process.excalidraw.png)

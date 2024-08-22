@@ -3,7 +3,9 @@ package io.miragon.zeebe.tm.order.adapter.out.database
 import io.miragon.zeebe.tm.order.application.port.out.OrderPersistencePort
 import io.miragon.zeebe.tm.order.domain.Item
 import io.miragon.zeebe.tm.order.domain.Order
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Component
@@ -21,26 +23,116 @@ class OrderPersistenceAdapter(
     override fun findById(id: String): Order
     {
         val uuid = UUID.fromString(id)
-        val orderEntity = orderRepository.findById(uuid).orElseThrow { throw RuntimeException("Order not found") }
+        val orderEntity =
+            orderRepository.findById(uuid).orElseThrow { throw EntityNotFoundException("Order not found") }
         return toOrder(orderEntity)
     }
 
-    override fun update(id: String, order: Order): String
+    @Transactional
+    override fun update(id: String, updatedOrder: Order): String
     {
-        val orderEntity = toOrderEntity(order, id)
-        val orderItemEntity = toOrderItemEntity(orderEntity, order.items)
-        val res = orderRepository.save(orderEntity.copy(orderItems = orderItemEntity))
+        val existingOrder = orderRepository.findById(UUID.fromString(id))
+            .orElseThrow { throw EntityNotFoundException("Order not found") }
+
+        val newOrder = existingOrder.copy(
+            firstname = updatedOrder.firstname,
+            lastname = updatedOrder.lastname,
+            email = updatedOrder.email,
+            street = updatedOrder.street,
+            city = updatedOrder.city,
+            zip = updatedOrder.zip,
+            orderItems = updateOrderItems(existingOrder, updatedOrder.items),
+            state = updatedOrder.state?.name ?: throw IllegalArgumentException("State must be set"),
+            processInstanceKey = updatedOrder.processInstanceKey,
+            deliveryDate = updatedOrder.deliveryDate,
+            modeOfDispatch = updatedOrder.modeOfDispatch,
+        )
+
+        val res = orderRepository.save(newOrder)
         return res.id.toString()
     }
 
-    override fun save(order: Order): String
+    @Transactional
+    override fun save(newOrder: Order): String
     {
-        val orderEntity = toOrderEntity(order)
-        val orderSaved = orderRepository.save(orderEntity)
-        val orderItemsEntity = toOrderItemEntity(orderSaved, order.items)
-        orderItemRepository.saveAll(orderItemsEntity)
+        // 1. Save order without order items
+        val orderEntity = OrderEntity(
+            firstname = newOrder.firstname,
+            lastname = newOrder.lastname,
+            email = newOrder.email,
+            street = newOrder.street,
+            city = newOrder.city,
+            zip = newOrder.zip,
+            state = newOrder.state?.name ?: throw IllegalArgumentException("State must be set"),
+            processInstanceKey = newOrder.processInstanceKey,
+            deliveryDate = newOrder.deliveryDate,
+            modeOfDispatch = newOrder.modeOfDispatch,
+        )
 
-        return orderSaved.id.toString()
+        val savedOrderEntity = orderRepository.save(orderEntity)
+
+        // 2. Add order items to saved order
+        val orderItemsEntity = newOrder.items.map {
+            val itemEntity = itemRepository
+                .findById(UUID.fromString(it.id))
+                .orElseThrow {
+                    throw EntityNotFoundException("Item with id ${it.id} not found")
+                }
+
+            OrderItemEntity(
+                order = orderEntity,
+                item = itemEntity,
+                quantity = it.quantity ?: throw IllegalArgumentException("Quantity must be set"),
+                ready = it.ready ?: false,
+            )
+        }
+
+        val completeOrder = savedOrderEntity.copy(orderItems = orderItemsEntity)
+
+        // 3. Save complete order
+        val savedOrder = orderRepository.save(completeOrder)
+
+        return savedOrder.id.toString()
+    }
+
+    private fun updateOrderItems(existingOrderEntity: OrderEntity, updatedItems: List<Item>): List<OrderItemEntity>
+    {
+        val existingOrderItems = existingOrderEntity.orderItems.toMutableList()
+
+        // Remove items that are not in the new order
+        existingOrderItems.removeIf { existingOrderItem ->
+            updatedItems.none { it.id == existingOrderItem.item.id.toString() }
+        }
+
+        // Update existing items or add new ones
+        updatedItems.forEach { updatedItem ->
+            val existingOrderItem = existingOrderItems.find { it.item.id.toString() == updatedItem.id }
+            if (existingOrderItem != null)
+            {
+                existingOrderItem.copy(
+                    quantity = updatedItem.quantity ?: throw IllegalArgumentException("Quantity must be set"),
+                    ready = updatedItem.ready ?: false,
+                )
+            } else
+            {
+                val itemEntity = itemRepository
+                    .findById(UUID.fromString(updatedItem.id))
+                    .orElseThrow {
+                        throw EntityNotFoundException("Item with id ${updatedItem.id} not found")
+                    }
+
+                existingOrderItems.add(
+                    OrderItemEntity(
+                        order = existingOrderEntity,
+                        item = itemEntity,
+                        quantity = updatedItem.quantity ?: throw IllegalArgumentException("Quantity must be set"),
+                        ready = updatedItem.ready ?: false,
+                    )
+                )
+            }
+        }
+
+        return existingOrderItems
     }
 
     private fun toOrder(orderEntity: OrderEntity): Order
@@ -66,41 +158,5 @@ class OrderPersistenceAdapter(
             deliveryDate = orderEntity.deliveryDate,
             modeOfDispatch = orderEntity.modeOfDispatch,
         )
-    }
-
-    private fun toOrderEntity(order: Order, id: String? = null, orderItems: List<OrderItemEntity>? = null): OrderEntity
-    {
-        return OrderEntity(
-            id = id?.let { UUID.fromString(it) },
-            firstname = order.firstname,
-            lastname = order.lastname,
-            email = order.email,
-            street = order.street,
-            city = order.city,
-            zip = order.zip,
-            orderItems = orderItems ?: emptyList(),
-            state = order.state?.name ?: throw IllegalArgumentException("State must be set"),
-            processInstanceKey = order.processInstanceKey,
-            deliveryDate = order.deliveryDate,
-            modeOfDispatch = order.modeOfDispatch,
-        )
-    }
-
-    private fun toOrderItemEntity(orderEntity: OrderEntity, orderItems: List<Item>): List<OrderItemEntity>
-    {
-        return orderItems.map { item ->
-            val itemEntity = itemRepository
-                .findById(UUID.fromString(item.id))
-                .orElseThrow {
-                    throw IllegalArgumentException("Item with id ${item.id} not found")
-                }
-
-            OrderItemEntity(
-                order = orderEntity,
-                item = itemEntity,
-                quantity = item.quantity ?: throw RuntimeException("Quantity must be set"),
-                ready = item.ready ?: false,
-            )
-        }
     }
 }

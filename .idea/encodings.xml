@@ -13,6 +13,8 @@
     <file url="file://$PROJECT_DIR$/processes/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/kotlin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tasklistApi/src/main/kotlin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tasklistApi/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/taskmanager/src/main/kotlin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/taskmanager/src/main/resources" charset="UTF-8" />
   </component>

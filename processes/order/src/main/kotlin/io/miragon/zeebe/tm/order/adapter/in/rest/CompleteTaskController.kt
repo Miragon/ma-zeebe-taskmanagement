@@ -1,8 +1,12 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
-import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.*
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.CheckOrder
+import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.PrepareDeliverySchema
 import io.miragon.zeebe.tm.order.application.port.`in`.CompleteCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareDeliveryTaskUseCase
+import io.miragon.zeebe.tm.tasklist.CompleteTaskDto
+import io.miragon.zeebe.tm.tasklist.FormData
+import io.miragon.zeebe.tm.tasklist.MessageDto
 import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -20,7 +24,7 @@ class CompleteTaskController(
     private val logger = KotlinLogging.logger {}
 
     @PostMapping("/complete")
-    fun completeTask(@RequestBody completeTaskDto: CompleteTaskDto<FormDataDto>): ResponseEntity<MessageDto>
+    fun completeTask(@RequestBody completeTaskDto: CompleteTaskDto<FormData>): ResponseEntity<MessageDto>
     {
         val userTask = completeTaskDto.userTask
 
@@ -28,7 +32,7 @@ class CompleteTaskController(
 
         when (val data = completeTaskDto.formData)
         {
-            is CheckOrderDto ->
+            is CheckOrder ->
             {
                 val command = data.toCommand(userTask.key, userTask.variables["orderId"].toString())
                 val taskId = checkOrderUseCase.complete(command)
@@ -56,7 +60,7 @@ class CompleteTaskController(
     }
 
     @PostMapping("/update")
-    fun updateTask(@RequestBody completeTaskDto: CompleteTaskDto<FormDataDto>): ResponseEntity<MessageDto>
+    fun updateTask(@RequestBody completeTaskDto: CompleteTaskDto<FormData>): ResponseEntity<MessageDto>
     {
         val userTask = completeTaskDto.userTask
         val formData = completeTaskDto.formData

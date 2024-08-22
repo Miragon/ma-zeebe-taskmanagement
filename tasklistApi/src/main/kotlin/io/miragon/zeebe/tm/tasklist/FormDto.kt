@@ -1,20 +1,20 @@
-package io.miragon.zeebe.tm.order.adapter.`in`.rest.model
+package io.miragon.zeebe.tm.tasklist
 
 /**
- * Base class for all classes that hold data that is shown in the UI.
+ * Interface for form data DTOs.
  */
-sealed class FormDataDto
+interface FormData
 
 sealed class FormDto
 {
-    data class JsonForm<T : FormDataDto>(
+    data class JsonForm<T : FormData>(
         val schema: String,
         val uiSchema: String,
         val updatable: Boolean,
         val formData: T?
     ) : FormDto()
 
-    data class HtmlForm<T : FormDataDto>(
+    data class HtmlForm<T : FormData>(
         val html: String,
         val updatable: Boolean,
         val formData: T?
