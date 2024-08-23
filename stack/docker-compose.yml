@@ -130,7 +130,7 @@ services:
       context: ../apps/tasklist
       target: prod
       args:
-        - VITE_BASE_URL=${PROCESS_BASE_URL}
+        VITE_BASE_URL: ${PROCESS_BASE_URL}
     ports:
       - "3000:8080"
     restart: unless-stopped
@@ -143,7 +143,10 @@ services:
     container_name: taskmanager
     build:
       context: ../.
-      dockerfile: stack/docker/Dockerfile-Taskmanager
+      dockerfile: stack/docker/Dockerfile
+      args:
+        PORT: ${TM_PORT}
+        PROJECT: taskmanager
     ports:
       - "8090:${TM_PORT}"
     restart: unless-stopped
@@ -172,7 +175,10 @@ services:
     container_name: order-process
     build:
       context: ../.
-      dockerfile: stack/docker/Dockerfile-OrderProcess
+      dockerfile: stack/docker/Dockerfile
+      args:
+        PORT: ${ORDER_PORT}
+        PROJECT: processes/order
     ports:
       - "8091:${ORDER_PORT}"
     restart: unless-stopped
@@ -200,7 +206,10 @@ services:
     container_name: payment-process
     build:
       context: ../.
-      dockerfile: stack/docker/Dockerfile-PaymentProcess
+      dockerfile: stack/docker/Dockerfile
+      args:
+        PORT: ${PAYMENT_PORT}
+        PROJECT: processes/payment
     ports:
       - "8092:${PAYMENT_PORT}"
     restart: unless-stopped
