@@ -35,6 +35,8 @@ services:
         condition: service_started
       elasticsearch:
         condition: service_healthy
+    profiles:
+      - prod
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.8.2
