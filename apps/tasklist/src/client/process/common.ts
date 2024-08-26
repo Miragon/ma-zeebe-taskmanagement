@@ -17,12 +17,25 @@ import type { Configuration } from "./configuration.ts";
 import type { RequestArgs } from "./base.ts";
 import { RequiredError } from "./base.ts";
 import type { AxiosInstance, AxiosResponse } from "axios";
+import { getMetadataByProcessId, UrlType } from "../taskmanager.ts";
 
-/**
- *
- * @export
- */
-export const DUMMY_BASE_URL = "https://example.com";
+
+export function getUrlByType(type: UrlType, processId: string): string {
+    const processApplication = getMetadataByProcessId(processId);
+
+    switch (type) {
+        case UrlType.PROCESS_START:
+            return processApplication.startProcessUrl;
+        case UrlType.PROCESS_START_FORM:
+            return processApplication.startProcessFormUrl;
+        case UrlType.LOAD_TASK:
+            return processApplication.loadTaskUrl;
+        case UrlType.UPDATE_TASK:
+            return processApplication.updateTaskUrl;
+        case UrlType.COMPLETE_TASK:
+            return processApplication.completeTaskUrl;
+    }
+}
 
 /**
  *
@@ -146,12 +159,4 @@ export const createRequestFunction = function(axiosArgs: RequestArgs, globalAxio
         };
         return axios.request<T, R>(axiosRequestArgs);
     };
-};
-
-/**
- *
- * @export
- */
-export const createUrl = function(path: string, basePath?: string) {
-    return new URL(path, basePath ?? DUMMY_BASE_URL);
 };

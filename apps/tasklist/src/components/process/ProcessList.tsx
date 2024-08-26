@@ -3,10 +3,12 @@ import { Snackbar, SnackbarProps } from "@mui/material";
 import { tss } from "tss-react/mui";
 import { AxiosRequestConfig } from "axios";
 import { ProcessApplication } from "../../client/generated/taskmanager";
-import { HtmlFormDto, JsonFormDto } from "../../client/process/models";
+import { HtmlForm as HtmlFormDto } from "../../client/generated/api/model/htmlForm.ts";
+import { JsonForm as JsonFormDto } from "../../client/generated/api/model/jsonForm.ts";
 import { StartProcessControllerApi } from "../../client/process";
 import { FormProps, FormType, getFormType, HtmlForm, JsonForm } from "../../model";
-import { getAllProcessApplications, getUrlByType, UrlType } from "../../config.ts";
+import { getAllProcessApplications, UrlType } from "../../client/taskmanager.ts";
+import { getUrlByType } from "../../client/process/common.ts";
 import ProcessStartButton from "./ProcessStartButton.tsx";
 import JsonFormRenderer from "../form/JsonFormRenderer.tsx";
 import HtmlFormRenderer from "../form/HtmlFormRenderer.tsx";
@@ -55,7 +57,7 @@ function ProcessList() {
         };
 
         try {
-            const response = await api.loadForm(config);
+            const response = await api.loadForm(undefined, config);
             const form = response.data;
 
             switch (getFormType(form)) {

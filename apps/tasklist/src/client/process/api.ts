@@ -23,8 +23,10 @@ import {
     toPathString,
 } from "./common.ts";
 import { BaseAPI, RequestArgs, RequiredError } from "./base.ts";
-import { CompleteTaskDto, FormDto, MessageDto } from "./models";
-import { UserTaskDto } from "../generated/taskmanager";
+import { CompleteTaskDtoFormData } from "../generated/api/model/completeTaskDtoFormData.ts";
+import { LoadStartForm200Response } from "../generated/api/model/loadStartForm200Response.ts";
+import { MessageDto } from "../generated/api/model/messageDto.ts";
+import { UserTaskDto } from "../generated/api/model/userTaskDto.ts";
 
 /**
  * CompleteTaskControllerApi - axios parameter creator
@@ -34,11 +36,12 @@ export const CompleteTaskControllerApiAxiosParamCreator = function(configuration
     return {
         /**
          *
-         * @param {CompleteTaskDto} completeTaskDto
+         * @summary Complete task
+         * @param {CompleteTaskDtoFormData} completeTaskDto
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        completeTask: async (completeTaskDto: CompleteTaskDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        completeTask: async (completeTaskDto: CompleteTaskDtoFormData, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'completeTaskDto' is not null or undefined
             assertParamExists("completeTask", "completeTaskDto", completeTaskDto);
             if (!options.url) {
@@ -69,11 +72,12 @@ export const CompleteTaskControllerApiAxiosParamCreator = function(configuration
         },
         /**
          *
-         * @param {CompleteTaskDto} completeTaskDto
+         * @summary Update task
+         * @param {CompleteTaskDtoFormData} completeTaskDto
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateTask: async (completeTaskDto: CompleteTaskDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateTask: async (completeTaskDto: CompleteTaskDtoFormData, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'completeTaskDto' is not null or undefined
             assertParamExists("updateTask", "completeTaskDto", completeTaskDto);
             if (!options.url) {
@@ -114,21 +118,23 @@ export const CompleteTaskControllerApiFp = function(configuration?: Configuratio
     return {
         /**
          *
-         * @param {CompleteTaskDto} completeTaskDto
+         * @summary Complete task
+         * @param {CompleteTaskDtoFormData} completeTaskDto
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async completeTask(completeTaskDto: CompleteTaskDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MessageDto>> {
+        async completeTask(completeTaskDto: CompleteTaskDtoFormData, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MessageDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.completeTask(completeTaskDto, options);
             return (axios) => createRequestFunction(localVarAxiosArgs, globalAxios)(axios);
         },
         /**
          *
-         * @param {CompleteTaskDto} completeTaskDto
+         * @summary Update task
+         * @param {CompleteTaskDtoFormData} completeTaskDto
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateTask(completeTaskDto: CompleteTaskDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MessageDto>> {
+        async updateTask(completeTaskDto: CompleteTaskDtoFormData, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MessageDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateTask(completeTaskDto, options);
             return (axios) => createRequestFunction(localVarAxiosArgs, globalAxios)(axios);
         },
@@ -144,20 +150,22 @@ export const CompleteTaskControllerApiFactory = function(configuration?: Configu
     return {
         /**
          *
-         * @param {CompleteTaskDto} completeTaskDto
+         * @summary Complete task
+         * @param {CompleteTaskDtoFormData} completeTaskDto
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        completeTask(completeTaskDto: CompleteTaskDto, options?: any): AxiosPromise<MessageDto> {
+        completeTask(completeTaskDto: CompleteTaskDtoFormData, options?: any): AxiosPromise<MessageDto> {
             return localVarFp.completeTask(completeTaskDto, options).then((request) => request(axios, basePath));
         },
         /**
          *
-         * @param {CompleteTaskDto} completeTaskDto
+         * @summary Update task
+         * @param {CompleteTaskDtoFormData} completeTaskDto
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateTask(completeTaskDto: CompleteTaskDto, options?: any): AxiosPromise<MessageDto> {
+        updateTask(completeTaskDto: CompleteTaskDtoFormData, options?: any): AxiosPromise<MessageDto> {
             return localVarFp.updateTask(completeTaskDto, options).then((request) => request(axios, basePath));
         },
     };
@@ -172,23 +180,25 @@ export const CompleteTaskControllerApiFactory = function(configuration?: Configu
 export class CompleteTaskControllerApi extends BaseAPI {
     /**
      *
-     * @param {CompleteTaskDto} completeTaskDto
+     * @summary Complete task
+     * @param {CompleteTaskDtoFormData} completeTaskDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CompleteTaskControllerApi
      */
-    public completeTask(completeTaskDto: CompleteTaskDto, options?: RawAxiosRequestConfig) {
+    public completeTask(completeTaskDto: CompleteTaskDtoFormData, options?: RawAxiosRequestConfig) {
         return CompleteTaskControllerApiFp(this.configuration).completeTask(completeTaskDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      *
-     * @param {CompleteTaskDto} completeTaskDto
+     * @summary Update task
+     * @param {CompleteTaskDtoFormData} completeTaskDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CompleteTaskControllerApi
      */
-    public updateTask(completeTaskDto: CompleteTaskDto, options?: RawAxiosRequestConfig) {
+    public updateTask(completeTaskDto: CompleteTaskDtoFormData, options?: RawAxiosRequestConfig) {
         return CompleteTaskControllerApiFp(this.configuration).updateTask(completeTaskDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -202,6 +212,7 @@ export const LoadTaskControllerApiAxiosParamCreator = function(configuration?: C
     return {
         /**
          *
+         * @summary Load a task form and it\'s data
          * @param {UserTaskDto} userTaskDto
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -247,11 +258,12 @@ export const LoadTaskControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          *
+         * @summary Load a task form and it\'s data
          * @param {UserTaskDto} userTaskDto
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async loadData(userTaskDto: UserTaskDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FormDto>> {
+        async loadData(userTaskDto: UserTaskDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoadStartForm200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.loadData(userTaskDto, options);
             return (axios) => createRequestFunction(localVarAxiosArgs, globalAxios)(axios);
         },
@@ -267,11 +279,12 @@ export const LoadTaskControllerApiFactory = function(configuration?: Configurati
     return {
         /**
          *
+         * @summary Load a task form and it\'s data
          * @param {UserTaskDto} userTaskDto
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadData(userTaskDto: UserTaskDto, options?: any): AxiosPromise<FormDto> {
+        loadData(userTaskDto: UserTaskDto, options?: any): AxiosPromise<LoadStartForm200Response> {
             return localVarFp.loadData(userTaskDto, options).then((request) => request(axios, basePath));
         },
     };
@@ -286,6 +299,7 @@ export const LoadTaskControllerApiFactory = function(configuration?: Configurati
 export class LoadTaskControllerApi extends BaseAPI {
     /**
      *
+     * @summary Load a task form and it\'s data
      * @param {UserTaskDto} userTaskDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -305,10 +319,14 @@ export const StartProcessControllerApiAxiosParamCreator = function(configuration
     return {
         /**
          *
+         * @summary Get start form
+         * @param {{ [key: string]: any; }} [requestBody]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadForm: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        loadForm: async (requestBody?: {
+            [key: string]: any;
+        }, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             if (!options.url) {
                 throw new RequiredError("url");
             }
@@ -318,14 +336,16 @@ export const StartProcessControllerApiAxiosParamCreator = function(configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: "GET", ...baseOptions, ...options };
+            const localVarRequestOptions = { method: "POST", ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter["Content-Type"] = "application/json";
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             const headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration);
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -334,6 +354,7 @@ export const StartProcessControllerApiAxiosParamCreator = function(configuration
         },
         /**
          *
+         * @summary Start a process
          * @param {object} body
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -379,15 +400,20 @@ export const StartProcessControllerApiFp = function(configuration?: Configuratio
     return {
         /**
          *
+         * @summary Get start form
+         * @param {{ [key: string]: any; }} [requestBody]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async loadForm(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FormDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.loadForm(options);
+        async loadForm(requestBody?: {
+            [key: string]: any;
+        }, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoadStartForm200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.loadForm(requestBody, options);
             return (axios) => createRequestFunction(localVarAxiosArgs, globalAxios)(axios);
         },
         /**
          *
+         * @summary Start a process
          * @param {object} body
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -408,14 +434,17 @@ export const StartProcessControllerApiFactory = function(configuration?: Configu
     return {
         /**
          *
+         * @summary Get start form
+         * @param {{ [key: string]: any; }} [requestBody]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadForm(options?: any): AxiosPromise<FormDto> {
-            return localVarFp.loadForm(options).then((request) => request(axios, basePath));
+        loadForm(requestBody?: { [key: string]: any; }, options?: any): AxiosPromise<LoadStartForm200Response> {
+            return localVarFp.loadForm(requestBody, options).then((request) => request(axios, basePath));
         },
         /**
          *
+         * @summary Start a process
          * @param {object} body
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -435,16 +464,19 @@ export const StartProcessControllerApiFactory = function(configuration?: Configu
 export class StartProcessControllerApi extends BaseAPI {
     /**
      *
+     * @summary Get start form
+     * @param {{ [key: string]: any; }} [requestBody]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof StartProcessControllerApi
      */
-    public loadForm(options?: RawAxiosRequestConfig) {
-        return StartProcessControllerApiFp(this.configuration).loadForm(options).then((request) => request(this.axios, this.basePath));
+    public loadForm(requestBody?: { [key: string]: any }, options?: RawAxiosRequestConfig) {
+        return StartProcessControllerApiFp(this.configuration).loadForm(requestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      *
+     * @summary Start a process
      * @param {object} body
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
