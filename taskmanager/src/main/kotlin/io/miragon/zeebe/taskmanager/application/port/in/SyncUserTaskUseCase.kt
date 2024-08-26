@@ -4,9 +4,9 @@ import java.time.Instant
 
 interface SyncUserTaskUseCase
 {
-    fun sync(command: SyncUserTaskCommand)
+    fun sync(command: Command)
 
-    data class SyncUserTaskCommand(
+    data class Command(
         val key: Long,
         val elementId: String,
         val processInstanceKey: Long,

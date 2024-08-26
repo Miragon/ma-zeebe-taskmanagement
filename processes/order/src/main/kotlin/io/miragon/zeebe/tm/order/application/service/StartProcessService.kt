@@ -19,10 +19,7 @@ class StartProcessService(
         order.state = Order.State.CREATED
 
         val orderId = orderPersistencePort.save(order)
-        val processInstanceKey = startProcessPort.startProcess(orderId)
-
-        order.processInstanceKey = processInstanceKey
-        orderPersistencePort.update(orderId, order)
+        startProcessPort.startProcess(orderId)
 
         return orderId
     }

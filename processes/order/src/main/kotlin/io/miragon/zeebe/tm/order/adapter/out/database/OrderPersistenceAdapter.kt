@@ -43,7 +43,7 @@ class OrderPersistenceAdapter(
             zip = updatedOrder.zip,
             orderItems = updateOrderItems(existingOrder, updatedOrder.items),
             state = updatedOrder.state?.name ?: throw IllegalArgumentException("State must be set"),
-            processInstanceKey = updatedOrder.processInstanceKey,
+            invoiceId = existingOrder.invoiceId ?: updatedOrder.invoiceId?.let { UUID.fromString(it) },
             deliveryDate = updatedOrder.deliveryDate,
             modeOfDispatch = updatedOrder.modeOfDispatch,
         )
@@ -64,9 +64,9 @@ class OrderPersistenceAdapter(
             city = newOrder.city,
             zip = newOrder.zip,
             state = newOrder.state?.name ?: throw IllegalArgumentException("State must be set"),
-            processInstanceKey = newOrder.processInstanceKey,
-            deliveryDate = newOrder.deliveryDate,
-            modeOfDispatch = newOrder.modeOfDispatch,
+            invoiceId = null,
+            deliveryDate = null,
+            modeOfDispatch = null,
         )
 
         val savedOrderEntity = orderRepository.save(orderEntity)
@@ -154,7 +154,7 @@ class OrderPersistenceAdapter(
                 )
             },
             state = Order.State.valueOf(orderEntity.state),
-            processInstanceKey = orderEntity.processInstanceKey,
+            invoiceId = orderEntity.invoiceId?.toString(),
             deliveryDate = orderEntity.deliveryDate,
             modeOfDispatch = orderEntity.modeOfDispatch,
         )

@@ -154,16 +154,6 @@
                     </modules>
                 </configuration>
             </plugin>
-            <plugin>
-                <!-- Generate OpenAPI documentation -->
-                <!-- Is only used because of react-forms -->
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-maven-plugin</artifactId>
-                <configuration>
-                    <apiDocsUrl>http://localhost:8091/v3/api-docs</apiDocsUrl>
-                    <outputDir>${project.basedir}</outputDir>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 

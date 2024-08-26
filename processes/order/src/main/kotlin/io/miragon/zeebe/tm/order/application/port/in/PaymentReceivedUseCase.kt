@@ -9,6 +9,7 @@ interface PaymentReceivedUseCase
     fun handle(query: Query)
 
     data class Query(
-        val paymentId: String
+        val orderId: String,
+        val invoiceId: String,
     )
 }

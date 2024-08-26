@@ -65,7 +65,7 @@
   </bpmn:process>
   <bpmn:message id="Message_20j8qkd" name="PaymentReceived">
     <bpmn:extensionElements>
-      <zeebe:subscription correlationKey="=invoiceId" />
+      <zeebe:subscription correlationKey="=orderId" />
     </bpmn:extensionElements>
   </bpmn:message>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">

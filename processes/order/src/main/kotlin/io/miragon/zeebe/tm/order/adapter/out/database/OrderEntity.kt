@@ -35,8 +35,8 @@ class OrderEntity(
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
     val orderItems: List<OrderItemEntity> = mutableListOf(),
 
-    @Column(nullable = true, name = "process_instance_key")
-    val processInstanceKey: Long?,
+    @Column(nullable = true, name = "invoice_id")
+    val invoiceId: UUID?,
 
     @Column(nullable = true, name = "delivery_date")
     val deliveryDate: LocalDate?,
@@ -54,7 +54,7 @@ class OrderEntity(
         zip: String = this.zip,
         orderItems: List<OrderItemEntity> = this.orderItems,
         state: String = this.state,
-        processInstanceKey: Long? = this.processInstanceKey,
+        invoiceId: UUID? = this.invoiceId,
         deliveryDate: LocalDate? = this.deliveryDate,
         modeOfDispatch: String? = this.modeOfDispatch,
     ): OrderEntity
@@ -69,7 +69,7 @@ class OrderEntity(
             zip = zip,
             orderItems = orderItems,
             state = state,
-            processInstanceKey = processInstanceKey,
+            invoiceId = invoiceId,
             deliveryDate = deliveryDate,
             modeOfDispatch = modeOfDispatch,
         )

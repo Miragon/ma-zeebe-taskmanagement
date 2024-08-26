@@ -6,11 +6,9 @@ interface UserTaskPersistencePort
 {
     fun findAllActiveTasks(): List<UserTask>
 
-    fun findByTaskId(taskId: Long): UserTask?
+    fun findByTaskId(taskId: Long): UserTask
 
-    fun findByAssignee(assignee: String): List<UserTask>
+    fun update(updatedTask: UserTask): Long
 
-    fun update(task: UserTask)
-
-    fun save(task: UserTask)
+    fun save(task: UserTask): Long
 }

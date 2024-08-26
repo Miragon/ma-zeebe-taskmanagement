@@ -3,7 +3,7 @@ package io.miragon.zeebe.taskmanager.adapter.out.database
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.miragon.zeebe.taskmanager.domain.UserTask
-import io.miragon.zeebe.taskmanager.domain.UserTaskState
+import io.miragon.zeebe.taskmanager.domain.UserTask.UserTaskState
 import jakarta.persistence.*
 import java.time.Instant
 
@@ -21,14 +21,14 @@ class UserTaskEntity(
 
     val processDefinitionKey: Long,
 
+    val createdAt: Instant = Instant.now(),
+
     var expiresAt: Instant,
 
     var taskState: String,
 
     @Convert(converter = MapConverter::class)
     var variables: Map<String, Any> = emptyMap(),
-
-    var createdAt: Instant = Instant.now(),
 
     var assignee: String?,
 

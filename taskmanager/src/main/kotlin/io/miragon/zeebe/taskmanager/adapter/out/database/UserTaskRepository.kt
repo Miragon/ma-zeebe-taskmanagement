@@ -10,6 +10,6 @@ interface UserTaskRepository : JpaRepository<UserTaskEntity, Long>
     @Query("SELECT t FROM UserTaskEntity t WHERE t.assignee = :assignee")
     fun findByAssignee(assignee: String): List<UserTaskEntity>
 
-    @Query("SELECT t FROM UserTaskEntity t WHERE t.expiresAt > :currentInstant")
+    @Query("SELECT t FROM UserTaskEntity t WHERE t.expiresAt > :currentInstant AND t.taskState = 'CREATED'")
     fun findByExpiresAtAfter(@Param("currentInstant") currentInstant: Instant): List<UserTaskEntity>
 }

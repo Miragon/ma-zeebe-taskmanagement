@@ -2,6 +2,7 @@ package io.miragon.zeebe.taskmanager.adapter.out.database
 
 import io.miragon.zeebe.taskmanager.application.port.out.UserTaskPersistencePort
 import io.miragon.zeebe.taskmanager.domain.UserTask
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Component
 import java.time.Instant
 
@@ -15,35 +16,39 @@ class UserTaskPersistenceAdapter(
         return userTaskRepository.findByExpiresAtAfter(Instant.now()).map { it.toDomain() }
     }
 
-    override fun findByTaskId(taskId: Long): UserTask?
+    override fun findByTaskId(taskId: Long): UserTask
     {
-        return userTaskRepository.findById(taskId).map { it.toDomain() }.orElse(null)
+        return userTaskRepository.findById(taskId).map { it.toDomain() }
+            .orElseThrow { EntityNotFoundException("Task with id $taskId not found") }
     }
 
-    override fun findByAssignee(assignee: String): List<UserTask>
+    override fun update(updatedTask: UserTask): Long
     {
-        return userTaskRepository.findByAssignee(assignee).map { it.toDomain() }
+        val existingTask = userTaskRepository.findById(updatedTask.key)
+            .orElseThrow { EntityNotFoundException("Task with id ${updatedTask.key} not found") }
+
+        existingTask.expiresAt = updatedTask.expiresAt
+        existingTask.taskState = updatedTask.taskState.toString()
+        existingTask.variables = updatedTask.variables
+        existingTask.assignee = updatedTask.assignee
+
+        return userTaskRepository.save(existingTask).id
     }
 
-    override fun update(task: UserTask)
+    override fun save(task: UserTask): Long
     {
-        this.save(task)
-    }
-
-    override fun save(task: UserTask)
-    {
-        userTaskRepository.save(
-            UserTaskEntity(
-                id = task.key,
-                elementId = task.elementId,
-                processInstanceKey = task.processInstanceKey,
-                bpmnProcessId = task.bpmnProcessId,
-                processDefinitionKey = task.processDefinitionKey,
-                variables = task.variables,
-                expiresAt = task.expiresAt,
-                assignee = task.assignee,
-                taskState = task.taskState.toString()
-            )
+        val userTaskEntity = UserTaskEntity(
+            id = task.key,
+            elementId = task.elementId,
+            processInstanceKey = task.processInstanceKey,
+            bpmnProcessId = task.bpmnProcessId,
+            processDefinitionKey = task.processDefinitionKey,
+            variables = task.variables,
+            expiresAt = task.expiresAt,
+            assignee = task.assignee,
+            taskState = task.taskState.toString()
         )
+
+        return userTaskRepository.save(userTaskEntity).id
     }
 }

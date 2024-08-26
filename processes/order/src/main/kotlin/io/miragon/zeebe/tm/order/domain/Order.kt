@@ -12,7 +12,7 @@ data class Order(
     val zip: String,
     var items: List<Item>,
     var state: State?,
-    var processInstanceKey: Long?,
+    var invoiceId: String?,
     var deliveryDate: LocalDate?,
     var modeOfDispatch: String?,
 )

@@ -24,7 +24,7 @@ fun PlaceOrderDto.toCommand() = StartProcessUseCase.Command(
             )
         },
         state = null,
-        processInstanceKey = null,
+        invoiceId = null,
         deliveryDate = null,
         modeOfDispatch = null
     )
