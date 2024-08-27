@@ -163,7 +163,7 @@ function TaskList() {
         setForm(null);
 
         setIsLoading(true);
-        setCompletedTask(task);
+        setTimeout(() => setCompletedTask(task), 500);
     };
 
     return (
