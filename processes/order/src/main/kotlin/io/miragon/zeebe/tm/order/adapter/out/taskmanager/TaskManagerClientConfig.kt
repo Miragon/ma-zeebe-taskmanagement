@@ -13,7 +13,7 @@ class TaskManagerClientConfig
     lateinit var baseUrl: String
 
     @Bean
-    fun tmRestClient(): RestClient
+    fun restClient(): RestClient
     {
         return RestClient.builder()
             .baseUrl(baseUrl)

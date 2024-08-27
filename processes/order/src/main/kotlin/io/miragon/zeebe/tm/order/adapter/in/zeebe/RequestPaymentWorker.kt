@@ -18,7 +18,6 @@ class RequestPaymentWorker(
     fun requestPayment(@Variable("orderId") orderId: String)
     {
         val command = Command(orderId)
-        val res = useCase.request(command)
-        log.info { "Payment requested: $res" }
+        useCase.request(command)
     }
 }

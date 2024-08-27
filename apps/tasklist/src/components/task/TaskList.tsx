@@ -30,6 +30,7 @@ function TaskList() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [tasks, setTasks] = useState<UserTaskDto[]>([]);
     const [task, setTask] = useState<UserTaskDto | null>(null);
+    const [completedTask, setCompletedTask] = useState<UserTaskDto | null>(null);
     const [form, setForm] = useState<FormProps | null>(null);
     const [snackbarProps, setSnackbarProps] = useState<SnackbarProps>({
         open: false,
@@ -53,7 +54,7 @@ function TaskList() {
             .catch((error) => console.error("Failed to load tasks:", error));
 
         setIsLoading(false);
-    }, []);
+    }, [completedTask]);
 
     function Tasks() {
         if (isLoading) {
@@ -162,6 +163,7 @@ function TaskList() {
         setForm(null);
 
         setIsLoading(true);
+        setCompletedTask(task);
     };
 
     return (

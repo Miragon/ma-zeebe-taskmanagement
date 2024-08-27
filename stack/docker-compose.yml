@@ -193,7 +193,7 @@ services:
     env_file:
       - common.env
     environment:
-      TM_BASE_URL: ${TM_BASE_URL}
+      TM_BASE_URL: http://taskmanager:8090
       ORDER_PORT: ${ORDER_PORT}
       ORDER_JDBC_URL: ${ORDER_JDBC_URL}
     profiles:
@@ -225,7 +225,7 @@ services:
     env_file:
       - common.env
     environment:
-      TM_BASE_URL: ${TM_BASE_URL}
+      TM_BASE_URL: http://taskmanager:8090
       PAYMENT_PORT: ${PAYMENT_PORT}
       PAYMENT_JDBC_URL: ${PAYMENT_JDBC_URL}
     profiles:

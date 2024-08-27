@@ -17,7 +17,13 @@ class RequestPaymentService(
     {
         val (orderId) = command
         val order = orderPersistencePort.findById(orderId)
-        val amount = order.items.sumOf { it.price ?: BigDecimal(0) }
+
+        // Calculate the total amount of the order
+        // by summing up the prices of all order items multiplied by their quantity
+        val amount = order.items
+            .map { it.price?.multiply(BigDecimal(it.quantity ?: 0)) }
+            .fold(BigDecimal.ZERO, BigDecimal::add)
+
 
         requestPaymentPort.publish(orderId, amount)
     }
