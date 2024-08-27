@@ -11,7 +11,6 @@ class SendCancellationProducer : SendCancellationPort
 
     override fun publish(orderId: String, email: String)
     {
-        // TODO produce message to Kafka for sending an email
-        log.info { "Declining order $orderId" }
+        log.info { "To: $email\nSubject: #$orderId declined" }
     }
 }

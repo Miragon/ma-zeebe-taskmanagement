@@ -3,6 +3,7 @@ server:
 
 order:
   id: orderProcess
+  tm.base-url: ${TM_BASE_URL:http://localhost:8090}
 
 management:
   endpoint:

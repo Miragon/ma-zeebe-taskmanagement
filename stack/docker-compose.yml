@@ -193,6 +193,7 @@ services:
     env_file:
       - common.env
     environment:
+      TM_BASE_URL: ${TM_BASE_URL}
       ORDER_PORT: ${ORDER_PORT}
       ORDER_JDBC_URL: ${ORDER_JDBC_URL}
     profiles:
@@ -224,6 +225,7 @@ services:
     env_file:
       - common.env
     environment:
+      TM_BASE_URL: ${TM_BASE_URL}
       PAYMENT_PORT: ${PAYMENT_PORT}
       PAYMENT_JDBC_URL: ${PAYMENT_JDBC_URL}
     profiles:

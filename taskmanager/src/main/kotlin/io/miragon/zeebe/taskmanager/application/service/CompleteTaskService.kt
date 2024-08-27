@@ -14,16 +14,19 @@ class CompleteTaskService(
 {
     private val log = KotlinLogging.logger {}
 
-    override fun complete(command: Command)
+    override fun complete(command: Command): Boolean
     {
+        val key = command.key
         try
         {
-            val task = userTaskPersistencePort.findByTaskId(command.key)
+            val task = userTaskPersistencePort.findByTaskId(key)
             task.complete()
-            userTaskPersistencePort.update(task)
+            val taskId = userTaskPersistencePort.update(task)
+            return taskId == key
         } catch (e: EntityNotFoundException)
         {
             log.error { "Task with id ${command.key} not found" }
+            return false
         }
     }
 }

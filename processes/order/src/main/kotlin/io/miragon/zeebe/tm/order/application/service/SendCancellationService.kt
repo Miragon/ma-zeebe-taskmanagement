@@ -4,6 +4,7 @@ import io.miragon.zeebe.tm.order.application.port.`in`.SendCancellationUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.SendCancellationUseCase.Command
 import io.miragon.zeebe.tm.order.application.port.out.OrderPersistencePort
 import io.miragon.zeebe.tm.order.application.port.out.SendCancellationPort
+import io.miragon.zeebe.tm.order.domain.Order
 import org.springframework.stereotype.Service
 
 @Service
@@ -16,6 +17,8 @@ class SendCancellationService(
     {
         val (orderId) = command
         val order = orderPersistencePort.findById(orderId)
+        order.state = Order.State.DECLINED
+        orderPersistencePort.update(orderId, order)
 
         sendCancellationPort.publish(orderId, order.email)
     }

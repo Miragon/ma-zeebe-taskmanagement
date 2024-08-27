@@ -1,8 +1,8 @@
 package io.miragon.zeebe.tm.payment.adapter.`in`.kafka
 
+import io.miragon.zeebe.tm.libs.shared.kafka.PaymentRequest
 import io.miragon.zeebe.tm.payment.application.port.`in`.CreateInvoiceUseCase
 import io.miragon.zeebe.tm.payment.application.port.`in`.CreateInvoiceUseCase.Command
-import io.miragon.zeebe.tm.shared.kafka.PaymentRequest
 import mu.KotlinLogging
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component

@@ -1,7 +1,7 @@
 package io.miragon.zeebe.tm.order.adapter.out.kafka
 
+import io.miragon.zeebe.tm.libs.shared.kafka.PaymentRequest
 import io.miragon.zeebe.tm.order.application.port.out.RequestPaymentPort
-import io.miragon.zeebe.tm.shared.kafka.PaymentRequest
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
 import java.math.BigDecimal

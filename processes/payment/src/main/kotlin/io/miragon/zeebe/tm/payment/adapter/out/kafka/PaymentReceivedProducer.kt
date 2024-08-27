@@ -1,7 +1,7 @@
 package io.miragon.zeebe.tm.payment.adapter.out.kafka
 
+import io.miragon.zeebe.tm.libs.shared.kafka.PaymentReceivedRequest
 import io.miragon.zeebe.tm.payment.application.port.out.PaymentReceivedPort
-import io.miragon.zeebe.tm.shared.kafka.PaymentReceivedRequest
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
 

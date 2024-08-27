@@ -4,6 +4,7 @@ import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareDeliveryTa
 import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareDeliveryTaskUseCase.Command
 import io.miragon.zeebe.tm.order.application.port.out.CompleteTaskPort
 import io.miragon.zeebe.tm.order.application.port.out.OrderPersistencePort
+import io.miragon.zeebe.tm.order.application.port.out.TaskManagerPort
 import io.miragon.zeebe.tm.order.domain.Order
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -14,6 +15,7 @@ import java.time.format.DateTimeFormatter
 class CompletePrepareDeliveryTaskService(
     private val completeTaskPort: CompleteTaskPort,
     private val orderPersistencePort: OrderPersistencePort,
+    private val taskManagerPort: TaskManagerPort,
 ) : CompletePrepareDeliveryTaskUseCase
 {
     private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").withLocale(java.util.Locale.GERMANY)
@@ -32,11 +34,12 @@ class CompletePrepareDeliveryTaskService(
         val order = orderPersistencePort.findById(orderId)
         order.deliveryDate = LocalDate.parse(deliveryDate, formatter)
         order.modeOfDispatch = modeOfDispatch
-        order.state = Order.State.PREPARED
+        order.state = Order.State.COMPLETE
         order.items = items
         orderPersistencePort.update(orderId, order)
 
         completeTaskPort.completePrepareDeliveryTask(taskId)
+        taskManagerPort.markTaskAsCompleted(taskId)
 
         return taskId
     }
@@ -46,6 +49,7 @@ class CompletePrepareDeliveryTaskService(
         val (taskId, orderId, deliveryDate, modeOfDispatch, items) = command
 
         val order = orderPersistencePort.findById(orderId)
+        order.state = Order.State.PREPARING_DELIVERY
         order.deliveryDate = LocalDate.parse(deliveryDate, formatter)
         order.modeOfDispatch = modeOfDispatch
         order.items = items

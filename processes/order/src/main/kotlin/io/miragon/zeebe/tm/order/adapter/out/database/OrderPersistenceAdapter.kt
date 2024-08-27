@@ -12,7 +12,6 @@ import java.util.*
 class OrderPersistenceAdapter(
     private val orderRepository: OrderRepository,
     private val itemRepository: ItemRepository,
-    private val orderItemRepository: OrderItemRepository,
 ) : OrderPersistencePort
 {
     override fun findAll(): List<Order>

@@ -5,6 +5,7 @@ import io.miragon.zeebe.tm.payment.application.port.`in`.CompleteCheckPaymentUse
 import io.miragon.zeebe.tm.payment.application.port.out.CompleteTaskPort
 import io.miragon.zeebe.tm.payment.application.port.out.InvoicePersistencePort
 import io.miragon.zeebe.tm.payment.application.port.out.PaymentReceivedPort
+import io.miragon.zeebe.tm.payment.application.port.out.TaskManagerPort
 import io.miragon.zeebe.tm.payment.domain.Invoice
 import org.springframework.stereotype.Service
 
@@ -13,17 +14,23 @@ class CompleteCheckPaymentService(
     private val invoicePersistencePort: InvoicePersistencePort,
     private val completeTaskPort: CompleteTaskPort,
     private val paymentReceivedPort: PaymentReceivedPort,
+    private val taskManagerPort: TaskManagerPort,
 ) : CompleteCheckPaymentUseCase
 {
     override fun complete(command: Command): Long
     {
         val (taskId, invoiceId, isAccepted) = command
 
+        // 1. Update invoice state
         val invoice = invoicePersistencePort.findById(invoiceId)
         invoice.state = if (isAccepted) Invoice.State.ACCEPTED else Invoice.State.REJECTED
         invoicePersistencePort.update(invoice)
-        completeTaskPort.completeCheckPaymentTask(taskId, isAccepted)
 
+        // 2. Complete task
+        completeTaskPort.completeCheckPaymentTask(taskId, isAccepted)
+        taskManagerPort.markTaskAsCompleted(taskId)
+
+        // 3. Inform order-process about payment
         paymentReceivedPort.publish(invoiceId, invoice.orderId)
 
         return taskId

@@ -4,6 +4,7 @@ import io.miragon.zeebe.tm.order.application.port.`in`.PaymentReceivedUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.PaymentReceivedUseCase.Query
 import io.miragon.zeebe.tm.order.application.port.out.OrderPersistencePort
 import io.miragon.zeebe.tm.order.application.port.out.PaymentReceivedPort
+import io.miragon.zeebe.tm.order.domain.Order
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,6 +18,7 @@ class PaymentReceivedService(
         val (orderId, invoiceId) = query
 
         val order = orderPersistencePort.findById(orderId)
+        order.state = Order.State.PAID
         order.invoiceId = invoiceId
         orderPersistencePort.update(orderId, order)
 

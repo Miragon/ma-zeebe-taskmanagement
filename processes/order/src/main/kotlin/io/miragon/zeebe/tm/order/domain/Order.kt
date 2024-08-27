@@ -22,8 +22,8 @@ data class Order(
         CREATED,
         CHECKED,
         DECLINED,
-        PREPARED,
-        PAYED,
+        PREPARING_DELIVERY,
+        PAID,
         COMPLETE
     }
 }

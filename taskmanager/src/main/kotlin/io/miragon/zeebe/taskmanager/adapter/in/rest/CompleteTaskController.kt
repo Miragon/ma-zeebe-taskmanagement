@@ -2,7 +2,6 @@ package io.miragon.zeebe.taskmanager.adapter.`in`.rest
 
 import io.miragon.zeebe.taskmanager.application.port.`in`.CompleteTaskUseCase
 import io.miragon.zeebe.taskmanager.application.port.`in`.CompleteTaskUseCase.Command
-import io.miragon.zeebe.tm.tasklist.UserTaskDto
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -15,9 +14,9 @@ class CompleteTaskController(
 )
 {
     @PostMapping("/task/complete")
-    fun completeTask(@RequestBody userTask: UserTaskDto)
+    fun completeTask(@RequestBody taskId: Long): Boolean
     {
-        val command = Command(userTask.key)
-        useCase.complete(command)
+        val command = Command(taskId)
+        return useCase.complete(command)
     }
 }

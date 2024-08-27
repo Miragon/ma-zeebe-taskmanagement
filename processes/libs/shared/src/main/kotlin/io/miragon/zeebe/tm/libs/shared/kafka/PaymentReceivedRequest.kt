@@ -1,4 +1,4 @@
-package io.miragon.zeebe.tm.shared.kafka
+package io.miragon.zeebe.tm.libs.shared.kafka
 
 data class PaymentReceivedRequest(
     val invoiceId: String,
