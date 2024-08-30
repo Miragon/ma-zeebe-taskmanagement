@@ -12,6 +12,7 @@
         <module>taskmanager</module>
         <module>processes</module>
         <module>tasklistApi</module>
+        <module>zeebe-user-task-exporter</module>
     </modules>
 
     <properties>
@@ -29,7 +30,7 @@
         <spring.boot.version>3.2.3</spring.boot.version>
         <spring.kafka.version>3.1.4</spring.kafka.version>
         <!-- camunda -->
-        <camunda.version>8.5.3</camunda.version>
+        <camunda.version>8.5.6</camunda.version>
         <!-- project -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -76,9 +77,16 @@
             </dependency>
             <!-- camunda -->
             <dependency>
+                <groupId>io.camunda</groupId>
+                <artifactId>zeebe-bom</artifactId>
+                <version>${camunda.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
                 <groupId>io.camunda.spring</groupId>
                 <artifactId>spring-boot-starter-camunda</artifactId>
-                <version>${camunda.version}</version>
+                <version>8.5.10</version>
             </dependency>
             <!-- etc -->
             <dependency>

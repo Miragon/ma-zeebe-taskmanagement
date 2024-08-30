@@ -1,7 +1,7 @@
 services:
 
   zeebe:
-    image: camunda/zeebe:8.5.1
+    image: camunda/zeebe:8.5.6
     container_name: zeebe
     ports:
       - "26500:26500"
@@ -9,10 +9,12 @@ services:
     env_file:
       - zeebe.env
     environment:
+      #  - SPRING_CONFIG_ADDITIONAL_LOCATION=/usr/local/zeebe/config/exporter.yml
       - "JAVA_TOOL_OPTIONS=-Xms512m -Xmx512m"
     restart: always
-    #volumes:
-    #  - .data/zeebe:/usr/local/zeebe/data
+    # volumes:
+    #   - ./zeebe/exporter.yml:/usr/local/zeebe/config/exporter.yml
+    #   - ./zeebe/zeebe-user-task-exporter.jar:/usr/local/zeebe/lib/zeebe-user-task-exporter.jar
     networks:
       - internal
     depends_on:
@@ -20,7 +22,7 @@ services:
         condition: service_healthy
 
   operate:
-    image: camunda/operate:8.5.1
+    image: camunda/operate:8.5.5
     container_name: zeebe-operate
     ports:
       - "8081:8080"

@@ -9,8 +9,8 @@ data class UserTask(
     val bpmnProcessId: String,
     val processDefinitionKey: Long,
     val variables: Map<String, Any> = emptyMap(),
-    var expiresAt: Instant,
-    var taskState: UserTaskState = UserTaskState.CREATED,
+    var taskState: TaskState,
+    var expiresAt: Instant?,
     var assignee: String?,
 )
 {
@@ -21,13 +21,6 @@ data class UserTask(
 
     fun complete()
     {
-        this.taskState = UserTaskState.COMPLETED
-    }
-
-    enum class UserTaskState
-    {
-        CREATED,
-        ASSIGNED,
-        COMPLETED
+        this.taskState = TaskState.COMPLETED
     }
 }

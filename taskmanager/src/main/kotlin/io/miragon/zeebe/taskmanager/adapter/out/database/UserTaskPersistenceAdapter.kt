@@ -1,6 +1,7 @@
 package io.miragon.zeebe.taskmanager.adapter.out.database
 
 import io.miragon.zeebe.taskmanager.application.port.out.UserTaskPersistencePort
+import io.miragon.zeebe.taskmanager.domain.TaskState
 import io.miragon.zeebe.taskmanager.domain.UserTask
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Component
@@ -11,6 +12,11 @@ class UserTaskPersistenceAdapter(
     private val userTaskRepository: UserTaskRepository
 ) : UserTaskPersistencePort
 {
+    override fun findByTaskState(taskState: TaskState): List<UserTask>
+    {
+        return userTaskRepository.findByTaskState(taskState.toString()).map { it.toDomain() }
+    }
+
     override fun findAllActiveTasks(): List<UserTask>
     {
         return userTaskRepository.findByExpiresAtAfter(Instant.now()).map { it.toDomain() }
