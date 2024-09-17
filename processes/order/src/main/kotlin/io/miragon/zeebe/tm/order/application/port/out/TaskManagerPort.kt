@@ -2,5 +2,7 @@ package io.miragon.zeebe.tm.order.application.port.out
 
 interface TaskManagerPort
 {
-    fun markTaskAsCompleted(taskId: Long): Boolean
+    fun completeCheckOrderTask(taskId: Long, approved: Boolean): Boolean
+
+    fun completePrepareDeliveryTask(taskId: Long): Boolean
 }

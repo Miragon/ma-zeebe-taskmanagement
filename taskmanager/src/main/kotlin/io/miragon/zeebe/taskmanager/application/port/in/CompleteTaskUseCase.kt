@@ -6,5 +6,6 @@ interface CompleteTaskUseCase
 
     data class Command(
         val key: Long,
+        val variables: Map<String, Any>?,
     )
 }

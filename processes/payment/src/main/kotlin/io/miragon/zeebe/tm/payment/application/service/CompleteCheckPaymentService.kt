@@ -2,9 +2,7 @@ package io.miragon.zeebe.tm.payment.application.service
 
 import io.miragon.zeebe.tm.payment.application.port.`in`.CompleteCheckPaymentUseCase
 import io.miragon.zeebe.tm.payment.application.port.`in`.CompleteCheckPaymentUseCase.Command
-import io.miragon.zeebe.tm.payment.application.port.out.CompleteTaskPort
 import io.miragon.zeebe.tm.payment.application.port.out.InvoicePersistencePort
-import io.miragon.zeebe.tm.payment.application.port.out.PaymentReceivedPort
 import io.miragon.zeebe.tm.payment.application.port.out.TaskManagerPort
 import io.miragon.zeebe.tm.payment.domain.Invoice
 import org.springframework.stereotype.Service
@@ -12,8 +10,6 @@ import org.springframework.stereotype.Service
 @Service
 class CompleteCheckPaymentService(
     private val invoicePersistencePort: InvoicePersistencePort,
-    private val completeTaskPort: CompleteTaskPort,
-    private val paymentReceivedPort: PaymentReceivedPort,
     private val taskManagerPort: TaskManagerPort,
 ) : CompleteCheckPaymentUseCase
 {
@@ -27,8 +23,7 @@ class CompleteCheckPaymentService(
         invoicePersistencePort.update(invoice)
 
         // 2. Complete task
-        completeTaskPort.completeCheckPaymentTask(taskId, isAccepted)
-        taskManagerPort.markTaskAsCompleted(taskId)
+        taskManagerPort.completeCheckPaymentTask(taskId, isAccepted)
 
         return taskId
     }

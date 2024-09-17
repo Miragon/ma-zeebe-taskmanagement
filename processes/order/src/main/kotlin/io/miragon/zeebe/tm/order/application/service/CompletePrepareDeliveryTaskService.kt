@@ -2,7 +2,6 @@ package io.miragon.zeebe.tm.order.application.service
 
 import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareDeliveryTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.CompletePrepareDeliveryTaskUseCase.Command
-import io.miragon.zeebe.tm.order.application.port.out.CompleteTaskPort
 import io.miragon.zeebe.tm.order.application.port.out.OrderPersistencePort
 import io.miragon.zeebe.tm.order.application.port.out.TaskManagerPort
 import io.miragon.zeebe.tm.order.domain.Order
@@ -13,7 +12,6 @@ import java.time.format.DateTimeFormatter
 
 @Service
 class CompletePrepareDeliveryTaskService(
-    private val completeTaskPort: CompleteTaskPort,
     private val orderPersistencePort: OrderPersistencePort,
     private val taskManagerPort: TaskManagerPort,
 ) : CompletePrepareDeliveryTaskUseCase
@@ -31,6 +29,7 @@ class CompletePrepareDeliveryTaskService(
             }
         }
 
+        // Update the order in the database
         val order = orderPersistencePort.findById(orderId)
         order.deliveryDate = LocalDate.parse(deliveryDate, formatter)
         order.modeOfDispatch = modeOfDispatch
@@ -38,8 +37,8 @@ class CompletePrepareDeliveryTaskService(
         order.items = items
         orderPersistencePort.update(orderId, order)
 
-        completeTaskPort.completePrepareDeliveryTask(taskId)
-        taskManagerPort.markTaskAsCompleted(taskId)
+        // Complete the task in the task manager
+        taskManagerPort.completePrepareDeliveryTask(taskId)
 
         return taskId
     }
