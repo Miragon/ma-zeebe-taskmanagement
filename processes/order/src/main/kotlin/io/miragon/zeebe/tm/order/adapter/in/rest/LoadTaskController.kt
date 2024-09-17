@@ -1,6 +1,7 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.miragon.zeebe.tm.libs.shared.utils.Form
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.*
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadCheckOrderTaskUseCase
 import io.miragon.zeebe.tm.order.application.port.`in`.LoadPrepareOrderTaskUseCase
@@ -23,10 +24,6 @@ class LoadTaskController(
     private val logger = KotlinLogging.logger {}
 
     private val mapper = jacksonObjectMapper()
-
-    private val checkOrderFormPath = "/forms/index.html"
-
-    private val prepareOrderFormPath = "/forms/PrepareOrderSchema.form.json"
 
     @PostMapping("/load")
     fun loadData(@RequestBody userTask: UserTaskDto): ResponseEntity<FormDto>
@@ -53,13 +50,15 @@ class LoadTaskController(
 
     private fun loadCheckOrder(userTask: UserTaskDto): FormDto.HtmlForm<LoadOrder>
     {
+        val checkOrderFormPath = "/forms/index.html"
+
         val command = LoadCheckOrderTaskUseCase.Command(
             orderId = userTask.variables["orderId"].toString(),
             filePath = checkOrderFormPath
         )
         val response = loadCheckOrderTask.load(command)
 
-        val form = response.form
+        val form = Form.createHtmlForm(response.htmlString)
         val order = response.order
 
         val formData = LoadOrder(
@@ -82,21 +81,24 @@ class LoadTaskController(
 
         return FormDto.HtmlForm(
             html = form.html,
-            updatable = form.updatable,
+            updatable = false,
             formData = formData
         )
     }
 
     private fun loadPrepareOrder(userTask: UserTaskDto): FormDto.JsonForm<PrepareDeliverySchema>
     {
+        val prepareOrderFormPath = "/forms/PrepareOrderSchema.form.json"
+
         val command = LoadPrepareOrderTaskUseCase.Command(
             orderId = userTask.variables["orderId"].toString(),
             filePath = prepareOrderFormPath
         )
         val response = loadPrepareOrderTask.load(command)
 
-        val schema = mapper.writeValueAsString(response.form.schema)
-        val uiSchema = mapper.writeValueAsString(response.form.uischema)
+        val form = Form.createJsonForm(response.jsonString)
+        val schema = mapper.writeValueAsString(form.schema)
+        val uiSchema = mapper.writeValueAsString(form.uischema)
         val items = response.items
 
         val formData = PrepareDeliverySchema(
@@ -115,7 +117,7 @@ class LoadTaskController(
         return FormDto.JsonForm(
             schema = schema,
             uiSchema = uiSchema,
-            updatable = response.form.updatable,
+            updatable = true,
             formData = formData
         )
     }

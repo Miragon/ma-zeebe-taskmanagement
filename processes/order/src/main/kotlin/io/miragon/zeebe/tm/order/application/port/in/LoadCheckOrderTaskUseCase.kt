@@ -1,6 +1,5 @@
 package io.miragon.zeebe.tm.order.application.port.`in`
 
-import io.miragon.zeebe.tm.order.domain.Form
 import io.miragon.zeebe.tm.order.domain.Order
 
 interface LoadCheckOrderTaskUseCase
@@ -13,7 +12,7 @@ interface LoadCheckOrderTaskUseCase
     )
 
     data class Response(
-        val form: Form.HtmlForm,
+        val htmlString: String,
         val order: Order,
     )
 }

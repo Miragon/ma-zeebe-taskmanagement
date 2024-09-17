@@ -14,8 +14,8 @@ class RequestPaymentWorker(
 {
     private val log = KotlinLogging.logger {}
 
-    @JobWorker(type = "requestPayment")
-    fun requestPayment(@Variable("orderId") orderId: String)
+    @JobWorker(type = "request-payment")
+    fun requestPayment(@Variable orderId: String)
     {
         val command = Command(orderId)
         useCase.request(command)

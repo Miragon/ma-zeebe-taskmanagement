@@ -30,9 +30,6 @@ class CompleteCheckPaymentService(
         completeTaskPort.completeCheckPaymentTask(taskId, isAccepted)
         taskManagerPort.markTaskAsCompleted(taskId)
 
-        // 3. Inform order-process about payment
-        paymentReceivedPort.publish(invoiceId, invoice.orderId)
-
         return taskId
     }
 }

@@ -1,14 +1,14 @@
 package io.miragon.zeebe.tm.order.application.port.`in`
 
-interface SendCancellationUseCase
+interface DeclineOrderUseCase
 {
     /**
      * Declines the order.
      * @return True if the order was declined, false otherwise.
      */
-    fun decline(command: Command)
+    fun decline(query: Query)
 
-    data class Command(
+    data class Query(
         val orderId: String,
     )
 }

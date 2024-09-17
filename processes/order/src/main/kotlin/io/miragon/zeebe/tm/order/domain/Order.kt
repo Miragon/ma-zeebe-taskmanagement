@@ -19,11 +19,11 @@ data class Order(
 {
     enum class State
     {
-        CREATED,
+        CANCELLED,
         CHECKED,
-        DECLINED,
-        PREPARING_DELIVERY,
+        COMPLETE,
+        CREATED,
         PAID,
-        COMPLETE
+        PREPARING_DELIVERY,
     }
 }

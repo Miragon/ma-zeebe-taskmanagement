@@ -1,5 +1,6 @@
 package io.miragon.zeebe.tm.order.adapter.`in`.rest
 
+import io.miragon.zeebe.tm.libs.shared.utils.Form
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.ItemDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.LoadItemsDto
 import io.miragon.zeebe.tm.order.adapter.`in`.rest.model.PlaceOrderDto
@@ -23,19 +24,17 @@ class StartProcessController(
 {
     private val logger = KotlinLogging.logger {}
 
-    private val processStartFormPath = "/forms/index.html"
-
-    /* TODO: What happens if a process has multiple start events? */
+    private val formPath = "/forms/index.html"
 
     @PostMapping("/start/form")
     fun loadItems(): ResponseEntity<FormDto.HtmlForm<LoadItemsDto>>
     {
         val command = LoadStartEventUseCase.Command(
-            filePath = processStartFormPath
+            filePath = formPath
         )
         val response = loadFormUseCase.load(command)
 
-        val form = response.form
+        val form = Form.createHtmlForm(response.htmlString)
 
         val formData = LoadItemsDto(
             items = response.formData.map { item ->
@@ -51,7 +50,7 @@ class StartProcessController(
         return ResponseEntity.ok(
             FormDto.HtmlForm(
                 html = form.html,
-                updatable = form.updatable,
+                updatable = false,
                 formData = formData
             )
         )

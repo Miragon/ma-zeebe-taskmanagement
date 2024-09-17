@@ -1,6 +1,7 @@
 package io.miragon.zeebe.tm.payment.adapter.`in`.rest
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.miragon.zeebe.tm.libs.shared.utils.Form
 import io.miragon.zeebe.tm.payment.adapter.`in`.rest.model.CheckPaymentSchema
 import io.miragon.zeebe.tm.payment.application.port.`in`.LoadCheckPaymentTaskUseCase
 import io.miragon.zeebe.tm.payment.application.port.`in`.LoadCheckPaymentTaskUseCase.Command
@@ -23,8 +24,6 @@ class LoadTaskController(
 
     private val mapper = jacksonObjectMapper()
 
-    private val checkPaymentFormPath = "/forms/CheckPaymentSchema.form.json"
-
     @PostMapping("/load")
     fun loadData(@RequestBody userTask: UserTaskDto): ResponseEntity<FormDto>
     {
@@ -45,6 +44,8 @@ class LoadTaskController(
 
     private fun loadCheckPayment(userTask: UserTaskDto): FormDto.JsonForm<CheckPaymentSchema>
     {
+        val checkPaymentFormPath = "/forms/CheckPaymentSchema.form.json"
+
         val invoiceId = userTask.variables["invoiceId"].toString()
         val command = Command(
             invoiceId,
@@ -52,7 +53,8 @@ class LoadTaskController(
         )
         val response = useCase.load(command)
 
-        val (form, invoice) = response
+        val (jsonString, invoice) = response
+        val form = Form.createJsonForm(jsonString)
         val schema = mapper.writeValueAsString(form.schema)
         val uiSchema = mapper.writeValueAsString(form.uischema)
 
@@ -65,7 +67,7 @@ class LoadTaskController(
         return FormDto.JsonForm(
             schema = schema,
             uiSchema = uiSchema,
-            updatable = form.updatable,
+            updatable = false,
             formData = formData,
         )
     }

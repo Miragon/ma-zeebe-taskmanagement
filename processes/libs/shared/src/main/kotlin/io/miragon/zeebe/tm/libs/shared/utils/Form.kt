@@ -1,12 +1,9 @@
-package io.miragon.zeebe.tm.order.domain
+package io.miragon.zeebe.tm.libs.shared.utils
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
 sealed class Form
 {
-    var updatable: Boolean = false
-
     companion object Factory
     {
         private val mapper = jacksonObjectMapper()
@@ -14,7 +11,7 @@ sealed class Form
         // Factory method to create a JsonForm from a JSON string
         fun createJsonForm(jsonString: String): JsonForm
         {
-            return mapper.readValue(jsonString, object : TypeReference<JsonForm>()
+            return mapper.readValue(jsonString, object : com.fasterxml.jackson.core.type.TypeReference<JsonForm>()
             {})
         }
 

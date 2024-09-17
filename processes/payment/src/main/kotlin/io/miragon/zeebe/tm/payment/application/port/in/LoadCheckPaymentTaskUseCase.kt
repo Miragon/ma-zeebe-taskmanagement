@@ -1,6 +1,5 @@
 package io.miragon.zeebe.tm.payment.application.port.`in`
 
-import io.miragon.zeebe.tm.payment.domain.Form
 import io.miragon.zeebe.tm.payment.domain.Invoice
 
 interface LoadCheckPaymentTaskUseCase
@@ -17,7 +16,7 @@ interface LoadCheckPaymentTaskUseCase
     )
 
     data class Response(
-        val form: Form.JsonForm,
+        val jsonString: String,
         val invoice: Invoice,
     )
 }

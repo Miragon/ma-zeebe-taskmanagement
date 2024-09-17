@@ -20,7 +20,7 @@ class CompleteCheckOrderTaskService(
         val (taskId, orderId, isAccepted) = command
 
         val order = orderPersistencePort.findById(orderId)
-        order.state = if (isAccepted) Order.State.CHECKED else Order.State.DECLINED
+        order.state = if (isAccepted) Order.State.CHECKED else Order.State.CANCELLED
 
         orderPersistencePort.update(orderId, order)
 

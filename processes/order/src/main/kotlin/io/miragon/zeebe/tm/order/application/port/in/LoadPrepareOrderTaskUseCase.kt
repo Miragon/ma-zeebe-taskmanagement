@@ -1,6 +1,5 @@
 package io.miragon.zeebe.tm.order.application.port.`in`
 
-import io.miragon.zeebe.tm.order.domain.Form
 import io.miragon.zeebe.tm.order.domain.Item
 
 interface LoadPrepareOrderTaskUseCase
@@ -13,7 +12,7 @@ interface LoadPrepareOrderTaskUseCase
     )
 
     data class Response(
-        val form: Form.JsonForm,
+        val jsonString: String,
         val items: List<Item>,
     )
 }
