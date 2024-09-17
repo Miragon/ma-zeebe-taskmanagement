@@ -12,7 +12,7 @@ class PaymentReceivedMessage(
     override fun correlateMessage(orderId: String, invoiceId: String)
     {
         zeebeClient.newPublishMessageCommand()
-            .messageName("PaymentReceived")
+            .messageName("PaymentReceivedEvent")
             .correlationKey(orderId)
             .variables(mapOf("invoiceId" to invoiceId))
             .send()

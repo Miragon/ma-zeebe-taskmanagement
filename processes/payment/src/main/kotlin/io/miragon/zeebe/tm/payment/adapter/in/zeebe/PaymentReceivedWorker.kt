@@ -11,7 +11,7 @@ class PaymentReceivedWorker(
     private val useCase: SendPaymentReceivedUseCase
 )
 {
-    @JobWorker(type = "paymentReceived")
+    @JobWorker(type = "payment-received")
     fun paymentReceived(@Variable invoiceId: String)
     {
         val command = Command(invoiceId)

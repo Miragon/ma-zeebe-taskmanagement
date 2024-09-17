@@ -31,7 +31,7 @@
     </bpmn:boundaryEvent>
     <bpmn:sendTask id="SendReminder" name="Send reminder">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="sendReminder" />
+        <zeebe:taskDefinition type="send-reminder" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0uj3m51</bpmn:incoming>
       <bpmn:outgoing>Flow_1iht8ux</bpmn:outgoing>
@@ -43,7 +43,7 @@
     <bpmn:sequenceFlow id="Flow_1iht8ux" sourceRef="SendReminder" targetRef="Event_0hff5mb" />
     <bpmn:sendTask id="Activity_16c9fa6" name="Inform about received payment">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="paymentReceived" />
+        <zeebe:taskDefinition type="payment-received" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0f66uwj</bpmn:incoming>
       <bpmn:outgoing>Flow_0jxwzxp</bpmn:outgoing>
@@ -56,7 +56,7 @@
     <bpmn:sequenceFlow id="Flow_0xn0wm0" sourceRef="Event_0v8bo4t" targetRef="Activity_08fz3qg" />
     <bpmn:sendTask id="Activity_08fz3qg" name="Cancel order">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="cancelOrder" />
+        <zeebe:taskDefinition type="cancel-order" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0xn0wm0</bpmn:incoming>
       <bpmn:outgoing>Flow_1d7lro4</bpmn:outgoing>

@@ -11,7 +11,7 @@ class CancelOrderWorker(
     private val useCase: SendCancellationUseCase
 )
 {
-    @JobWorker(type = "cancelOrder")
+    @JobWorker(type = "cancel-order")
     fun cancelOrder(@Variable invoiceId: String)
     {
         useCase.send(Command(invoiceId))

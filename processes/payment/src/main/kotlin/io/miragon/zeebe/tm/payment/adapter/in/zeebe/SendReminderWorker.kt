@@ -9,7 +9,7 @@ class SendReminderWorker(
     private val useCase: SendReminderUseCase
 )
 {
-    @JobWorker(type = "sendReminder")
+    @JobWorker(type = "send-reminder")
     fun sendReminder()
     {
         useCase.handle()
