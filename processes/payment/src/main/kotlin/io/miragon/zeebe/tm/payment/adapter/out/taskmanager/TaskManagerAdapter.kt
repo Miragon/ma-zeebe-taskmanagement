@@ -10,7 +10,7 @@ import org.springframework.web.client.RestClientResponseException
 
 @Component
 class TaskManagerAdapter(
-    private val restClient: RestClient
+    restClient: RestClient
 ) : TaskManagerPort
 {
     private val log = KotlinLogging.logger {}

@@ -29,7 +29,7 @@ class CompleteTaskService(
             return taskId == key && isCompleted
         } catch (e: EntityNotFoundException)
         {
-            log.error { "Task with id ${command.key} not found" }
+            log.error { "Task with id ${command.key} not found: ${e.message}\n${e.stackTrace}" }
             return false
         }
     }
