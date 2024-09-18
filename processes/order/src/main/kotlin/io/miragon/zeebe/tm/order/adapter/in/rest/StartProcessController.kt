@@ -22,13 +22,15 @@ class StartProcessController(
     private val startProcessUseCase: StartProcessUseCase
 )
 {
-    private val logger = KotlinLogging.logger {}
+    private val log = KotlinLogging.logger {}
 
     private val formPath = "/forms/index.html"
 
     @PostMapping("/start/form")
     fun loadItems(): ResponseEntity<FormDto.HtmlForm<LoadItemsDto>>
     {
+        log.info { "Loading form for starting a new process instance." }
+
         val command = LoadStartEventUseCase.Command(
             filePath = formPath
         )
@@ -59,11 +61,11 @@ class StartProcessController(
     @PostMapping("/start")
     fun placeOrder(@RequestBody formData: PlaceOrderDto): ResponseEntity<MessageDto>
     {
+        log.info { "Starting new process instance." }
+
         val command = formData.toCommand()
         val orderId = startProcessUseCase.startProcess(command)
         val response = MessageDto("Order with id $orderId created!")
-
-        logger.info { "Order with id $orderId created!" }
 
         return ResponseEntity.ok(response)
     }

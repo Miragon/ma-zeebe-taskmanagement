@@ -31,7 +31,7 @@
     </bpmn:boundaryEvent>
     <bpmn:sendTask id="SendReminder" name="Send reminder">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="send-reminder" />
+        <zeebe:taskDefinition type="send-reminder-request" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0uj3m51</bpmn:incoming>
       <bpmn:outgoing>Flow_1iht8ux</bpmn:outgoing>
@@ -43,7 +43,7 @@
     <bpmn:sequenceFlow id="Flow_1iht8ux" sourceRef="SendReminder" targetRef="Event_0hff5mb" />
     <bpmn:sendTask id="Activity_16c9fa6" name="Inform about received payment">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="payment-received" />
+        <zeebe:taskDefinition type="payment-received-request" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0f66uwj</bpmn:incoming>
       <bpmn:outgoing>Flow_0jxwzxp</bpmn:outgoing>
@@ -51,12 +51,14 @@
     <bpmn:sequenceFlow id="Flow_0jxwzxp" sourceRef="Activity_16c9fa6" targetRef="Event_0wrdna2" />
     <bpmn:boundaryEvent id="Event_0v8bo4t" name="14 days" attachedToRef="CheckPayment">
       <bpmn:outgoing>Flow_0xn0wm0</bpmn:outgoing>
-      <bpmn:timerEventDefinition id="TimerEventDefinition_1qcvrxk" />
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1qcvrxk">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT30S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_0xn0wm0" sourceRef="Event_0v8bo4t" targetRef="Activity_08fz3qg" />
     <bpmn:sendTask id="Activity_08fz3qg" name="Cancel order">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="cancel-order" />
+        <zeebe:taskDefinition type="cancel-order-request" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0xn0wm0</bpmn:incoming>
       <bpmn:outgoing>Flow_1d7lro4</bpmn:outgoing>

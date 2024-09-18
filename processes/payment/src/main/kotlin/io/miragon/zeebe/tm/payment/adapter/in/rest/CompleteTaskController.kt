@@ -18,14 +18,14 @@ class CompleteTaskController(
     private val useCase: CompleteCheckPaymentUseCase
 )
 {
-    private val logger = KotlinLogging.logger {}
+    private val log = KotlinLogging.logger {}
 
     @PostMapping("/complete")
     fun completeTask(@RequestBody completeTaskDto: CompleteTaskDto<FormData>): ResponseEntity<MessageDto>
     {
         val userTask = completeTaskDto.userTask
 
-        logger.info { "Completing task with id: ${userTask.elementId}" }
+        log.info { "Completing user task: ${userTask.elementId}" }
 
         when (val data = completeTaskDto.formData)
         {

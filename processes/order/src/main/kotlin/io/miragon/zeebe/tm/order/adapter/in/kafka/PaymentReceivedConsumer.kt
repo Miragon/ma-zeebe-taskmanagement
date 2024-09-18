@@ -17,8 +17,8 @@ class PaymentReceivedConsumer(
     @KafkaListener(topics = ["payment-received"], groupId = "order-process")
     fun receivePayment(response: PaymentReceivedRequest)
     {
+        log.info { "Request \"payment-received\" received." }
         val (invoiceId, orderId) = response
         useCase.handle(Query(orderId, invoiceId))
-        log.info { "Payment received $invoiceId" }
     }
 }

@@ -17,8 +17,8 @@ class PaymentRequestConsumer(
     @KafkaListener(topics = ["payment-request"], groupId = "payment-process")
     fun consume(request: PaymentRequest)
     {
+        log.info { "Request \"payment-request\" received." }
         val (orderId, amount) = request
         createInvoiceUseCase.create(Command(orderId, amount))
-        log.info { "Payment process started for order $orderId with amount $amount" }
     }
 }

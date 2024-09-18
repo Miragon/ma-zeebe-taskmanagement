@@ -14,9 +14,10 @@ class RequestPaymentWorker(
 {
     private val log = KotlinLogging.logger {}
 
-    @JobWorker(type = "request-payment")
+    @JobWorker(type = "receive-payment-request")
     fun requestPayment(@Variable orderId: String)
     {
+        log.info { "Task \"request-payment\" activated." }
         val command = Command(orderId)
         useCase.request(command)
     }

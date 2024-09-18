@@ -14,10 +14,10 @@ class DeclineOrderWorker(
 {
     private val log = KotlinLogging.logger {}
 
-    @JobWorker(type = "decline-order")
+    @JobWorker(type = "decline-order-request")
     fun declineOrder(@Variable orderId: String)
     {
+        log.info { "Task \"decline-order\" activated." }
         useCase.decline(Query(orderId))
-        log.info { "Order $orderId declined!" }
     }
 }

@@ -23,11 +23,7 @@
       <bpmn:incoming>Flow_1y9k46h</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:userTask id="PrepareDelivery" name="Prepare delivery">
-      <bpmn:extensionElements>
-        <zeebe:ioMapping>
-          <zeebe:input source="=orderId" target="orderId" />
-        </zeebe:ioMapping>
-      </bpmn:extensionElements>
+      <bpmn:extensionElements />
       <bpmn:incoming>Flow_14acku6</bpmn:incoming>
       <bpmn:outgoing>Flow_1y9k46h</bpmn:outgoing>
     </bpmn:userTask>
@@ -47,7 +43,7 @@
     </bpmn:sequenceFlow>
     <bpmn:sendTask id="RequestPayment" name="Request payment">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="request-payment" />
+        <zeebe:taskDefinition type="receive-payment-request" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0wi71fc</bpmn:incoming>
       <bpmn:outgoing>Flow_0hkw20k</bpmn:outgoing>
@@ -55,7 +51,7 @@
     <bpmn:sequenceFlow id="Flow_0hkw20k" sourceRef="RequestPayment" targetRef="PaymentReceivedEvent" />
     <bpmn:sendTask id="SendCancellation" name="Send cancellation email to customer">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="decline-order" />
+        <zeebe:taskDefinition type="decline-order-request" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0dm4lct</bpmn:incoming>
       <bpmn:outgoing>Flow_0wxvd28</bpmn:outgoing>
@@ -73,7 +69,13 @@
       <bpmn:messageEventDefinition id="MessageEventDefinition_1byhbby" messageRef="Message_20j8qkd" />
     </bpmn:intermediateCatchEvent>
     <bpmn:subProcess id="Activity_1mfg3yg" triggeredByEvent="true">
+      <bpmn:extensionElements>
+        <zeebe:ioMapping>
+          <zeebe:input source="=orderId" target="orderId" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
       <bpmn:startEvent id="Event_0pbsgu2" name="Cancellation received">
+        <bpmn:extensionElements />
         <bpmn:outgoing>Flow_0k7r135</bpmn:outgoing>
         <bpmn:messageEventDefinition id="MessageEventDefinition_0iy9fob" messageRef="Message_1dk0dl4" />
       </bpmn:startEvent>

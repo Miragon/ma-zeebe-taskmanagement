@@ -21,7 +21,7 @@ class LoadTaskController(
     private val loadPrepareOrderTask: LoadPrepareOrderTaskUseCase
 )
 {
-    private val logger = KotlinLogging.logger {}
+    private val log = KotlinLogging.logger {}
 
     private val mapper = jacksonObjectMapper()
 
@@ -30,7 +30,7 @@ class LoadTaskController(
     {
         val userTaskId = userTask.elementId
 
-        logger.info { "Loading form for user task with id: $userTaskId" }
+        log.info { "Loading form for user task: $userTaskId" }
 
         return when (userTaskId)
         {

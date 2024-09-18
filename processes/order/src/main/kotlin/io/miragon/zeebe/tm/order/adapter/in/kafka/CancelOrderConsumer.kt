@@ -17,8 +17,8 @@ class CancelOrderConsumer(
     @KafkaListener(topics = ["cancel-order"], groupId = "order-process")
     fun receivePayment(response: CancelOrderRequest)
     {
+        log.info { "Request \"cancel-order\" received." }
         val orderId = response.orderId
         useCase.handle(Query(orderId))
-        log.info { "Order cancelled $orderId" }
     }
 }
