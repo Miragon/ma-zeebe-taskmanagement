@@ -29,12 +29,12 @@ class ProcessVariablePersistenceAdapter(
         val entity = ProcessVariableEntity(
             processInstanceKey = processVariable.processInstanceKey,
             bpmnProcessId = processVariable.bpmnProcessId ?: "",
-            processDefinitionKey = processVariable.processDefinitionKey ?: 0,
+            processDefinitionKey = processVariable.processDefinitionKey ?: Long.MIN_VALUE,
             name = processVariable.name,
             value = processVariable.value,
         )
 
-        return repository.save(entity).processDefinitionKey
+        return repository.save(entity).processInstanceKey
     }
 
     override fun update(updatedProcessVariable: ProcessVariable): Long
@@ -45,6 +45,6 @@ class ProcessVariablePersistenceAdapter(
 
         existingProcessVariable.value = updatedProcessVariable.value
 
-        return repository.save(existingProcessVariable).processDefinitionKey
+        return repository.save(existingProcessVariable).processInstanceKey
     }
 }

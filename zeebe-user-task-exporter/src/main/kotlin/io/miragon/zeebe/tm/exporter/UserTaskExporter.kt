@@ -65,14 +65,15 @@ class UserTaskExporter : Exporter
         }
 
         val recordString = mapper.writeValueAsString(record)
-        log.info("Record: $recordString")
+
+        log.info("User Task Exporter Record: $recordString")
 
         val url = if (record.intent.name() == "CREATED")
         {
-            "$baseUrl/rest/task/save"
+            "$baseUrl/rest/${record.valueType.name.lowercase()}/save"
         } else
         {
-            "$baseUrl/rest/task/update"
+            "$baseUrl/rest/${record.valueType.name.lowercase()}/update"
         }
 
         postUserTaskJobEvent(url, recordString)

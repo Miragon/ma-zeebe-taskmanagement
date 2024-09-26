@@ -12,7 +12,6 @@
     <bpmn:userTask id="CheckOrder" name="Check order">
       <bpmn:extensionElements>
         <zeebe:ioMapping>
-          <zeebe:input source="=orderId" target="localOrderId" />
           <zeebe:output source="=isOrderValid" target="isOrderValid" />
         </zeebe:ioMapping>
         <zeebe:formDefinition externalReference="ABC123" />

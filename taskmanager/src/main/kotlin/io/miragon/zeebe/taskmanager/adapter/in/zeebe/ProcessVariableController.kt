@@ -21,18 +21,26 @@ class ProcessVariableController(
     @PostMapping("/save")
     fun saveTask(@RequestBody job: JobRecord<ProcessVariable>): ResponseEntity<String>
     {
-        log.info { "Saving variable with key: ${job.key}" }
+        val jobValue = job.value
+        log.info { "Saving variable for instance ${jobValue.processInstanceKey} with name ${jobValue.name}." }
 
-        val value = job.value
+        val variableValue = if (jobValue.value is String)
+        {
+            jobValue.value.trim('"')
+        } else
+        {
+            jobValue.value
+        }
+
         try
         {
             useCase.save(
                 SaveCommand(
-                    processInstanceKey = value.processInstanceKey,
-                    bpmnProcessId = value.bpmnProcessId,
-                    processDefinitionKey = value.processDefinitionKey,
-                    name = value.name,
-                    value = value.value,
+                    processInstanceKey = jobValue.processInstanceKey,
+                    bpmnProcessId = jobValue.bpmnProcessId,
+                    processDefinitionKey = jobValue.processDefinitionKey,
+                    name = jobValue.name,
+                    value = variableValue,
                 )
             )
             return ResponseEntity.ok("Variable saved")

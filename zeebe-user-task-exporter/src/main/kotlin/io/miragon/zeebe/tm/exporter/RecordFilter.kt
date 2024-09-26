@@ -11,7 +11,7 @@ class RecordFilter : Context.RecordFilter
      */
     override fun acceptType(recordType: RecordType?): Boolean
     {
-        return recordType == RecordType.EVENT || recordType == RecordType.COMMAND
+        return recordType == RecordType.EVENT
     }
 
     /**
@@ -20,6 +20,6 @@ class RecordFilter : Context.RecordFilter
      */
     override fun acceptValue(valueType: ValueType?): Boolean
     {
-        return (valueType == ValueType.JOB) || (valueType == ValueType.USER_TASK || valueType == ValueType.VARIABLE)
+        return valueType == ValueType.USER_TASK || valueType == ValueType.VARIABLE
     }
 }
