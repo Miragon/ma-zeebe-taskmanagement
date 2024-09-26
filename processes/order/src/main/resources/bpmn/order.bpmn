@@ -12,8 +12,11 @@
     <bpmn:userTask id="CheckOrder" name="Check order">
       <bpmn:extensionElements>
         <zeebe:ioMapping>
+          <zeebe:input source="=orderId" target="localOrderId" />
           <zeebe:output source="=isOrderValid" target="isOrderValid" />
         </zeebe:ioMapping>
+        <zeebe:formDefinition externalReference="ABC123" />
+        <zeebe:userTask />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0t8y9hy</bpmn:incoming>
       <bpmn:outgoing>Flow_13agsff</bpmn:outgoing>
@@ -23,7 +26,9 @@
       <bpmn:incoming>Flow_1y9k46h</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:userTask id="PrepareDelivery" name="Prepare delivery">
-      <bpmn:extensionElements />
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_14acku6</bpmn:incoming>
       <bpmn:outgoing>Flow_1y9k46h</bpmn:outgoing>
     </bpmn:userTask>

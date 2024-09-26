@@ -8,7 +8,7 @@ data class UserTask(
     val processInstanceKey: Long,
     val bpmnProcessId: String,
     val processDefinitionKey: Long,
-    val variables: Map<String, Any> = emptyMap(),
+    var variables: Map<String, Any> = emptyMap(),
     var taskState: TaskState,
     var expiresAt: Instant?,
     var assignee: String?,

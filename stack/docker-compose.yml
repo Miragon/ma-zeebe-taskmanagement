@@ -9,12 +9,12 @@ services:
     env_file:
       - zeebe.env
     environment:
-      #  - SPRING_CONFIG_ADDITIONAL_LOCATION=/usr/local/zeebe/config/exporter.yml
+      - SPRING_CONFIG_ADDITIONAL_LOCATION=/usr/local/zeebe/config/exporter.yml
       - "JAVA_TOOL_OPTIONS=-Xms512m -Xmx512m"
     restart: always
-    # volumes:
-    #   - ./zeebe/exporter.yml:/usr/local/zeebe/config/exporter.yml
-    #   - ./zeebe/zeebe-user-task-exporter.jar:/usr/local/zeebe/lib/zeebe-user-task-exporter.jar
+    volumes:
+      - ./zeebe/exporter.yml:/usr/local/zeebe/config/exporter.yml
+      - ./zeebe/zeebe-user-task-exporter.jar:/usr/local/zeebe/lib/zeebe-user-task-exporter.jar
     networks:
       - internal
     depends_on:

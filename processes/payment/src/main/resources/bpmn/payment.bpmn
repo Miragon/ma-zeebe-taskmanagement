@@ -14,6 +14,7 @@
         <zeebe:ioMapping>
           <zeebe:output source="=isAccepted" target="isAccepted" />
         </zeebe:ioMapping>
+        <zeebe:userTask />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1rrpel3</bpmn:incoming>
       <bpmn:outgoing>Flow_0f66uwj</bpmn:outgoing>

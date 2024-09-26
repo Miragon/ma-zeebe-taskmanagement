@@ -79,7 +79,8 @@ function ProcessList() {
                 }
             }
         } catch (error) {
-            console.error("Failed to load form:", error);
+            console.info("No form available. Trying to start process without form.");
+            submit({});
         }
     };
 

@@ -18,20 +18,21 @@ class UserTaskController(
     private val log = KotlinLogging.logger {}
 
     @PostMapping("/save")
-    fun saveTask(@RequestBody job: JobRecordDto): ResponseEntity<String>
+    fun saveTask(@RequestBody job: JobRecord<UserTask>): ResponseEntity<String>
     {
         log.info { "Saving task with key: ${job.key}" }
 
+        val value = job.value
         try
         {
             useCase.save(
                 SaveCommand(
                     key = job.key,
-                    elementId = job.elementId,
-                    processInstanceKey = job.processInstanceKey,
-                    bpmnProcessId = job.bpmnProcessId,
-                    processDefinitionKey = job.processDefinitionKey,
-                    variables = job.variables,
+                    elementId = value.elementId,
+                    processInstanceKey = value.processInstanceKey,
+                    bpmnProcessId = value.bpmnProcessId,
+                    processDefinitionKey = value.processDefinitionKey,
+                    assignee = value.assignee,
                 )
             )
             return ResponseEntity.ok("Task saved")
@@ -42,7 +43,7 @@ class UserTaskController(
     }
 
     @PostMapping("/update")
-    fun updateTask(@RequestBody job: JobRecordDto): ResponseEntity<String>
+    fun updateTask(@RequestBody job: JobRecord<UserTask>): ResponseEntity<String>
     {
         log.info { "Updating task with key: ${job.key} ${job.intent}" }
         try
