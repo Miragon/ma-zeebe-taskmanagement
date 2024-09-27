@@ -24,9 +24,8 @@ class UserTaskService(
                 processInstanceKey = command.processInstanceKey,
                 bpmnProcessId = command.bpmnProcessId,
                 processDefinitionKey = command.processDefinitionKey,
-                variables = command.variables,
+                assignee = command.assignee,
                 expiresAt = null,
-                assignee = null,
             )
         )
     }
@@ -34,8 +33,8 @@ class UserTaskService(
     override fun updateState(key: Long, state: String)
     {
         val matchingTask = userTaskPersistencePort.findByTaskId(key)
-        val ts = TaskState.valueOf(state)
-        matchingTask.taskState = ts
+        val taskState = TaskState.valueOf(state)
+        matchingTask.taskState = taskState
         userTaskPersistencePort.update(matchingTask)
     }
 

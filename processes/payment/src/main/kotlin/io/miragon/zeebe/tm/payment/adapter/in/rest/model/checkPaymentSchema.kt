@@ -7,15 +7,15 @@ import java.math.BigDecimal
 
 data class CheckPaymentSchema(
     @get:NotNull
-    @get:NotBlank(message = "Please provide the id of the invoice.")
+    @get:NotBlank
     val invoiceId: String,
 
     @get:NotNull
-    @get:NotBlank(message = "Please provide the id of the corresponding order.")
+    @get:NotBlank
     val orderId: String,
 
     @get:NotNull
-    @get:NotBlank(message = "Please provide the amount of money that was received.")
+    @get:NotBlank
     val amount: BigDecimal,
 
     val isAccepted: Boolean = false,

@@ -16,7 +16,7 @@ interface UserTaskUseCase
         val processInstanceKey: Long,
         val bpmnProcessId: String,
         val processDefinitionKey: Long,
-        val variables: Map<String, Any>,
+        val assignee: String,
     )
 
     data class SyncCommand(

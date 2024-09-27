@@ -21,14 +21,16 @@ class CompleteTaskAdapter(private val zeebeClient: ZeebeClient) :
             if (variables == null)
             {
                 zeebeClient
-                    .newCompleteCommand(taskId)
+                    .newUserTaskCompleteCommand(taskId) // TODO: Uncomment if using Zeebe Exporter (Zeebe Task API)
+                    // .newCompleteCommand(taskId) // JobWorker Version
                     .send()
                     .join()
 
             } else
             {
                 zeebeClient
-                    .newCompleteCommand(taskId)
+                    .newUserTaskCompleteCommand(taskId) // TODO: Uncomment if using Zeebe Exporter (Zeebe Task API)
+                    // .newCompleteCommand(taskId) // JobWorker Version
                     .variables(variables)
                     .send()
                     .join()

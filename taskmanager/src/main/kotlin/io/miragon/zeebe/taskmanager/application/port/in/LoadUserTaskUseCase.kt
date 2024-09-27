@@ -4,5 +4,7 @@ import io.miragon.zeebe.taskmanager.domain.UserTask
 
 interface LoadUserTaskUseCase
 {
-    fun load(): List<UserTask>
+    fun loadByExpirationDate(): List<UserTask>
+
+    fun loadByTaskState(): List<UserTask>
 }

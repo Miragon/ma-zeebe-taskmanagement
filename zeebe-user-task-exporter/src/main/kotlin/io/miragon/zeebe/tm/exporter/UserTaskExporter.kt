@@ -5,7 +5,6 @@ import io.camunda.zeebe.exporter.api.Exporter
 import io.camunda.zeebe.exporter.api.context.Context
 import io.camunda.zeebe.exporter.api.context.Controller
 import io.camunda.zeebe.protocol.record.Record
-import io.camunda.zeebe.protocol.record.value.JobRecordValue
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -60,41 +59,33 @@ class UserTaskExporter : Exporter
 
     override fun export(record: Record<*>)
     {
-        if (record.value is JobRecordValue)
+        if (record.intent.name() == "CREATING")
         {
-            val jobRecordValue = record.value as JobRecordValue
-            if (jobRecordValue.type == USER_TASK_JOB_TYPE)
-            {
-                val jobRecordDto = JobRecordDto(
-                    key = record.key,
-                    intent = record.intent.name(),
-                    elementId = jobRecordValue.elementId,
-                    processInstanceKey = jobRecordValue.processInstanceKey,
-                    bpmnProcessId = jobRecordValue.bpmnProcessId,
-                    processDefinitionKey = jobRecordValue.processDefinitionKey,
-                    variables = jobRecordValue.variables,
-                )
-
-                postUserTaskJobEvent(jobRecordDto)
-            }
+            return
         }
+
+        val recordString = mapper.writeValueAsString(record)
+
+        log.info("User Task Exporter Record: $recordString")
+
+        val url = if (record.intent.name() == "CREATED")
+        {
+            "$baseUrl/rest/${record.valueType.name.lowercase()}/save"
+        } else
+        {
+            "$baseUrl/rest/${record.valueType.name.lowercase()}/update"
+        }
+
+        postUserTaskJobEvent(url, recordString)
 
         this.controller.updateLastExportedRecordPosition(record.position)
     }
 
-    private fun postUserTaskJobEvent(jobRecordDto: JobRecordDto)
+    private fun postUserTaskJobEvent(url: String, recordString: String)
     {
         val json = "application/json; charset=utf-8".toMediaType()
-        val body = mapper.writeValueAsString(jobRecordDto).toRequestBody(json)
+        val body = recordString.toRequestBody(json)
         val rb = Request.Builder()
-
-        val url = if (jobRecordDto.intent == "CREATED")
-        {
-            "$baseUrl/rest/task/save"
-        } else
-        {
-            "$baseUrl/rest/task/update"
-        }
 
         val request = rb.url(url)
             .post(body)

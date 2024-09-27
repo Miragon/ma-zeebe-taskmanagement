@@ -14,6 +14,7 @@
         <zeebe:ioMapping>
           <zeebe:output source="=isOrderValid" target="isOrderValid" />
         </zeebe:ioMapping>
+        <zeebe:userTask />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0t8y9hy</bpmn:incoming>
       <bpmn:outgoing>Flow_13agsff</bpmn:outgoing>
@@ -23,7 +24,9 @@
       <bpmn:incoming>Flow_1y9k46h</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:userTask id="PrepareDelivery" name="Prepare delivery">
-      <bpmn:extensionElements />
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_14acku6</bpmn:incoming>
       <bpmn:outgoing>Flow_1y9k46h</bpmn:outgoing>
     </bpmn:userTask>
@@ -69,11 +72,7 @@
       <bpmn:messageEventDefinition id="MessageEventDefinition_1byhbby" messageRef="Message_20j8qkd" />
     </bpmn:intermediateCatchEvent>
     <bpmn:subProcess id="Activity_1mfg3yg" triggeredByEvent="true">
-      <bpmn:extensionElements>
-        <zeebe:ioMapping>
-          <zeebe:input source="=orderId" target="orderId" />
-        </zeebe:ioMapping>
-      </bpmn:extensionElements>
+      <bpmn:extensionElements />
       <bpmn:startEvent id="Event_0pbsgu2" name="Cancellation received">
         <bpmn:extensionElements />
         <bpmn:outgoing>Flow_0k7r135</bpmn:outgoing>

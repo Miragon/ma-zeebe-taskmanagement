@@ -38,6 +38,9 @@ spring:
 
 camunda:
   client:
-    zeebe:
-      gateway-url: ${ZEEBE_BASE_URL:http://localhost:26500}
     mode: simple
+    zeebe:
+      enabled: true
+      gateway-url: ${ZEEBE_GRPC_URL:http://localhost:26500}
+      base-url: ${ZEEBE_REST_URL:http://localhost:8080}
+      prefer-rest-over-grpc: false

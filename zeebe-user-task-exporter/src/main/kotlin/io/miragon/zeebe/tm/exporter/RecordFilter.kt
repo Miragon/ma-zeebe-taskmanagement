@@ -20,6 +20,6 @@ class RecordFilter : Context.RecordFilter
      */
     override fun acceptValue(valueType: ValueType?): Boolean
     {
-        return (valueType == ValueType.JOB) || (valueType == ValueType.USER_TASK)
+        return valueType == ValueType.USER_TASK || valueType == ValueType.VARIABLE
     }
 }
