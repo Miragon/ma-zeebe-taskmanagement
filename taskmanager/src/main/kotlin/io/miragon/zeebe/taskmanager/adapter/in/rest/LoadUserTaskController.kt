@@ -16,6 +16,9 @@ class LoadUserTaskController(
     @GetMapping("/tasks")
     fun loadTasks(): ResponseEntity<List<UserTaskDto>>
     {
+        // val tasks = loadUserTaskUseCase.loadByExpirationDate()
+
+        // TODO: uncomment the following line if using Zeebe exporter
         val tasks = loadUserTaskUseCase.loadByTaskState()
 
         return ResponseEntity.ok(tasks.map {

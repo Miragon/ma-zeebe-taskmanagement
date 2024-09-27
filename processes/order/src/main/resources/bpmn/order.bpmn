@@ -14,7 +14,6 @@
         <zeebe:ioMapping>
           <zeebe:output source="=isOrderValid" target="isOrderValid" />
         </zeebe:ioMapping>
-        <zeebe:formDefinition externalReference="ABC123" />
         <zeebe:userTask />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0t8y9hy</bpmn:incoming>
@@ -73,11 +72,7 @@
       <bpmn:messageEventDefinition id="MessageEventDefinition_1byhbby" messageRef="Message_20j8qkd" />
     </bpmn:intermediateCatchEvent>
     <bpmn:subProcess id="Activity_1mfg3yg" triggeredByEvent="true">
-      <bpmn:extensionElements>
-        <zeebe:ioMapping>
-          <zeebe:input source="=orderId" target="orderId" />
-        </zeebe:ioMapping>
-      </bpmn:extensionElements>
+      <bpmn:extensionElements />
       <bpmn:startEvent id="Event_0pbsgu2" name="Cancellation received">
         <bpmn:extensionElements />
         <bpmn:outgoing>Flow_0k7r135</bpmn:outgoing>

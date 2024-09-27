@@ -53,7 +53,7 @@
     <bpmn:boundaryEvent id="Event_0v8bo4t" name="14 days" attachedToRef="CheckPayment">
       <bpmn:outgoing>Flow_0xn0wm0</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_1qcvrxk">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT30S</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P14D</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_0xn0wm0" sourceRef="Event_0v8bo4t" targetRef="Activity_08fz3qg" />

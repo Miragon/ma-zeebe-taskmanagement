@@ -23,8 +23,11 @@ class CompleteTaskService(
         {
             val task = userTaskPersistencePort.findByTaskId(key)
             task.complete()
-            val taskId = userTaskPersistencePort.update(task)
-            val isCompleted = completeTaskPort.complete(taskId, variables)
+
+            val isCompleted = completeTaskPort.complete(task.key, variables)
+
+            val taskId =
+                userTaskPersistencePort.update(task) // Update database after task is marked completed in engine
 
             return taskId == key && isCompleted
         } catch (e: EntityNotFoundException)
