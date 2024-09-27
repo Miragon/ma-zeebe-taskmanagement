@@ -1,8 +1,8 @@
 package io.miragon.zeebe.taskmanager.application.port.`in`
 
-interface MetadataUseCase
+interface LoadMetadataUseCase
 {
-    fun getMetadata(): Response
+    fun load(): Response
 
     data class Response(
         val processApplications: List<ProcessApplication>

@@ -20,7 +20,7 @@ class ProcessApplicationMetadataServiceTest
     @Test
     fun getMetadata()
     {
-        val processApplications = metadataService.getMetadata().processApplications
+        val processApplications = metadataService.load().processApplications
 
         // order-process
         val orderProcess = processApplications.find { it.processId == "order-process" }
