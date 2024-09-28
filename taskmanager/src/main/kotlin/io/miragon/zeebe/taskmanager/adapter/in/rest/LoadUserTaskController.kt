@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/rest")
 class LoadUserTaskController(
-    private val loadUserTaskUseCase: LoadUserTaskUseCase
+    @Value("\${miranum.tm.exporter}") private val exporter: Boolean,
+    private val loadUserTaskUseCase: LoadUserTaskUseCase,
 )
 {
-    @Value("\${miranum.tm.exporter}")
-    private var exporter: Boolean = false
-
     @GetMapping("/tasks")
     fun loadTasks(): ResponseEntity<List<UserTaskDto>>
     {

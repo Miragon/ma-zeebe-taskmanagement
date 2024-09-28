@@ -9,4 +9,4 @@ zeebe:
           maxBlockingTimeoutMs: 1000
           flushIntervalMs: 1000
 
-          baseUrl: http://taskmanager:8090 # http://host.docker.internal:8090 # Local development
+          baseUrl: http://host.docker.internal:8090

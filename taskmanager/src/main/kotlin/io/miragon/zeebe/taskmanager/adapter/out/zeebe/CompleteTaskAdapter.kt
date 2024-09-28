@@ -7,12 +7,11 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 @Component
-class CompleteTaskAdapter(private val zeebeClient: ZeebeClient) :
-    CompleteTaskPort
+class CompleteTaskAdapter(
+    @Value("\${miranum.tm.exporter}") private val exporter: Boolean,
+    private val zeebeClient: ZeebeClient,
+) : CompleteTaskPort
 {
-    @Value("\${miranum.tm.exporter}")
-    private var exporter = false
-
     private val log = KotlinLogging.logger {}
 
     override fun complete(
