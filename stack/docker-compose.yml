@@ -10,12 +10,12 @@ services:
     env_file:
       - zeebe.env
     environment:
-      - SPRING_CONFIG_ADDITIONAL_LOCATION=/usr/local/zeebe/config/exporter.yml # TODO: Add this line if using Zeebe exporter
+      # - SPRING_CONFIG_ADDITIONAL_LOCATION=/usr/local/zeebe/config/exporter.yml # TODO: Add this line if using Zeebe exporter
       - "JAVA_TOOL_OPTIONS=-Xms512m -Xmx512m"
     restart: always
     volumes:
-      - ./zeebe/exporter.yml:/usr/local/zeebe/config/exporter.yml # TODO: Add this line if using Zeebe exporter
-      - ./zeebe/zeebe-user-task-exporter.jar:/usr/local/zeebe/lib/zeebe-user-task-exporter.jar # TODO: Add this line if using Zeebe exporter
+    # - ./zeebe/exporter.yml:/usr/local/zeebe/config/exporter.yml # TODO: Add this line if using Zeebe exporter
+    # - ./zeebe/zeebe-user-task-exporter.jar:/usr/local/zeebe/lib/zeebe-user-task-exporter.jar # TODO: Add this line if using Zeebe exporter
     networks:
       - internal
     depends_on:
@@ -163,6 +163,7 @@ services:
     env_file:
       - common.env
     environment:
+      TM_USE_EXPORTER: false # TODO: Set to true if using Zeebe exporter
       TM_PORT: ${TM_PORT}
       TM_JDBC_URL: ${TM_JDBC_URL}
       ORDER_BASE_URL: ${ORDER_BASE_URL}

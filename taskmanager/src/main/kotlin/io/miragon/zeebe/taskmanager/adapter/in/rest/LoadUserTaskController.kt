@@ -2,6 +2,7 @@ package io.miragon.zeebe.taskmanager.adapter.`in`.rest
 
 import io.miragon.zeebe.taskmanager.application.port.`in`.LoadUserTaskUseCase
 import io.miragon.zeebe.tm.tasklist.UserTaskDto
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -13,13 +14,21 @@ class LoadUserTaskController(
     private val loadUserTaskUseCase: LoadUserTaskUseCase
 )
 {
+    @Value("\${miranum.tm.exporter}")
+    private var exporter: Boolean = false
+
     @GetMapping("/tasks")
     fun loadTasks(): ResponseEntity<List<UserTaskDto>>
     {
-        // val tasks = loadUserTaskUseCase.loadByExpirationDate()
-
-        // TODO: uncomment the following line if using Zeebe exporter
-        val tasks = loadUserTaskUseCase.loadByTaskState()
+        val tasks = if (exporter)
+        {
+            // Should be used if user tasks are retrieved via exporter
+            loadUserTaskUseCase.loadByTaskState()
+        } else
+        {
+            // Should be used if user tasks are retrieved via job worker
+            loadUserTaskUseCase.loadByExpirationDate()
+        }
 
         return ResponseEntity.ok(tasks.map {
             UserTaskDto(

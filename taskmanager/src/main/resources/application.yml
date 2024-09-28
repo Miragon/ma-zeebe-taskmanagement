@@ -30,13 +30,15 @@ camunda:
       base-url: ${ZEEBE_REST_URL:http://localhost:8080}
       prefer-rest-over-grpc: false
 
-miranum.tm.process-application:
-  orderProcess:
-    label: Order Process
-    base-url: ${ORDER_BASE_URL:http://localhost:8091}
-    startable: true
-  paymentProcess:
-    label: Payment Process
-    base-url: ${PAYMENT_BASE_URL:http://localhost:8092}
-    startable: false
+miranum.tm:
+  exporter: ${TM_USE_EXPORTER:false}
+  metadata.process-application:
+    orderProcess:
+      label: Order Process
+      base-url: ${ORDER_BASE_URL:http://localhost:8091}
+      startable: true
+    paymentProcess:
+      label: Payment Process
+      base-url: ${PAYMENT_BASE_URL:http://localhost:8092}
+      startable: false
 

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import org.springframework.boot.context.properties.ConfigurationProperties
 
-@ConfigurationProperties(prefix = "miranum.tm")
+@ConfigurationProperties(prefix = "miranum.tm.metadata")
 data class ProcessApplicationMetadata(
     val processApplication: Map<String, ProcessApplication>,
 )
