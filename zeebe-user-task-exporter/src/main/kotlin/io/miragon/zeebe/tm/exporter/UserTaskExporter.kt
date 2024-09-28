@@ -24,7 +24,6 @@ class UserTaskExporter : Exporter
 
     private lateinit var baseUrl: String
     private lateinit var config: ExporterConfiguration
-    private val USER_TASK_JOB_TYPE = "io.camunda.zeebe:userTask"
 
     override fun configure(context: Context)
     {
@@ -76,12 +75,12 @@ class UserTaskExporter : Exporter
             "$baseUrl/rest/${record.valueType.name.lowercase()}/update"
         }
 
-        postUserTaskJobEvent(url, recordString)
+        postUserTaskRecord(url, recordString)
 
         this.controller.updateLastExportedRecordPosition(record.position)
     }
 
-    private fun postUserTaskJobEvent(url: String, recordString: String)
+    private fun postUserTaskRecord(url: String, recordString: String)
     {
         val json = "application/json; charset=utf-8".toMediaType()
         val body = recordString.toRequestBody(json)
